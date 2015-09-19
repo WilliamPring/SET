@@ -1,0 +1,15 @@
+#FileName: makeClient
+#NAME: William Pring and Naween Mehanmal
+#Date Friday March 27
+#Description: This is the make file for the client end
+
+#
+# FINAL BINARY Target
+./bin/tcpipClient : ./obj/tcpipClient.o
+	gcc -pthread ./obj/tcpipClient.o -o ./bin/tcpipClient -lncurses
+#
+# =======================================================
+#                     Dependencies
+# =======================================================                     
+./obj/tcpipClient.o : ./src/tcpip-client.c
+	cc -c ./src/tcpip-client.c -o ./obj/tcpipClient.o

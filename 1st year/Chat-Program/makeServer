@@ -1,0 +1,16 @@
+#FileName: makeServer
+#NAME: William Pring and Naween Mehanmal
+#Date Friday March 27
+#Description: This is the make file for the server end 
+
+
+#
+# FINAL BINARY Target
+./bin/tcpipServer : ./obj/tcpipServer.o
+	gcc -pthread ./obj/tcpipServer.o -o ./bin/tcpipServer
+#
+# =======================================================
+#                     Dependencies
+# =======================================================                     
+./obj/tcpipServer.o : ./src/tcpip-server.c
+	cc -c ./src/tcpip-server.c -o ./obj/tcpipServer.o
