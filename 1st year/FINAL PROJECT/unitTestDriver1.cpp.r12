@@ -1,0 +1,38 @@
+/*
+File name: unitTestDriver1.cpp
+Project: DS-OOP Assignment
+By: Naween Mehanmal and William Pring
+Date: April 5, 2015
+Description: This test harness is explicitly for the Container class and through numerous vigorous testing, the outcome will determine if the 
+functions/methods have been implemented correctly, meeting the domain/business rules and the program's requirements. 
+*/
+
+
+#include "Container.h"
+
+
+int maina()
+{
+	Container testContainer;
+
+	bool flagCreateChampion = true;
+	bool flag; 
+
+	testContainer.
+
+	//Normal testing for CreateChampion method
+
+	flagCreateChampion = testContainer.CreateChampion("WIll!$!@$M M", "Assassin", "SUPPORT", "1", "2", "3", "4", "5", "6");
+
+	
+	if (flagCreateChampion == false)
+	{
+		printf("Test failed\n");
+	}
+
+
+	
+
+
+	return 0; 
+}

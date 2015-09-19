@@ -1,0 +1,287 @@
+/*
+File name:
+Project:
+By:
+Date:
+Description:
+*/
+
+#include "Container.h"
+
+
+
+//
+//Container::Container()
+//{
+//	string line = "";
+//	ifstream infile("thefile.txt");
+//	if (!infile.bad())
+//	{
+//		while (getline(infile, line))
+//		{
+//			vector<string> storeList;
+//			string total = "";
+//			string name = "";
+//			string mainRole = "";
+//			string subRole = ""; 
+//			int AD = 0;
+//			int AP = 0;
+//			int DEF = 0;
+//			int DIFF = 0;
+//			int IP = 0;
+//			int RP = 0;
+//			istringstream iss(line);
+//			std::string int_string = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15";
+//			std::vector<int> int_list;
+//			strtk::parse(int_string, ",", int_list);
+//			//if (!(iss >> name >> mainRole >> subRole >> AD >> DEF >> AP >> DIFF >> IP >> RP))
+//			//{
+//			//	iss.str();
+//			//	//myclass current(f, f, f, f, f, f f, );
+//			//	//vector.pushback(current)
+//			//}
+//		}
+//	}
+//
+//
+//}
+
+
+string Container::deleteContainer()
+{
+	string message = "";
+	if (championContainer.size() == 0)
+	{
+		message += "You can not delet a champion that dose not exist yet!!\n";
+	}
+	else
+	{
+		championContainer.empty();
+		message += "You have sucesfully deleated all of you champions localy!!\n";
+	}
+	return message;
+}
+
+string Container::createUserLOLChampion(string nameChamp, string MainRoleChamp, string SubRoleChamp, string ADChamp, string APChamp, string DEFChamp, string DIFFChamp, string IPChamp, string RPChamp)
+{
+	string statusMessage = "";
+	Champions rules;
+
+	statusMessage = rules.Champion(nameChamp, MainRoleChamp, SubRoleChamp ,ADChamp, APChamp, DEFChamp, DIFFChamp, IPChamp, RPChamp);
+	if (statusMessage == "You have sucessfully created your new champion!\n")
+	{
+		championContainer.push_back(rules);
+	}
+	
+	return statusMessage;
+}
+
+string Container::sortAmount(string memType)
+{
+	//Champions tmpObj;
+	string message = ""; 
+
+	if (championContainer.size() == 0)
+	{
+		message += "There is nothing to sort your you have no champions!!\n";
+	}
+	else if (championContainer.size() == 1)
+	{
+		message += "There is only 1 champions nothing else that can sorted!!\n";
+	}
+	else
+	{
+		Champions::SetWhatToSort(memType);
+		sort(championContainer.begin(), championContainer.end());
+		message = "Success! Sorted Champions. \n";
+	}
+
+	return message;
+}
+
+string Container::displayContainer()
+{
+	string contentDisplay = "";
+	int i = 0;
+	string statsConversion = "";
+	vector <Champions>::iterator iter;
+	if (championContainer.size() < 1)
+	{
+		contentDisplay += "There was a problem when sorting your champion...\n";
+		contentDisplay += "\nERRORS WILL BE LISTED BELOW: \n";
+		contentDisplay += "Cannot display when there is no chamions!\n";
+	}
+	else
+	{
+		for (iter = championContainer.begin(); iter != championContainer.end(); iter++)
+		{
+			contentDisplay += "**************Champion**************\n";
+			contentDisplay += "Champion's Name: ";
+			contentDisplay += (*iter).GetChampName().c_str();
+			contentDisplay += "\nChampion's Main Role: ";
+			contentDisplay += (*iter).ChampMainRole().c_str();
+			contentDisplay += "\nChampion's SUB Role: ";
+			contentDisplay += (*iter).ChampSubRole().c_str();
+			//convert int to a string
+			statsConversion = convertInt((*iter).GetChampAD());
+			contentDisplay += "\nChampion's Attack Damage: ";
+			contentDisplay += statsConversion;
+			statsConversion = "";
+			//convert int to a string
+			statsConversion = convertInt((*iter).GetChampAP());
+			contentDisplay += "\nChampion's Attack Power: ";
+			contentDisplay += statsConversion;
+			statsConversion = "";
+			//convert int to a string
+			statsConversion = convertInt((*iter).GetChampDef());
+			contentDisplay += "\nChampion's Attack Defense: ";
+			contentDisplay += statsConversion;
+			statsConversion = "";
+			//convert int to a string
+			statsConversion = convertInt((*iter).GetChampDiff());
+			contentDisplay += "\nChampion's Attack Difficulty: ";
+			contentDisplay += statsConversion;
+			statsConversion = "";
+			//convert int to a string
+			statsConversion = convertInt((*iter).GetChampDiff());
+			contentDisplay += "\nChampion's Riot Points: ";
+			contentDisplay += statsConversion;
+			statsConversion = "";
+			//convert int to a string
+			statsConversion = convertInt((*iter).GetChampRP());
+			contentDisplay += "\nChampion's Influentes Points: \n";
+			contentDisplay += statsConversion;
+			statsConversion = "";
+		}
+	}
+
+	return contentDisplay;
+}
+
+
+string Container::convertInt(int number)
+{
+	stringstream ss;
+	ss << number;
+	return ss.str();
+}
+string Container::sortLOLChampion(string stats)
+{
+	string returnMessage = "";
+	string fianlMessage = "";
+	if ((stats == "AD") || (stats == "AP") || (stats == "DEF") || (stats == "DIFF") || (stats == "IP") || (stats == "RP") || (stats =="ChampName"))
+	{
+		returnMessage = sortAmount(stats);
+	}	
+	else
+	{
+		returnMessage += "Did not match the corresponding stats\n";
+	}
+	if (returnMessage != "")
+	{
+		fianlMessage += "There was a problem when sorting your champion...\n";
+		fianlMessage += "\nERRORS WILL BE LISTED BELOW: \n";
+		fianlMessage += returnMessage;
+	}
+	else
+	{
+		fianlMessage += returnMessage;
+	}
+
+	return fianlMessage;
+}
+
+string Container::createChampions(string champNum)
+{
+	int championAmount = 0;
+	int i = 0; 
+	Champions fighter;
+
+	championAmount = atoi(champNum.c_str());
+
+	for (int i = 0; i < championAmount; i++)
+	{
+		fighter.SetChampAD(randomNumCreator());
+		fighter.SetChampAP(randomNumCreator());
+		fighter.SetChampDef(randomNumCreator());
+		fighter.SetChampDiff(randomNumCreator());
+
+		fighter.SetChampIP(randomIPCreator());
+		fighter.SetChampRP(randomRPCreator());
+
+
+		fighter.SetChampMainRole(randomStringCreator());
+		fighter.SetChampSubRole(randomStringCreator());
+		fighter.SetChampName(randomNameCreator());
+
+		//Push into the vector
+
+		championContainer.push_back(fighter);
+	}
+
+	return "string"; 
+}
+
+int Container::randomNumCreator(void)
+{
+
+}
+
+int Container::randomIPCreator(void)
+{
+	int randomNumber = 0;
+
+	time_t t = 0;
+
+	srand((unsigned)time(&t));
+
+	randomNumber = 450 + rand() % 6300;
+
+	return randomNumber;
+}
+
+int Container::randomRPCreator(void)
+{
+	int number = rand() % 260 + 976;
+
+	return number;
+}
+
+string Container::randomNameCreator(void)
+{
+	static const char alphanum[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz";
+	char str[121] = "";
+	srand(time(0));
+
+	int letters = rand() % (123 - 65) + 65;
+	
+	srand(time(0));
+	
+	int len = rand() % (15 - 7) + 7; 
+
+	for (int i = 0; i < len; i++) {
+		str[i] = alphanum[rand() % (sizeof(alphanum)-1)];
+	}
+
+	str[len] = 0;
+
+	string result = str; 
+
+	return result;	
+}
+
+
+string Container::randomStringCreator(void)
+{
+	int randomNumber = 0;
+
+	time_t t = 0;
+
+	srand((unsigned)time(&t));
+
+	randomNumber = 1 + rand() % 6;
+	string type[7] = { "Fighter", "Mage", "Assassin", "Tank", "N/A", "Support", "Marksman" };
+
+
+	return type[randomNumber];
+}
