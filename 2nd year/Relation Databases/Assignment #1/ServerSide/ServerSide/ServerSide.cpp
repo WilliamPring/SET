@@ -26,6 +26,9 @@ DWORD WINAPI closeServer(LPVOID lpParam);
 
 //Global variables to ease complexity and allow for variables to be used in different threads 
 int recvbuflen = 512;
+int dBaseID = 1;
+int test = 20;
+
 char recvbuf[512] = "";
 SOCKET ClientSocket; //Temporary socket variable to accept connections from clients 
 SOCKET ListenSocket = INVALID_SOCKET;
@@ -35,6 +38,9 @@ HANDLE openMutex;
 
 vector<int> socketPool;
 //vector<int>::iterator iter; 
+
+void handleFind(LPVOID lpParam);
+void handleUpdate(LPVOID lpParam);
 
 int main()
 {
@@ -165,20 +171,20 @@ DWORD WINAPI readAndWriteThread(LPVOID lpParam)
 
 	int ClientSocket = (int)lpParam;
 
-	char* serverMenu = "Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n";
 	char* defaultCase = "Character was unreadable\n\n";
 	char* busyServer = "Server is busy at the moment, please wait\n";
 	int	  numberChosen = 0;
 	bool  leaveLoop = false;
 	DWORD dwWaitResult;
-
+	int loopCounter = 0;
+	ofstream file;
 	dwWaitResult = WaitForSingleObject(openMutex, INFINITE);
 
 	switch (dwWaitResult)
 	{
 	case WAIT_OBJECT_0:	// TODO: Perform task
 	{
-		send(ClientSocket, serverMenu, (int)strlen(serverMenu), 0);
+		//send(ClientSocket, serverMenu, (int)strlen(serverMenu), 0);
 
 		do
 		{
@@ -191,24 +197,35 @@ DWORD WINAPI readAndWriteThread(LPVOID lpParam)
 			case 1:
 			{
 				//function for inserting into file
-				//send(ClientSocket, "You chose 1", (int)strlen("You chose 1"), 0);
-				recv(ClientSocket, recvbuf, recvbuflen, 0);
-				ofstream file;
+				//recv(ClientSocket, recvbuf, recvbuflen, 0);
+				//loopCounter = atoi(recvbuf);
+				memset(recvbuf, 0, strlen(recvbuf));
 				file.open("database.txt", ios::app);
-				file << recvbuf;
+
+				while (1)
+				{
+					recv(ClientSocket, recvbuf, recvbuflen, 0);
+					if (strcmp(recvbuf, "End") == 0)
+					{
+						break;
+					}
+					file << dBaseID << "|" << recvbuf;
+					dBaseID++;
+					memset(recvbuf, 0, strlen(recvbuf));
+				}
 				file.close();
 				break;
 			}
 			case 2:
 			{
 				//function for updating the file 			
-
+				handleUpdate(lpParam);
 				break;
 			}
 			case 3:
 			{
 				//function for finding a member in the file 
-
+				handleFind(lpParam);
 				break;
 			}
 			case 4:
@@ -272,10 +289,232 @@ DWORD WINAPI closeServer(LPVOID lpParam)
 }
 
 
-//FILE IO, streams... delimiters 
 
-//40 000, if condition 
+/****************************************************/
 
-//Client has to be able to disconnect gracefully
+/*
+Function:
+Description:
+Parameter(s):
+Return:
+*/
+void handleUpdate(LPVOID lpParam)
+{
+	int socketNum = (int)lpParam;
+	int loopCount = 0;
+	bool updateString = false;
+	fstream inputFile;
 
-//Server disconnects, everybody disconnects with a message, alarm.. , everybody disconnects with a message, alarm.. 
+	string lineToRead = "";
+	string idObtained = "";
+
+	memset(recvbuf, 0, strlen(recvbuf));
+	recv(ClientSocket, recvbuf, recvbuflen, 0);
+	string findID = recvbuf;
+	int enteredID = atoi(findID.c_str());
+
+	inputFile.open("database.txt", ios::in | ios::out);
+	inputFile.clear();
+	//inputFile.seekg(0, ios::beg);
+
+	int byteCounter = 0;
+
+	if (enteredID <= dBaseID)
+	{
+		if (inputFile.good())
+		{
+			while (getline(inputFile, lineToRead, '\n'))
+			{
+				loopCount = lineToRead.length();
+
+				for (int i = 0; i < loopCount; i++)
+				{
+					if (idObtained == findID)
+					{
+						updateString = true;
+						break; // Begin parsing the entire string
+					}
+					else if (lineToRead[i] == '|')
+					{
+						idObtained = "";
+						break; // Leave loop and try new line
+					}
+
+					idObtained += lineToRead[i];
+				}
+
+				if (updateString == true)
+				{
+					//update the new string 
+					inputFile.seekp(byteCounter);
+					// 10|denys|denys|1995-03-03|\n
+					inputFile << findID + "|DENYS|WILLY|1995-01-05|";
+					break;
+				}
+
+				byteCounter += lineToRead.length() + 2;
+			}
+
+
+
+			/*
+			for (int i = 0; i < enteredID; i++)
+			{
+			getline(inputFile, lineToRead, '\n');
+			}
+
+			loopCount = lineToRead.length();
+
+			for (int i = 0; i < loopCount; i++)
+			{
+			if (idObtained == findID)
+			{
+			updateString = true;
+			break; // Begin parsing the entire string
+			}
+			else if (lineToRead[i] == '|')
+			{
+			idObtained = "";
+			break; // Leave loop and try new line
+			}
+
+			idObtained += lineToRead[i];
+			}
+
+			if (updateString == true)
+			{
+			//Update the string
+			cout << lineToRead << endl;
+			lineToRead = findID + "|TEST|BRO|1995/05/03";
+			cout << lineToRead << endl;
+
+			inputFile << lineToRead;
+			inputFile.close();
+
+			}  */
+			//send(socketNum, overall.c_str(), (int)strlen(overall.c_str()), 0);
+		}
+		else
+		{
+			cout << "File unable to be opened" << endl;
+		}
+	}
+	else
+	{
+		send(socketNum, "Not enough member ID in the database\n", (int)strlen("Not enough member ID in the database\n"), 0);
+	}
+
+	inputFile.close();
+	return;
+}
+
+
+
+/****************************************************/
+
+/*
+Function:
+Description:
+Parameter(s):
+Return:
+*/
+void handleFind(LPVOID lpParam)
+{
+	int socketNum = (int)lpParam;
+	int pipeCounter = 0;
+	int loopCount = 0;
+
+	bool parseString = false;
+
+	ifstream ifs;
+
+	string lineToRead = "";
+	string memberID = "Member ID : ";
+	string firstName = "First Name: ";
+	string lastName = "Last Name: ";
+	string birthDate = "Birth Date: ";
+	string overall = "";
+	string idObtained = "";
+
+	memset(recvbuf, 0, strlen(recvbuf));
+	recv(ClientSocket, recvbuf, recvbuflen, 0);
+	string findID = recvbuf;
+	int idNumber = atoi(findID.c_str());
+
+	ifs.open("database.txt");
+
+	if (idNumber <= dBaseID)
+	{
+		if (ifs.good())
+		{
+			while (getline(ifs, lineToRead, '\n'))
+			{
+				loopCount = lineToRead.length();
+
+				for (int i = 0; i < loopCount; i++)
+				{
+					if (idObtained == findID)
+					{
+						parseString = true;
+						break; // Begin parsing the entire string
+					}
+					else if (lineToRead[i] == '|')
+					{
+						idObtained = "";
+						break; // Leave loop and try new line
+					}
+
+					idObtained += lineToRead[i];
+				}
+
+				if (parseString == true)
+				{
+					cout << lineToRead << endl;
+
+					for (int i = 0; i < loopCount; i++)
+					{
+						if (lineToRead[i] == '|')
+						{
+							pipeCounter++;
+							continue;
+						}
+
+						if (pipeCounter == 0)
+						{
+							memberID += lineToRead[i];
+						}
+						else if (pipeCounter == 1)
+						{
+							firstName += lineToRead[i];
+						}
+						else if (pipeCounter == 2)
+						{
+							lastName += lineToRead[i];
+						}
+						else if (pipeCounter == 3)
+						{
+							birthDate += lineToRead[i];
+						}
+					}
+
+					overall = memberID + "\n" + firstName + "\n" + lastName + "\n" + birthDate + "\n";
+					break;
+				}
+			}
+			send(socketNum, overall.c_str(), (int)strlen(overall.c_str()), 0);
+		}
+		else
+		{
+			cout << "File unable to be opened" << endl;
+		}
+	}
+	else
+	{
+		send(socketNum, "Not enough member ID in the database\n", (int)strlen("Not enough member ID in the database\n"), 0);
+	}
+
+	ifs.close();
+	return;
+}
+
+/****************************************************/
