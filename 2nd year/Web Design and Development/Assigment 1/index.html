@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+
+
+	var randomNumber;
+	var status = true;
+	var loopStatusForName = true;
+	var tryAgain;   
+	var loopStatus = true;
+	var number =0;
+	while (loopStatusForName)
+	{
+		var name = prompt("Enter in your name");
+		if ((name.search(/[^a-zA-Z]+/) === -1) && (name.length > 1))
+		{
+			loopStatusForName = false;
+			break;
+		}
+		else
+		{
+			tryAgain = prompt("Try again? y or click anything to exit");
+			if (tryAgain === "y")
+			{
+				continue;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+
+	if (loopStatusForName === false)
+	{
+		while (loopStatus)
+		{
+			//Enter Name in a prompt box
+			var maxNumber = prompt("Enter The Maximum Guess number");
+			//first it will subtract the number with modify number assuming there a decmial if it subtract fully that means its a whole
+			//number if it did not that means there a decmial
+			if(((maxNumber - Math.floor(maxNumber)) == 0 ) && (maxNumber > 1))
+			{
+				randomNumber = Math.floor((Math.random() * maxNumber) + 1);
+				
+				while (number != randomNumber)
+				{
+					number = prompt("Enter in a number between 1 and " + maxNumber);
+					if (number > randomNumber)
+					{
+						window.alert("The number is to big");
+					}
+					else if (number < randomNumber)
+					{
+						window.alert("The number is to small");
+					}
+					else
+					{
+						window.alert("You Are Correct!!");
+						document.body.style.backgroundColor = "red";
+						window.confirm("PLay Again");
+						break;
+					}
+				}
+				document.body.style.backgroundColor = "white";
+			}
+			else
+			{
+				tryAgain = prompt("Try again? y or click anything to exit");
+				if (tryAgain === "y")
+				{
+					continue;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+	}
+</script>
+
+
+</html>
+
