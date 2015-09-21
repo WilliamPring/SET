@@ -13,78 +13,32 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <regex>
 #include <time.h>
+
 #pragma comment(lib, "Ws2_32.lib")
 #pragma warning(disable:4996)
 
-using namespace std; 
+using namespace std;
+
+/******************** Global Variables ********************/
 string randomDateGenerator();
 DWORD WINAPI typeInfoThread(LPVOID lpParam);
 HANDLE newThread;
 int recvbuflen = DEFAULT_BUFLEN;
-int exitProgram = 0; 
+int exitProgram = 0;
 char recvbuf[DEFAULT_BUFLEN];
-bool menuOption = false; 
 
-//Function Prototypes
-char* userInput(void);
-bool CheckLetter(char* answer);
-bool birthdate(char* answer);
+bool showMenu = true;
 
+/******************** Function Prototypes ********************/
+void generateInformation(char *temp);
+void handleInsert(LPVOID lpParam);
 
+string randomDateGenerator(void);
+string randomName(void);
 
-string randomName()
-{
-	string result = "";
-	static const char alphanum[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz";
-	char str[121] = "";
-	//srand(time(0));
-
-	int letters = rand() % (123 - 65) + 65;
-
-	//srand(time(0));
-
-	int len = rand() % (15 - 7) + 7;
-
-	for (int i = 0; i < len; i++) {
-		str[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
-	}
-
-	str[len] = 0;
-
-	result = str;
-
-	return result;
-}
-
-		
-
-
-
-
-string randomDateGenerator()
-{
-	string totalDate = "";
-	string sMonth = "";
-	string sDay = "";
-	string sYear = "";
-	srand(time(NULL));
-	int month = 0;
-	int day = 0;
-	int year = 0;
-	month = rand() % 12 + 1;
-	day = rand() % 31 + 1;
-	year = rand() % (2015 - 1915) +1915;
-	sDay = to_string(day);
-	sYear = to_string(year);
-	sMonth = to_string(month);
-	totalDate += (sYear) + ("/" + sMonth) + ("/" + sDay);
-
-	return totalDate;
-
-
-}
-
+/****************************************/
 
 int main(int argc, char* argv[])
 {
@@ -101,7 +55,7 @@ int main(int argc, char* argv[])
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
-	
+
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0) {
@@ -116,7 +70,6 @@ int main(int argc, char* argv[])
 		WSACleanup();
 		return 1;
 	}
-
 
 	// Attempt to connect to the first address returned by
 	// the call to getaddrinfo
@@ -156,15 +109,11 @@ int main(int argc, char* argv[])
 	newThread = CreateThread(NULL, 0, typeInfoThread, (LPVOID)ConnectSocket, 0, NULL);
 
 	// Receive data until the server closes the connection
-	
+	printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
+
 	do {
 		memset(recvbuf, 0, strlen(recvbuf));
 		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
-
-		if (strcmp(recvbuf, "Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n") == 0)
-		{
-			menuOption = true; 
-		}
 
 		if (strcmp(recvbuf, "Server Closed") == 0)
 		{
@@ -179,8 +128,15 @@ int main(int argc, char* argv[])
 				exit(0);
 			}
 
-			printf("%s\n", recvbuf);
-
+			if (showMenu == true)
+			{
+				printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
+			}
+			else
+			{
+				printf("%s\n", recvbuf);
+				showMenu = true;
+			}
 		}
 		else if (iResult == 0)
 		{
@@ -190,118 +146,83 @@ int main(int argc, char* argv[])
 
 	exit(0);
 
-	return 0; 
+	return 0;
 }
 
 
 DWORD WINAPI typeInfoThread(LPVOID lpParam)
-{	
-	bool loopCondition = true; 
-	bool condition = true; 
-	int ConnectSocket = (int)lpParam; 
-	int numberChosen = 0;	
-	int errorCheck = 0; //Checks for errors when trying to shutdown and close the sockets 
-	char buffer[1024] = ""; //Used to store user input and to perform error checking 
-	char officialString[1024] = ""; 
-	char* answer = ""; 
-	char* serverMenu = "Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n";
-	string fullData = "";
-	string firstName = "";
-	string lastName = "";
+{
+	bool loopCondition = true;
+	bool menuOption = true;
 
-	while (condition)
+	int ConnectSocket = (int)lpParam;
+	int numberChosen = 0;
+	int errorCheck = 0; //Checks for errors when trying to shutdown and close the sockets 
+
+	char buffer[DEFAULT_BUFLEN] = ""; //Used to store user input and to perform error checking 
+
+	while (menuOption)
 	{
 		fgets(buffer, 1024, stdin);
 		*strchr(buffer, '\n') = '\0';
 		send(ConnectSocket, buffer, (int)strlen(buffer), 0);
 		numberChosen = atoi(buffer);
 
-		if (menuOption == true)
+		switch (numberChosen)
 		{
-			switch (numberChosen)
-			{
-				case 1: //Inserting new member into database, error check
-				{
-					string tempAmount = "";
-					printf("How much data do you want to enter in the database");
-					getline(cin, tempAmount);
-
-					send(ConnectSocket, tempBufferData, strlen(tempBufferData), 0);
-
-					int amountOfEntry = 0;
-					amountOfEntry = atoi(tempAmount.c_str());
-					for (int i = 0; i < amountOfEntry; i++)
-					{
-						string sNewEntryData = "";
-						string date = "";
-						string firstName = "";
-						string lastName = "";
-						date = randomDateGenerator();
-						firstName = randomName();
-						lastName = randomName();
-						sNewEntryData += (firstName + "|") + (lastName + "|") + (date + "|") + "\n";
-						char tempBufferData[50] = "";
-						strcpy(tempBufferData,sNewEntryData.c_str());
-						send(ConnectSocket, tempBufferData, strlen(tempBufferData), 0);
-					}
-					break;
-				}
-				case 2:
-				{
-					printf("You've chosen 2");
-					break;
-				}
-				case 3:
-				{
-					printf("You've chosen 3");
-					break;
-				}
-				case 4: //Disconnect client
-				{
-					condition = false;
-					// shutdown the send half of the connection since no more data will be sent
-					send(ConnectSocket, buffer, (int)strlen(buffer), 0);
-					errorCheck = shutdown(ConnectSocket, SD_BOTH);
-					closesocket(ConnectSocket);
-					if (errorCheck == SOCKET_ERROR)
-					{
-						printf("shutdown failed: %d\n", WSAGetLastError());
-						closesocket(ConnectSocket);
-						WSACleanup();
-						return 1;
-					}
-					printf("You have officially disconnected, goodbye!\n");
-					break;
-				}
-				default:
-				{
-					printf("Character unreadable, please try again.\n");
-					break;
-				}
-			}
-			memset(buffer, 0, strlen(buffer));
+		case 1: //Inserting new member into database, error check
+		{
+			handleInsert(lpParam);
+			break;
 		}
+		case 2:
+		{
+			printf("You've chosen 2\n");
+			fgets(buffer, 1024, stdin);
+			*strchr(buffer, '\n') = '\0';
+			send(ConnectSocket, buffer, (int)strlen(buffer), 0);
+			break;
+		}
+		case 3:
+		{
+			fgets(buffer, 1024, stdin);
+			*strchr(buffer, '\n') = '\0';
+			send(ConnectSocket, buffer, (int)strlen(buffer), 0);
+			showMenu = false;
+			//memset(recvbuf, 0, recvbuflen);
+			//recv(ConnectSocket, recvbuf, recvbuflen, 0);
+			//printf("%s\n", recvbuf);
+			break;
+		}
+		case 4: //Disconnect client
+		{
+			menuOption = false;
+			// shutdown the send half of the connection since no more data will be sent
+			send(ConnectSocket, buffer, (int)strlen(buffer), 0);
+			errorCheck = shutdown(ConnectSocket, SD_BOTH);
+			closesocket(ConnectSocket);
+			if (errorCheck == SOCKET_ERROR)
+			{
+				printf("shutdown failed: %d\n", WSAGetLastError());
+				closesocket(ConnectSocket);
+				WSACleanup();
+				return 1;
+			}
+			printf("You have officially disconnected, goodbye!\n");
+			break;
+		}
+		default:
+		{
+			printf("Character unreadable, please try again.\n");
+			break;
+		}
+		}
+		memset(buffer, 0, strlen(buffer));
+
 	}
 
 	exit(0);
-	return 0; 
-}
-
-
-
-
-/*
-Function: 
-Description: 
-Parameter(s):
-Return:
-*/
-char* userInput(void)
-{
-	char buffer[1024] = { 0 };
-	fgets(buffer, 1024, stdin);
-	*strchr(buffer, '\n') = '\0';
-	return buffer;
+	return 0;
 }
 
 
@@ -312,192 +233,129 @@ Description:
 Parameter(s):
 Return:
 */
-bool CheckLetter(char* answer)
+void handleInsert(LPVOID lpParam)
 {
-	string input = "";
-	bool error = true;
-	bool inputStatus = true;
-	bool retry = false;
-	bool status = true;
-	char* buffer = ""; 
-
-	while (status)
+	string fullData = "";
+	string firstName = "";
+	string lastName = "";
+	regex integer("(\\+|-)?[[:digit:]]+");
+	string tempAmount = "";
+	int socketNum = (int)lpParam;
+	char tempBufferData[DEFAULT_BUFLEN] = "";
+	bool continueLoop = true;
+	while (continueLoop)
 	{
-		if (retry == true)
-		{
-			memset(buffer, 0, strlen(buffer));
-			fgets(buffer, 1024, stdin);
-			*strchr(buffer, '\n') = '\0';
-			retry = false;
-		}
-		//check to see if the length of the string is greater then 20
-		if (strlen(buffer) > 20)
-		{
-			//if it is then you will be prompt with a question if you wish to continue or not
-			printf("inappropriate ammount of characters\n");
-			printf("Do you wish to try again n (no) or click anybutton for yes\n");
-			getline(cin, input);
-			//if the peroson dose not wish to continue then it will end the loop
-			if (input == "n")
-			{
-				status = false;
-				error = false;
-				continue;
-			}
-			else
-			{
-				//if the person wish to try again there will be an if statement that will allow them because 
-				//the retry bool will change
-				status = true;
-				retry = true;
-				continue;
-			}
-		}
-		//if everything is correct such as the lenght of the string it will check to see if the 
-		//the string is a number or not
-		for (unsigned int i = 0; i < strlen(buffer); i++)
-		{
-			//check to see if the letter is a digit or not
-			if (isdigit(buffer[i]) != 0)
-			{
-				//if it si then promt them with a message asking them do they wish to try again
-				printf("That is not a letter \n");
-				printf("Do you wish to try again? \n");
-				getline(cin, input);
-				//if not the program will end
-				if (input == "n")
-				{
-					error = false;
-					inputStatus = true;
-					error = false;
-					break;
-				}
-				else
-				{
-					memset(buffer, 0, strlen(buffer));
-					fgets(buffer, 1024, stdin);
-					*strchr(buffer, '\n') = '\0';
-					inputStatus = false;
-					break;
-				}
-			}
-			inputStatus = true;
-		}
-		if (inputStatus == true)
-		{
-			break;
-		}
-	}
-	return error;
-}
+		printf("How much data do you wish to enter in the database: ");
+		getline(cin, tempAmount);
 
-
-
-/*
-Function:
-Description:
-Parameter(s):
-Return:
-*/
-bool birthdate(char* answer)
-{
-	string input = "";
-	char tempBuffer[121] = "";
-	char buffer[1024] = { 0 };
-	bool returnStatus = true;
-	string totalStringBirthdate = "";
-	totalStringBirthdate = answer;
-	string month = "";
-	string day = "";
-	int nMonth = 0;
-	int nDay = 0;
-	int nYear = 0;
-	bool status = true;
-	bool inputStatus = false;
-	string year = "";
-	while (status)
-	{
-		if (inputStatus == true)
+		if (regex_match(tempAmount, integer))
 		{
-			memset(buffer, 0, strlen(buffer));
-			fgets(buffer, 1024, stdin);
-			*strchr(buffer, '\n') = '\0';
-			inputStatus = false;
-		}
-		if ((totalStringBirthdate.c_str()[4] == '/') && (totalStringBirthdate.c_str()[7] == '/') && (totalStringBirthdate.length() == 10))
-		{
-			year = totalStringBirthdate.substr(0, 4);
-			month = totalStringBirthdate.substr(5, 2);
-			day = totalStringBirthdate.substr(9, 2);
-			//removing the first /
-			totalStringBirthdate.erase(4, 1);
-			//removing the second /
-			totalStringBirthdate.erase(6, 1);
-			strcpy(tempBuffer, totalStringBirthdate.c_str());
-			for (unsigned int i = 0; i < strlen(tempBuffer); i++)
+			//memset(tempBufferData, 0, strlen(tempBufferData));
+			//strcpy(tempBufferData, tempAmount.c_str());
+			//send(socketNum, tempBufferData, strlen(tempBufferData), 0);
+			int amountOfEntry = 0;
+			amountOfEntry = atoi(tempAmount.c_str());
+			for (int i = 0; i < amountOfEntry; i++)
 			{
-				//check to see if the letter is a digit or not
-				if (isalpha(tempBuffer[i]) != 0)
-				{
-					//if it si then promt them with a message asking them do they wish to try again
-					printf("That is not a number \n");
-					printf("Do you wish to try again? click n for no or click any button to try again\n");
-					getline(cin, input);
-					//if not the program will end
-					if (input == "n")
-					{
-						break;
-					}
-					else
-					{
-						inputStatus = true;
-						break;
-					}
-				}
+				generateInformation(tempBufferData);
+				send(socketNum, tempBufferData, strlen(tempBufferData), 0);
+				memset(tempBufferData, 0, strlen(tempBufferData));
 			}
-			if (inputStatus == false)
-			{
-				nYear = atoi(year.c_str());
-				nDay = atoi(day.c_str());
-				nMonth = atoi(month.c_str());
-
-				if (((nYear <= 2015) && (nYear >= 1915)) && ((nMonth >= 1) && (nMonth <= 12)) && ((nDay >= 1) && (nDay <= 31)))
-				{
-					break;
-				}
-				else
-				{
-					printf("That was the wrong format. click n (no) or click any button to try again ");
-					getline(cin, input);
-					//if not the program will end
-					if (input == "n")
-					{
-						break;
-					}
-					else
-					{
-						inputStatus = true;
-						continue;
-					}
-				}
-			}
+			send(socketNum, "End", strlen("End"), 0);
+			continueLoop = false;
 		}
 		else
 		{
-			printf("That was the wrong format. click n (no) or click any button to try again ");
-			getline(cin, input);
-			//if not the program will end
-			if (input == "n")
+			printf("That was not a number do want to try again!\n y(yes) or click anything to quit\n");
+			getline(cin, tempAmount);
+			if (tempAmount != "y")
 			{
-				break;
+				continueLoop = false;
 			}
-			else
-			{
-				inputStatus = true;
-				continue;
-			}
-
 		}
 	}
-	return returnStatus;
+
+	printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
+	return;
+}
+
+
+/*
+Function:
+Description:
+Parameter(s):
+Return:
+*/
+void generateInformation(char *temp)
+{
+	string sNewEntryData = "";
+	string date = "";
+	string firstName = "";
+	string lastName = "";
+	date = randomDateGenerator();
+	firstName = randomName();
+	lastName = randomName();
+	sNewEntryData += (firstName + "|") + (lastName + "|") + (date + "|") + "\n";
+	strcpy(temp, sNewEntryData.c_str());
+}
+
+
+
+/*
+Function:
+Description:
+Parameter(s):
+Return:
+*/
+string randomDateGenerator(void)
+{
+	string totalDate = "";
+	string sMonth = "";
+	string sDay = "";
+	string sYear = "";
+	int month = 0;
+	int day = 0;
+	int year = 0;
+	month = rand() % 12 + 1;
+	day = rand() % 31 + 1;
+	year = rand() % (2015 - 1915) + 1915;
+	sDay = to_string(day);
+	if (sDay.length() == 1)
+	{
+		sDay = "0" + sDay;
+	}
+	sYear = to_string(year);
+	sMonth = to_string(month);
+	if (sMonth.length() == 1)
+	{
+		sMonth = "0" + sMonth;
+	}
+	totalDate += (sYear)+("/" + sMonth) + ("/" + sDay);
+	return totalDate;
+}
+
+
+
+/*
+Function:
+Description:
+Parameter(s):
+Return:
+*/
+string randomName(void)
+{
+	string result = "";
+	const char alphanum[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz";
+	char str[DEFAULT_BUFLEN] = "";
+	int letters = rand() % (123 - 65) + 65;
+	int len = 5;
+
+	for (int i = 0; i < len; i++)
+	{
+		str[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
+	}
+
+	str[len] = 0;
+	result = str;
+	return result;
 }
