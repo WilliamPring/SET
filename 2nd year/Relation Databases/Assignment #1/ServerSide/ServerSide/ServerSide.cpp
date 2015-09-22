@@ -2,7 +2,7 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-#define DEFAULT_PORT "27016"
+#define DEFAULT_PORT "30000"
 
 #include <windows.h>
 #include <winsock2.h>
@@ -35,6 +35,7 @@ SOCKET ListenSocket = INVALID_SOCKET;
 HANDLE newThread; //Handle for new thread creation 
 HANDLE closeSocketsThread;
 HANDLE openMutex;
+HANDLE idMutex;
 
 vector<int> socketPool;
 //vector<int>::iterator iter; 
@@ -121,6 +122,7 @@ int main()
 
 	//Create the mutex so that clients can use the server one at a time
 	openMutex = CreateMutex(NULL, FALSE, NULL);
+	idMutex = CreateMutex(NULL, FALSE, NULL);
 
 	if (openMutex == NULL)
 	{
@@ -175,84 +177,111 @@ DWORD WINAPI readAndWriteThread(LPVOID lpParam)
 	char* busyServer = "Server is busy at the moment, please wait\n";
 	int	  numberChosen = 0;
 	bool  leaveLoop = false;
+	bool  leaveMutex = true;
 	DWORD dwWaitResult;
 	int loopCounter = 0;
 	ofstream file;
-	dwWaitResult = WaitForSingleObject(openMutex, INFINITE);
+	//dwWaitResult = WaitForSingleObject(openMutex, INFINITE);
 
-	switch (dwWaitResult)
+	do
 	{
-	case WAIT_OBJECT_0:	// TODO: Perform task
-	{
-		//send(ClientSocket, serverMenu, (int)strlen(serverMenu), 0);
+		recv(ClientSocket, recvbuf, recvbuflen, 0);
+		numberChosen = atoi(recvbuf);
+		memset(recvbuf, 0, strlen(recvbuf));
 
-		do
+		switch (numberChosen)
 		{
-			recv(ClientSocket, recvbuf, recvbuflen, 0);
-			numberChosen = atoi(recvbuf);
+		case 1:
+		{
+			//Insert # of records  
+
+			WaitForSingleObject(openMutex, INFINITE);
 			memset(recvbuf, 0, strlen(recvbuf));
+			file.open("database.txt", ios::app);
 
-			switch (numberChosen)
+			while (1)
 			{
-			case 1:
-			{
-				//function for inserting into file
-				//recv(ClientSocket, recvbuf, recvbuflen, 0);
-				//loopCounter = atoi(recvbuf);
-				memset(recvbuf, 0, strlen(recvbuf));
-				file.open("database.txt", ios::app);
-
-				while (1)
+				recv(ClientSocket, recvbuf, recvbuflen, 0);
+				if (strcmp(recvbuf, "End") == 0)
 				{
-					recv(ClientSocket, recvbuf, recvbuflen, 0);
-					if (strcmp(recvbuf, "End") == 0)
-					{
-						break;
-					}
-					file << dBaseID << "|" << recvbuf;
-					dBaseID++;
-					memset(recvbuf, 0, strlen(recvbuf));
+					break;
 				}
-				file.close();
-				break;
-			}
-			case 2:
-			{
-				//function for updating the file 			
-				handleUpdate(lpParam);
-				break;
-			}
-			case 3:
-			{
-				//function for finding a member in the file 
-				handleFind(lpParam);
-				break;
-			}
-			case 4:
-			{
-				printf("Client Number [%d] Disconnected", ClientSocket);
-				send(ClientSocket, "Disconnected from server", (int)strlen("Disconnected from server"), 0);
-				leaveLoop = true;
-				break;
-			}
-			}
-		} while (leaveLoop != true);
+				file << dBaseID << "|" << recvbuf;
 
-		ReleaseMutex(openMutex);
-		break;
-	}
-	case WAIT_TIMEOUT:
-	{
-		send(ClientSocket, busyServer, (int)strlen(busyServer), 0);
-		printf("Thread %d: wait timed out\n", GetCurrentThreadId());
-		break;
-	}
-	default:
-	{
-		send(ClientSocket, busyServer, (int)strlen(busyServer), 0);
-		break;
-	}
-	}
+				WaitForSingleObject(idMutex, INFINITE);
+				dBaseID++;
+				ReleaseMutex(idMutex);
+
+				memset(recvbuf, 0, strlen(recvbuf));
+			}
+			file.close();
+			ReleaseMutex(openMutex);
+		}
+		break; //Break out of case 1, from parent loop
+		case 2:
+		{
+			//function for updating the file
+			leaveMutex = true;
+
+			while (leaveMutex)
+			{
+				dwWaitResult = WaitForSingleObject(openMutex, INFINITE);
+
+				switch (dwWaitResult)
+				{
+				case WAIT_OBJECT_0:	// TODO: Perform task
+				{
+					handleUpdate(lpParam);
+					leaveMutex = false;
+					ReleaseMutex(openMutex); //Open up the file for other clients 
+					break;
+				}
+				case WAIT_TIMEOUT:
+				{
+					send(ClientSocket, busyServer, (int)strlen(busyServer), 0);
+					printf("Thread %d: wait timed out\n", GetCurrentThreadId());
+					break;
+				}
+				}
+			}
+			break; //break out of case 2 parent loop 
+		}
+		case 3:
+		{
+			//function for finding a member in the file 
+			leaveMutex = true;
+
+			while (leaveMutex)
+			{
+				dwWaitResult = WaitForSingleObject(openMutex, INFINITE);
+				switch (dwWaitResult)
+				{
+				case WAIT_OBJECT_0:	// TODO: Perform task
+				{
+					handleFind(lpParam);
+					leaveMutex = false;
+					ReleaseMutex(openMutex); //Open up the file for other clients 
+					break;
+				}
+				case WAIT_TIMEOUT:
+				{
+					send(ClientSocket, busyServer, (int)strlen(busyServer), 0);
+					printf("Thread %d: wait timed out\n", GetCurrentThreadId());
+					break;
+				}
+				}
+			}
+			break;
+		}
+		case 4:
+		{
+			printf("Client Number [%d] Disconnected", ClientSocket);
+			send(ClientSocket, "Disconnected from server", (int)strlen("Disconnected from server"), 0);
+			leaveLoop = true;
+			break;
+		}
+		}
+	} while (leaveLoop != true);
 
 	printf("\nExited LOOP successfully\n");
 
@@ -315,7 +344,6 @@ void handleUpdate(LPVOID lpParam)
 
 	inputFile.open("database.txt", ios::in | ios::out);
 	inputFile.clear();
-	//inputFile.seekg(0, ios::beg);
 
 	int byteCounter = 0;
 
@@ -348,51 +376,15 @@ void handleUpdate(LPVOID lpParam)
 					//update the new string 
 					inputFile.seekp(byteCounter);
 					// 10|denys|denys|1995-03-03|\n
-					inputFile << findID + "|DENYS|WILLY|1995-01-05|";
+					memset(recvbuf, 0, recvbuflen);
+					recv(ClientSocket, recvbuf, recvbuflen, 0);
+					printf("%s\n", recvbuf);
+					inputFile << findID + recvbuf;
 					break;
 				}
 
 				byteCounter += lineToRead.length() + 2;
 			}
-
-
-
-			/*
-			for (int i = 0; i < enteredID; i++)
-			{
-			getline(inputFile, lineToRead, '\n');
-			}
-
-			loopCount = lineToRead.length();
-
-			for (int i = 0; i < loopCount; i++)
-			{
-			if (idObtained == findID)
-			{
-			updateString = true;
-			break; // Begin parsing the entire string
-			}
-			else if (lineToRead[i] == '|')
-			{
-			idObtained = "";
-			break; // Leave loop and try new line
-			}
-
-			idObtained += lineToRead[i];
-			}
-
-			if (updateString == true)
-			{
-			//Update the string
-			cout << lineToRead << endl;
-			lineToRead = findID + "|TEST|BRO|1995/05/03";
-			cout << lineToRead << endl;
-
-			inputFile << lineToRead;
-			inputFile.close();
-
-			}  */
-			//send(socketNum, overall.c_str(), (int)strlen(overall.c_str()), 0);
 		}
 		else
 		{
