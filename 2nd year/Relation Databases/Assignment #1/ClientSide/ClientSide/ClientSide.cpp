@@ -2,7 +2,7 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-#define DEFAULT_PORT "27015"
+#define DEFAULT_PORT "27016"
 #define DEFAULT_BUFLEN 1024
 
 #include <windows.h>
@@ -254,8 +254,9 @@ void handleInsert(LPVOID lpParam)
 			//strcpy(tempBufferData, tempAmount.c_str());
 			//send(socketNum, tempBufferData, strlen(tempBufferData), 0);
 			int amountOfEntry = 0;
+			int i = 0;
 			amountOfEntry = atoi(tempAmount.c_str());
-			for (int i = 0; i < amountOfEntry; i++)
+			for (i; i < amountOfEntry; i++)
 			{
 				generateInformation(tempBufferData);
 				send(socketNum, tempBufferData, strlen(tempBufferData), 0);
@@ -274,7 +275,7 @@ void handleInsert(LPVOID lpParam)
 			}
 		}
 	}
-
+	
 	printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
 	return;
 }
