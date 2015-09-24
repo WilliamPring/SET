@@ -1,8 +1,12 @@
+/*
+
+
+*/
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-#define DEFAULT_PORT "30000"
+#define DEFAULT_PORT "40000"
 #define DEFAULT_BUFLEN 1024
 
 #include <windows.h>
@@ -25,16 +29,14 @@ using namespace std;
 string randomDateGenerator();
 DWORD WINAPI typeInfoThread(LPVOID lpParam);
 HANDLE newThread;
-int recvbuflen = DEFAULT_BUFLEN;
-int exitProgram = 0;
-char recvbuf[DEFAULT_BUFLEN];
-
-bool showMenu = true;
 
 /******************** Function Prototypes ********************/
 void generateInformation(char *temp);
 void handleInsertClient(LPVOID lpParam);
 void handleUpdateClient(LPVOID lpParam);
+
+bool verifyNumber(string& numberEntered);
+bool verifyMenuNumber(string& numberEntered);
 
 string randomDateGenerator(void);
 string randomName(void);
@@ -43,7 +45,9 @@ string randomName(void);
 
 int main(int argc, char* argv[])
 {
-	int iResult;
+	int recvbuflen = DEFAULT_BUFLEN;
+	int iResult = 0;
+	char recvbuf[DEFAULT_BUFLEN] = "";
 	char menuScreen[1024] = "Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n";
 
 	WSADATA wsaData;
@@ -109,14 +113,11 @@ int main(int argc, char* argv[])
 	}
 
 	newThread = CreateThread(NULL, 0, typeInfoThread, (LPVOID)ConnectSocket, 0, NULL);
-
-	// Receive data until the server closes the connection
-	//printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
 	printf("%s\n", menuScreen);
 
 	do {
 		memset(recvbuf, 0, strlen(recvbuf));
-		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
+		recv(ConnectSocket, recvbuf, recvbuflen, 0);
 
 		if (strcmp(recvbuf, "Server Closed") == 0)
 		{
@@ -124,29 +125,16 @@ int main(int argc, char* argv[])
 			break;
 		}
 
-		if (iResult > 0)
-		{
-			if (strcmp(recvbuf, "Server Closed") == 0)
-			{
-				exit(0);
-			}
+		printf("%s\n", recvbuf);
 
-			if (showMenu == true)
-			{
-				printf("%s\n", menuScreen);
-			}
-			else
-			{
-				printf("%s\n", recvbuf);
-				printf("%s\n", menuScreen);
-				showMenu = true;
-			}
-		}
-		else if (iResult == 0)
+		if (strcmp(recvbuf, "<<Disconnected from server>>") == 0)
 		{
-			printf("Connection closed\n");
+			printf("You have officially disconnected, goodbye!\n");
+			break;
 		}
-	} while (iResult > 0);
+
+		printf("%s\n", menuScreen);
+	} while (1);
 
 	exit(0);
 
@@ -158,56 +146,100 @@ DWORD WINAPI typeInfoThread(LPVOID lpParam)
 {
 	bool loopCondition = true;
 	bool menuOption = true;
+	bool validNumber = true;
+	bool validMenuNumber = true;
 
 	int ConnectSocket = (int)lpParam;
 	int numberChosen = 0;
 	int errorCheck = 0; //Checks for errors when trying to shutdown and close the sockets 
 
 	char buffer[DEFAULT_BUFLEN] = ""; //Used to store user input and to perform error checking 
+	int recvbuflen = DEFAULT_BUFLEN;
+	char recvbuf[DEFAULT_BUFLEN] = "";
+
+	string numberInput = "";
+	string menuNumberInput = "";
 
 	while (menuOption)
 	{
-		fgets(buffer, 1024, stdin);
-		*strchr(buffer, '\n') = '\0';
-		send(ConnectSocket, buffer, (int)strlen(buffer), 0);
-		numberChosen = atoi(buffer);
+		while (1)
+		{
+			menuNumberInput.clear();
+			getline(cin, menuNumberInput);
+			validMenuNumber = verifyMenuNumber(menuNumberInput);
+			cout << menuNumberInput << endl;
+
+			if (validMenuNumber == true)
+			{
+				if (menuNumberInput == "4")
+				{
+					send(ConnectSocket, "|", (int)strlen("|"), 0);
+				}
+
+				send(ConnectSocket, menuNumberInput.c_str(), (int)strlen(menuNumberInput.c_str()), 0);
+				validMenuNumber = false;
+				system("cls");
+				break;
+			}
+		}
+
+		numberChosen = atoi(menuNumberInput.c_str());
 
 		switch (numberChosen)
 		{
-		case 1: //Inserting new member into database, error check
+		case 1:
 		{
+			//Inserting new member into database, error check
 			handleInsertClient(lpParam);
-			showMenu = true;
 			break;
 		}
 		case 2:
 		{
 			system("cls");
-			printf("Which member would you like to update?\n");
-			memset(buffer, 0, (int)strlen(buffer));
-			fgets(buffer, 1024, stdin);
-			*strchr(buffer, '\n') = '\0';
-			send(ConnectSocket, buffer, (int)strlen(buffer), 0);
+
+			while (1)
+			{
+				printf("Which member would you like to update?\n");
+				numberInput.clear();
+				getline(cin, numberInput);
+				validNumber = verifyNumber(numberInput);
+
+				if (validNumber == true)
+				{
+					send(ConnectSocket, numberInput.c_str(), (int)strlen(numberInput.c_str()), 0);
+					validNumber = false;
+					break;
+				}
+			}
+
 			handleUpdateClient(lpParam);
-			showMenu = true;
 			break;
 		}
 		case 3:
 		{
 			system("cls");
-			printf("Which member would you like to find?\n");
-			memset(buffer, 0, (int)strlen(buffer));
-			fgets(buffer, 1024, stdin);
-			*strchr(buffer, '\n') = '\0';
-			send(ConnectSocket, buffer, (int)strlen(buffer), 0);
-			showMenu = false;
+
+			while (1)
+			{
+				printf("Which member would you like to find?\n");
+				numberInput.clear();
+				getline(cin, numberInput);
+				validNumber = verifyNumber(numberInput);
+
+				if (validNumber == true)
+				{
+					send(ConnectSocket, numberInput.c_str(), (int)strlen(numberInput.c_str()), 0);
+					validNumber = false;
+					break;
+				}
+			}
 			break;
 		}
-		case 4: //Disconnect client
+		case 4:
 		{
-			menuOption = false;
-			// shutdown the send half of the connection since no more data will be sent
-			send(ConnectSocket, buffer, (int)strlen(buffer), 0);
+			//Shutdown the send half of the connection since no more data will be sent
+			menuOption = false; //Disconnect client
+			send(ConnectSocket, "|", (int)strlen("|"), 0);
 			errorCheck = shutdown(ConnectSocket, SD_BOTH);
 			closesocket(ConnectSocket);
 			if (errorCheck == SOCKET_ERROR)
@@ -217,7 +249,6 @@ DWORD WINAPI typeInfoThread(LPVOID lpParam)
 				WSACleanup();
 				return 1;
 			}
-			printf("You have officially disconnected, goodbye!\n");
 			break;
 		}
 		default:
@@ -227,13 +258,74 @@ DWORD WINAPI typeInfoThread(LPVOID lpParam)
 		}
 		}
 		memset(buffer, 0, strlen(buffer));
-
 	}
 
 	exit(0);
 	return 0;
 }
 
+
+
+/*
+Function:
+Description:
+Parameter(s):
+Return:
+*/
+bool verifyMenuNumber(string& numberEntered)
+{
+	int length = numberEntered.length();
+	int actualNumber = atoi(numberEntered.c_str());
+	bool retValue = true;
+
+	for (int i = 0; i < length; i++)
+	{
+		if (!isdigit(numberEntered.c_str()[i]))
+		{
+			system("cls");
+			printf("Invalid input! Must be a number only, try again!\n");
+			printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
+			retValue = false;
+			break;
+		}
+	}
+
+	if ((actualNumber == 0) || (actualNumber > 4))
+	{
+		system("cls");
+		printf("\nInvalid menu option! Must be a number only, try again!\n");
+		printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
+		retValue = false;
+	}
+
+	return retValue;
+}
+
+
+
+/*
+Function:
+Description:
+Parameter(s):
+Return:
+*/
+bool verifyNumber(string& numberEntered)
+{
+	int length = numberEntered.length();
+	bool retValue = true;
+
+	for (int i = 0; i < length; i++)
+	{
+		if (!isdigit(numberEntered.c_str()[i]))
+		{
+			printf("\nInvalid Input! Must be a number only, try again!\n");
+			retValue = false;
+			break;
+		}
+	}
+
+	return retValue;
+}
 
 
 /*
@@ -315,8 +407,8 @@ void handleUpdateClient(LPVOID lpParam)
 			sendingString += firstName + "|";
 		}
 
-		system("cls");
-		printf("Good, now enter the last name of the member:\n(String must be within 5): ");
+		//system("cls");
+		printf("\nGood, now enter the last name of the member:\n(String must be within 5): ");
 		lastName.clear();
 		getline(cin, lastName);
 
@@ -369,17 +461,18 @@ void handleUpdateClient(LPVOID lpParam)
 		break; //Leave the loop, first and last name were good 
 	}
 
-	system("cls");
+	//system("cls");
 
 	while (1)
 	{
 		//The calender date checking is a bit more explicit
-		printf("Enter in the year of date of birth:\n");
+		printf("\nEnter in the year of date of birth:\n");
 		getline(cin, userInput);
 		year = atoi(userInput.c_str());
 
 		if (!(year >= 1915 && year <= 2015))
 		{
+			system("cls");
 			printf("Year was not acceptable, try again..\n");
 			continue;
 		}
@@ -387,7 +480,7 @@ void handleUpdateClient(LPVOID lpParam)
 		dateOfBirth += userInput + '-';
 		userInput.clear();
 
-		printf("Enter in the month of date of birth:\n");
+		printf("\nEnter in the month of date of birth:\n");
 		getline(cin, userInput);
 		month = atoi(userInput.c_str());
 
@@ -405,7 +498,7 @@ void handleUpdateClient(LPVOID lpParam)
 		dateOfBirth += userInput + '-';
 
 		userInput.clear();
-		printf("Enter in the day of date of birth:\n");
+		printf("\nEnter in the day of date of birth:\n");
 		getline(cin, userInput);
 		day = atoi(userInput.c_str());
 
@@ -426,11 +519,10 @@ void handleUpdateClient(LPVOID lpParam)
 
 	sendingString = "|" + sendingString + dateOfBirth;
 
-	//cout << sendingString << endl;
 	strcpy(testBuffer, sendingString.c_str());
-	send(socketNum, testBuffer, strlen(testBuffer), 0);
-	system("cls");
-	printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
+	send(socketNum, testBuffer, (int)strlen(testBuffer), 0);
+	//system("cls");
+	//printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
 	return;
 }
 
@@ -485,8 +577,8 @@ void handleInsertClient(LPVOID lpParam)
 		}
 	}
 
-	system("cls");
-	printf("Welcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
+	//system("cls");
+	//printf("\nWelcome to Database Server\n\n1-INSERT\n2-UPDATE\n3-FIND\n4-DISCONNECT\n");
 	return;
 }
 
@@ -508,6 +600,7 @@ void generateInformation(char *temp)
 	lastName = randomName();
 	sNewEntryData += (firstName + "|") + (lastName + "|") + (date + "|") + "\n";
 	strcpy(temp, sNewEntryData.c_str());
+	return;
 }
 
 
