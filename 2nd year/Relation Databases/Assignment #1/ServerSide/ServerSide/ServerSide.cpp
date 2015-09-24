@@ -2,7 +2,9 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-#define DEFAULT_PORT "30000"
+#define DEFAULT_PORT "40000"
+#define MAX_BUF 1024
+#define MAX_RECORD 40000
 
 #include <windows.h>
 #include <winsock2.h>
@@ -13,6 +15,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <cstdio>
 
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -25,26 +28,25 @@ DWORD WINAPI closeServer(LPVOID lpParam);
 //The steps to create a server, create a socket, bind the socket, have the socket listen for connections, connect, read/write to client connected
 
 //Global variables to ease complexity and allow for variables to be used in different threads 
-int recvbuflen = 512;
 int dBaseID = 1;
 int test = 20;
 
-char recvbuf[512] = "";
-SOCKET ClientSocket; //Temporary socket variable to accept connections from clients 
-SOCKET ListenSocket = INVALID_SOCKET;
 HANDLE newThread; //Handle for new thread creation 
 HANDLE closeSocketsThread;
 HANDLE openMutex;
 HANDLE idMutex;
 
+
 vector<int> socketPool;
 //vector<int>::iterator iter; 
 
-void handleFind(LPVOID lpParam);
-void handleUpdate(LPVOID lpParam);
+void handleFind(string& finalString, char* idNumberString);
+bool handleUpdate(string& updateFinalString, char* idNumberString, int& byteCounter);
 
 int main()
 {
+	SOCKET ClientSocket; //Temporary socket variable to accept connections from clients 
+	SOCKET ListenSocket = INVALID_SOCKET;
 	WSADATA wsaData;
 	int iResult;
 
@@ -124,6 +126,7 @@ int main()
 	openMutex = CreateMutex(NULL, FALSE, NULL);
 	idMutex = CreateMutex(NULL, FALSE, NULL);
 
+
 	if (openMutex == NULL)
 	{
 		printf("CreateMutex error: %d\n", GetLastError());
@@ -176,16 +179,36 @@ DWORD WINAPI readAndWriteThread(LPVOID lpParam)
 	char* defaultCase = "Character was unreadable\n\n";
 	char* busyServer = "Server is busy at the moment, please wait\n";
 	int	  numberChosen = 0;
-	bool  leaveLoop = false;
-	bool  leaveMutex = true;
-	DWORD dwWaitResult;
+
+	bool leaveLoop = false;
+	bool leaveMutex = true;
+	bool updateRecord = true;
+
 	int loopCounter = 0;
+	int byteCounter = 0;
+
 	ofstream file;
-	//dwWaitResult = WaitForSingleObject(openMutex, INFINITE);
+	fstream newFile;
+
+	string databaseID = "";
+	string finalString = "";
+	string updateString = "";
+
+	char recvbuf[MAX_BUF] = "";
+	int recvbuflen = MAX_BUF;
 
 	do
 	{
+		memset(recvbuf, 0, strlen(recvbuf));
 		recv(ClientSocket, recvbuf, recvbuflen, 0);
+
+		if (strcmp(recvbuf, "|") == 0)
+		{
+			printf("Client Number [%d] Disconnected\n", ClientSocket);
+			send(ClientSocket, "<<Disconnected from server>>", (int)strlen("<<Disconnected from server>>"), 0);
+			break;
+		}
+
 		numberChosen = atoi(recvbuf);
 		memset(recvbuf, 0, strlen(recvbuf));
 
@@ -193,97 +216,105 @@ DWORD WINAPI readAndWriteThread(LPVOID lpParam)
 		{
 		case 1:
 		{
-			//Insert # of records  
+			//Insert # of records 
 
-			WaitForSingleObject(openMutex, INFINITE);
 			memset(recvbuf, 0, strlen(recvbuf));
+			WaitForSingleObject(openMutex, INFINITE);
 			file.open("database.txt", ios::app);
 
 			while (1)
 			{
 				recv(ClientSocket, recvbuf, recvbuflen, 0);
+
 				if (strcmp(recvbuf, "End") == 0)
 				{
+					//leaveLoop = true; 
 					break;
 				}
+
 				file << dBaseID << "|" << recvbuf;
+				memset(recvbuf, 0, strlen(recvbuf));
 
 				WaitForSingleObject(idMutex, INFINITE);
+				if (dBaseID == MAX_RECORD)
+				{
+					send(ClientSocket, "\n<<Database is full>>\n", (int)strlen("\n<<Database is full>>\n"), 0);
+					ReleaseMutex(idMutex);
+					updateRecord = false;
+					break;
+				}
+
 				dBaseID++;
 				ReleaseMutex(idMutex);
-
-				memset(recvbuf, 0, strlen(recvbuf));
 			}
 			file.close();
 			ReleaseMutex(openMutex);
+
+			if (updateRecord == true)
+			{
+				send(ClientSocket, "\n<<Database updated>>\n", (int)strlen("\n<<Database updated>>\n"), 0);
+			}
+			updateRecord = true;
+			break; //Break out of case 1, from parent loop
 		}
-		break; //Break out of case 1, from parent loop
+
+
 		case 2:
 		{
 			//function for updating the file
-			leaveMutex = true;
+			memset(recvbuf, 0, strlen(recvbuf));
+			recv(ClientSocket, recvbuf, recvbuflen, 0);
+			databaseID = recvbuf;
+			printf("ID entered: %s\n", recvbuf);
 
-			while (leaveMutex)
+			WaitForSingleObject(openMutex, INFINITE);
+			newFile.open("database.txt", ios::in | ios::out);
+
+			updateString.clear();
+			updateRecord = handleUpdate(updateString, recvbuf, byteCounter);
+
+			if (updateRecord == true)
 			{
-				dwWaitResult = WaitForSingleObject(openMutex, INFINITE);
+				updateRecord = false;
+				memset(recvbuf, 0, strlen(recvbuf));
+				recv(ClientSocket, recvbuf, recvbuflen, 0);
+				printf("%s\n", recvbuf);
 
-				switch (dwWaitResult)
-				{
-				case WAIT_OBJECT_0:	// TODO: Perform task
-				{
-					handleUpdate(lpParam);
-					leaveMutex = false;
-					ReleaseMutex(openMutex); //Open up the file for other clients 
-					break;
-				}
-				case WAIT_TIMEOUT:
-				{
-					send(ClientSocket, busyServer, (int)strlen(busyServer), 0);
-					printf("Thread %d: wait timed out\n", GetCurrentThreadId());
-					break;
-				}
-				}
+				newFile.seekp(byteCounter);
+				send(ClientSocket, "\n<<ID was updated>>\n", (int)strlen("\n<<ID was updated>>\n"), 0);
+				newFile << databaseID + recvbuf;
+				databaseID.clear();
 			}
+			else
+			{
+				send(ClientSocket, "\n<<ID could not be updated>>\n", (int)strlen("\n<<ID could not be updated\n>>"), 0);
+			}
+
+			newFile.close();
+
+			ReleaseMutex(openMutex); //Open up the file for other clients 				
 			break; //break out of case 2 parent loop 
 		}
 		case 3:
 		{
 			//function for finding a member in the file 
-			leaveMutex = true;
+			memset(recvbuf, 0, strlen(recvbuf));
+			recv(ClientSocket, recvbuf, recvbuflen, 0);
 
-			while (leaveMutex)
-			{
-				dwWaitResult = WaitForSingleObject(openMutex, INFINITE);
-				switch (dwWaitResult)
-				{
-				case WAIT_OBJECT_0:	// TODO: Perform task
-				{
-					handleFind(lpParam);
-					leaveMutex = false;
-					ReleaseMutex(openMutex); //Open up the file for other clients 
-					break;
-				}
-				case WAIT_TIMEOUT:
-				{
-					send(ClientSocket, busyServer, (int)strlen(busyServer), 0);
-					printf("Thread %d: wait timed out\n", GetCurrentThreadId());
-					break;
-				}
-				}
-			}
-			break;
-		}
-		case 4:
-		{
-			printf("Client Number [%d] Disconnected", ClientSocket);
-			send(ClientSocket, "Disconnected from server", (int)strlen("Disconnected from server"), 0);
-			leaveLoop = true;
+			printf("%s\n", recvbuf);
+
+			WaitForSingleObject(openMutex, INFINITE);
+
+
+			finalString.clear();
+			handleFind(finalString, recvbuf);
+			send(ClientSocket, finalString.c_str(), (int)strlen(finalString.c_str()), 0);
+
+			ReleaseMutex(openMutex); //Open up the file for other clients 			
 			break;
 		}
 		}
 	} while (leaveLoop != true);
-
-	printf("\nExited LOOP successfully\n");
 
 	return 0;
 }
@@ -292,24 +323,35 @@ DWORD WINAPI readAndWriteThread(LPVOID lpParam)
 
 //Create another thread so that the application can be asynchronous to read and write responses 
 
+/*
+Thread: closeServer()
+Description:
+Parameter(s):
+Return:
+*/
 DWORD WINAPI closeServer(LPVOID lpParam)
 {
-	char buffer[1024] = { 0 };
+	string closeProg = "";
 
 	while (1)
 	{
-		fgets(buffer, 1024, stdin);
-		*strchr(buffer, '\n') = '\0';
-
-		if (strcmp(buffer, "close") == 0)
+		getline(cin, closeProg);
+		//check to see if the program wants to shut down all the clients
+		if (closeProg == "close")
 		{
 			printf("Closing Server Now!\n>>SERVER CLOSED\n");
+			//seraches through a vector 
 			for (vector<int>::iterator iter = socketPool.begin(); iter != socketPool.end(); ++iter)
 			{
+				//all client will receive this messages
 				send(*iter, "Server Closed", (int)strlen("Server Closed"), 0);
 				shutdown(*iter, SD_BOTH);
 				closesocket(*iter);
 			}
+
+			//Delete the database 
+			remove("C:\\Users\\Naween\\Desktop\\ServerSide\\ServerSide\\database.txt");
+			printf("Deleted database file\n");
 			exit(0);
 			break;
 		}
@@ -322,39 +364,46 @@ DWORD WINAPI closeServer(LPVOID lpParam)
 /****************************************************/
 
 /*
-Function:
+Function: handleUpdate()
 Description:
 Parameter(s):
 Return:
 */
-void handleUpdate(LPVOID lpParam)
+bool handleUpdate(string& updateFinalString, char* idNumberString, int& byteCounter)
 {
-	int socketNum = (int)lpParam;
+	//int socketNum = (int)lpParam;
 	int loopCount = 0;
 	bool updateString = false;
+	bool retValue = false;
 	fstream inputFile;
+
+	char recvbuf[512] = "";
+	int recvbuflen = 512;
 
 	string lineToRead = "";
 	string idObtained = "";
 
-	memset(recvbuf, 0, strlen(recvbuf));
-	recv(ClientSocket, recvbuf, recvbuflen, 0);
-	string findID = recvbuf;
+
+	string findID = idNumberString;
 	int enteredID = atoi(findID.c_str());
+
+	WaitForSingleObject(openMutex, INFINITE);
 
 	inputFile.open("database.txt", ios::in | ios::out);
 	inputFile.clear();
-
-	int byteCounter = 0;
+ 
 
 	if (enteredID <= dBaseID)
 	{
+		//check the bit to see if it good to open
 		if (inputFile.good())
 		{
+			//if it is get the line until getline fails
 			while (getline(inputFile, lineToRead, '\n'))
 			{
+				//check the lenght of the line that was read
 				loopCount = lineToRead.length();
-
+				//loop the length of the line
 				for (int i = 0; i < loopCount; i++)
 				{
 					if (idObtained == findID)
@@ -371,15 +420,10 @@ void handleUpdate(LPVOID lpParam)
 					idObtained += lineToRead[i];
 				}
 
-				if (updateString == true)
+				if (updateString == true) // MIGHTNEED TO PUT THIS OUT IN THE SERVER CASE 
 				{
-					//update the new string 
-					inputFile.seekp(byteCounter);
-					// 10|denys|denys|1995-03-03|\n
-					memset(recvbuf, 0, recvbuflen);
-					recv(ClientSocket, recvbuf, recvbuflen, 0);
-					printf("%s\n", recvbuf);
-					inputFile << findID + recvbuf;
+
+					retValue = true;
 					break;
 				}
 
@@ -393,11 +437,12 @@ void handleUpdate(LPVOID lpParam)
 	}
 	else
 	{
-		send(socketNum, "Not enough member ID in the database\n", (int)strlen("Not enough member ID in the database\n"), 0);
+		updateFinalString = "Not enough member ID in the database\n";
 	}
 
 	inputFile.close();
-	return;
+	ReleaseMutex(openMutex);
+	return retValue;
 }
 
 
@@ -410,11 +455,14 @@ Description:
 Parameter(s):
 Return:
 */
-void handleFind(LPVOID lpParam)
+void handleFind(string& finalString, char* idNumberString)
 {
-	int socketNum = (int)lpParam;
+	//int socketNum = (int)lpParam;
 	int pipeCounter = 0;
 	int loopCount = 0;
+
+	char recvbuf[512] = "";
+	int recvbuflen = 512;
 
 	bool parseString = false;
 
@@ -428,12 +476,16 @@ void handleFind(LPVOID lpParam)
 	string overall = "";
 	string idObtained = "";
 
-	memset(recvbuf, 0, strlen(recvbuf));
-	recv(ClientSocket, recvbuf, recvbuflen, 0);
-	string findID = recvbuf;
+	//memset(recvbuf, 0, strlen(recvbuf));
+	//recv(ClientSocket, recvbuf, recvbuflen, 0);
+	string findID = idNumberString;
 	int idNumber = atoi(findID.c_str());
 
+	//WaitForSingleObject(openMutex, INFINITE);
+
 	ifs.open("database.txt");
+
+	//WaitForSingleObject(idMutexFind, INFINITE);
 
 	if (idNumber <= dBaseID)
 	{
@@ -489,11 +541,10 @@ void handleFind(LPVOID lpParam)
 						}
 					}
 
-					overall = memberID + "\n" + firstName + "\n" + lastName + "\n" + birthDate + "\n";
+					finalString = memberID + "\n" + firstName + "\n" + lastName + "\n" + birthDate + "\n";
 					break;
 				}
 			}
-			send(socketNum, overall.c_str(), (int)strlen(overall.c_str()), 0);
 		}
 		else
 		{
@@ -502,8 +553,9 @@ void handleFind(LPVOID lpParam)
 	}
 	else
 	{
-		send(socketNum, "Not enough member ID in the database\n", (int)strlen("Not enough member ID in the database\n"), 0);
+		finalString = "Not enough member ID in the database\n";
 	}
+
 
 	ifs.close();
 	return;
