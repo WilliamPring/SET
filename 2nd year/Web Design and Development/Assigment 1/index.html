@@ -1,3 +1,13 @@
+<!--
+File: index.html
+Project :Web Desgin and Development Assigment #1
+Programmer : Denys Polituk
+First Version: 20 september 2015
+Descrition: This Project is to create a HI Lo Game in java script. It allow the users to guess the randomly generated number base on their max number
+input. When they win the game it will change colours.
+-->
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,16 +18,22 @@
 </body>
 <script type="text/javascript">
 
-
+	var minNumber =1;
 	var randomNumber;
 	var status = true;
 	var loopStatusForName = true;
 	var tryAgain;   
 	var loopStatus = true;
 	var number =0;
+	var tempMaxNumber =0;
 	while (loopStatusForName)
 	{
 		var name = prompt("Enter in your name");
+		if (name === 'null')
+		{
+			break;
+		
+		}
 		if ((name.search(/[^a-zA-Z]+/) === -1) && (name.length > 1))
 		{
 			loopStatusForName = false;
@@ -25,15 +41,8 @@
 		}
 		else
 		{
-			tryAgain = prompt("Try again? y or click anything to exit");
-			if (tryAgain === "y")
-			{
-				continue;
-			}
-			else
-			{
-				break;
-			}
+			window.alert("Invalid Name!");
+	
 		}
 	}
 
@@ -42,29 +51,54 @@
 		while (loopStatus)
 		{
 			//Enter Name in a prompt box
-			var maxNumber = prompt("Enter The Maximum Guess number");
+			var maxNumber = prompt("Enter The Maximum Guess number " + name);
 			//first it will subtract the number with modify number assuming there a decmial if it subtract fully that means its a whole
 			//number if it did not that means there a decmial
-			if(((maxNumber - Math.floor(maxNumber)) == 0 ) && (maxNumber > 1))
+
+			if (maxNumber.search(/^[0-9]*$/) == -1)
+			{
+				alert("Not valid Max Guess");
+				continue;
+			}
+
+			if(((maxNumber - Math.floor(maxNumber)) == 0 ) && (maxNumber > 1) )
 			{
 				randomNumber = Math.floor((Math.random() * maxNumber) + 1);
 				
 				while (number != randomNumber)
 				{
-					number = prompt("Enter in a number between 1 and " + maxNumber);
-					if (number > randomNumber)
+					number = prompt("Enter in a number between" + minNumber + " and " + maxNumber);
+					if (number.search(/^[0-9]*$/) == -1)
 					{
+						alert("Not valid Number");
+						continue;
+					}
+					if (number > randomNumber)
+					{	
+						if (number <= maxNumber)
+						{						
+							maxNumber = number;
+						}
+
 						window.alert("The number is to big");
 					}
 					else if (number < randomNumber)
 					{
+						if (number => minNumber)
+						{
+							minNumber = number;
+						}
 						window.alert("The number is to small");
 					}
 					else
 					{
 						window.alert("You Are Correct!!");
 						document.body.style.backgroundColor = "red";
-						window.confirm("PLay Again");
+						if (window.confirm("PLay Again") == true)
+						{
+							loopStatus = false;
+							break;
+						}
 						break;
 					}
 				}
@@ -72,15 +106,7 @@
 			}
 			else
 			{
-				tryAgain = prompt("Try again? y or click anything to exit");
-				if (tryAgain === "y")
-				{
-					continue;
-				}
-				else
-				{
-					break;
-				}
+				window.alert("Invalid Number!");
 			}
 		}
 	}
@@ -88,4 +114,3 @@
 
 
 </html>
-
