@@ -372,7 +372,7 @@ namespace Assigment_2
             List<Vehicle> temp = new List<Vehicle>();
             foreach (Vehicle v in newVehicles)
             {
-                if(v.Model == ModelToTrack)
+                if(v.ModelYear.ToString() == ModelToTrack)
                 {
                     temp.Add(v);
                 }
