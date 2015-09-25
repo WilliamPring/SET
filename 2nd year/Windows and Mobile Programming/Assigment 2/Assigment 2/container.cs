@@ -120,6 +120,10 @@ namespace Assigment_2
                     }
                     if (readLine[0] == 'M')
                     {
+                        if (nMotocycle == 10)
+                        {
+                            continue;
+                        }
                         counter = 0;
                         string manufacturer = "";
                         string Model = "";
@@ -179,6 +183,10 @@ namespace Assigment_2
                     }
                     else if ((readLine[0] == 'S') && (readLine[1] == 'T'))
                     {
+                        if (nSmallTruck == 10)
+                        {
+                            continue;
+                        }
                         counter = 0;
                         string manufacturer = "";
                         string Model = "";
@@ -239,6 +247,10 @@ namespace Assigment_2
                     }
                     else if (readLine[0] == 'A')
                     {
+                        if (nAutoMobile == 10)
+                        {
+                            continue;
+                        }
                         counter = 0;
                         string manufacturer = "";
                         string Model = "";
