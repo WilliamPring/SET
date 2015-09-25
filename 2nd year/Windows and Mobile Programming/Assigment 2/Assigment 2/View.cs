@@ -22,7 +22,6 @@ namespace Assigment_2
         public void createAutomobile(string ManufacturerInfo, string ModelInfo, int ModelYearInfo, double dInitalPurchasePrice,
                                 string nPurchaseDateInfo, double dCurrentOdometerInfo, double dSizeOfEngineInfo, int nNumOfDoor, string aFuel, container trackNewVehicle)
         {
-            string type = "A";
             bool status = true;
             bool infoStatus = true;
             bool fuelStatus = false; 
@@ -133,7 +132,6 @@ namespace Assigment_2
         public void createSmallTruck(string ManufacturerInfo, string ModelInfo, int ModelYearInfo, double dInitalPurchasePrice,
                                 string nPurchaseDateInfo, double dCurrentOdometerInfo, double dSizeOfEngineInfo, double cargoCapacity, double towingCapacity, container trackNewVehicle)
         {
-            string type = "ST";
 
             bool status = true;
             bool infoStatus = true;
