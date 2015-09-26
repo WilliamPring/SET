@@ -1,0 +1,3 @@
+This Project was to Show an understanding about how Server works and why we should use them. My friend and I created both a Server
+And a Client application. The client will be able to ADD, FIND and Replace anything in the database. This databaase is able
+to handle many clients connecting to it and execute the commands. 
