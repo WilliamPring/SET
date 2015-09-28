@@ -84,22 +84,28 @@
      		{
      			status = false;
      			counter++;
+     			//catted the counter to message
      			message+=counter;
+     			//catted the error to the message
      			message+=". Invalid Name!\n";
      		}
-     		//check to see if last name is emoty or valid
+     		//check to see if street name is emoty
+     		//did not check for numbers because street contains number in NA
      		if (document.SETFORM.street.value == "")
      		{
+
      			 status = false;
      			 counter++;
+     			  //catted the counter to message
      			 message+=counter;
      			 message+=". Invalid Street\n";
      		}
-     		//check to see if a city was choosen
+     		//check to see if a city was choosen or if city was valid which means no number
      		if ((document.SETFORM.city.value == 0)
      			||(/^[a-zA-Z ]+$/.test(document.SETFORM.firstname.value) == false))
      		{
      			 status = false;
+     			 //catted the counter to message
      			 counter++;
      			 message+=counter;
      			 message+=". Invalid City\n";
@@ -109,6 +115,7 @@
      			(document.getElementById("DisplayOptionForStudent").style.display == "none"))
      		{
      			 status = false;
+     			 //catted the counter to message
      			 counter++;
      			 message+=counter;
      			 message+=". Must Select Student or Faculty\n";
@@ -116,6 +123,7 @@
      		if (/^[a-zA-Z][0-9][a-zA-Z][ ]?[0-9][a-zA-Z][0-9]$/.test(document.SETFORM.postalCode.value) == false)
      		{
      			status = false;
+     			//catted the counter to message
      			counter++;
      			message+=counter;
      			message+=". Postal Code Invalid";
@@ -154,6 +162,7 @@
 			<td align="right">Province</td>
 				<td>
 				 <select name="PickProvince">
+				 	<!-- Defult Name for the dropdown menu -->
 				    <option value="0">--Province--</option>
 					<option value="AB">Alberta</option>
 					<option value="BC">British Columbia</option>
@@ -224,8 +233,10 @@
 				</table> 
 			</tr>
 				<tr>
-					<td align="left"><input type="submit" name = "toBeSubmitted" value="Submit"/></td>
-					<td align="right"><input type="reset" value="Cancel!" onclick="hide()"/></td>
+					<td width="65"><input type="submit" name = "toBeSubmitted" value="Submit"/></td>
+				</tr>
+				<tr>
+					<td width="55"><input type="reset" value="Cancel!" onclick="hide()"/></td>
 				</tr>
 		</table>
 	</form>
