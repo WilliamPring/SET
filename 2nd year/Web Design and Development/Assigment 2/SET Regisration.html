@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		SET Regisration	
+	</title>
+	<script type="text/javascript"> 
+			 /*
+				        Name: StudentOrTeacher 
+					        Purpose: To Display and hide the check box as well as getting ride of the previous checkbox checkmarks
+					        Data Members :  titleInSchool       
+					        Type: string
+	        */
+		function StudentOrTeacher(titleInSchool)
+		{ 
+		//check to see if the value pass is faculty or student
+			if(titleInSchool.value == "faculty")
+			{
+
+			//if it faculty then show the faculty 
+				document.getElementById("DisplayOptionForFaculty").style.display = "block";
+				//hide the student
+				document.getElementById("DisplayOptionForStudent").style.display = "none";
+				//hide the student study in Information Technology option
+				 document.getElementById("IT").checked = false;
+				 //hide the student study in Own a Laptop Computer option
+				document.getElementById("Laptop").checked = false;
+				 //hide the student study in Take Bus to School option
+				document.getElementById("Bus").checked = false;
+				 //hide the student study in Own a Portable Music Player option
+				 document.getElementById("music").checked = false;
+
+			}
+			else if(titleInSchool.value == "student")
+			{
+
+			//if it faculty then show the Student
+				document.getElementById("DisplayOptionForStudent").style.display = "block";
+				//hide the Faculty
+			    document.getElementById("DisplayOptionForFaculty").style.display = "none";
+			    //hide the Faculty Teach in Engineering option
+				document.getElementById("Teach").checked = false;
+				 //hide the Faculty Drive Car to Work option
+				document.getElementById("Drive").checked = false;
+				 					 //hide the Bring lunch to Work option
+				document.getElementById("BringLunch").checked = false;
+
+			}
+			else
+			{
+			//do nothing
+			}
+		}  
+						 /*
+        Name: StudentOrTeacher 
+        Purpose: Hide the check box for student and teacher
+        Data Members :  None       
+        Type: None
+        */
+       function hide()
+       { 
+		//hide the student
+			document.getElementById("DisplayOptionForStudent").style.display = "none";
+		 	//hide the faculty
+		    document.getElementById("DisplayOptionForFaculty").style.display = "none";
+    	} 
+
+  
+    	 /*
+        Name: validate 
+        Purpose: Validate the user input and give them the correct error message
+        Data Members :  None       
+        Type: None
+        */
+
+        function validate()
+        { 
+        	var status = true;
+        	var message = "";
+        	//check to see if first name is empty or is valid
+     		if (document.SETFORM.firstname.value == "")
+     		{
+     			status = false;
+     			message+="1. Invalid Name!\n";
+     		}
+     		//check to see if last name is emoty or valid
+     		if (document.SETFORM.street.value == "")
+     		{
+     			 status = false;
+     			 message+="2. Invalid Street\n";
+     		}
+     		//check to see if a city was choosen
+     		if (document.SETFORM.city.value == 0)
+     		{
+     			 status = false;
+     			 message+="3. Invalid City\n";
+     		}
+     		//check to see if either student or faculty was choosen
+     		if((document.getElementById("DisplayOptionForFaculty").style.display == "none") && 
+     			(document.getElementById("DisplayOptionForStudent").style.display == "none"))
+     		{
+     			 status = false;
+     			 message+="4. Must Select Student or Faculty\n";
+     		}
+     		if (/^[a-zA-Z][0-9][a-zA-Z][ ]?[0-9][a-zA-Z][0-9]$/.test(document.SETFORM.postalCode.value) == false)
+     		{
+     			status = false;
+     			message+="4. Postal Code Invalid";
+     		}
+     		window.alert(message);
+     		return status;
+        }      
+    </script>     
+
+</head>
+	<body>
+	<form name="SETFORM" action="http://pc-00224d503c23/testRequest.asp" onsubmit="return validate()" method="get">
+ 		<table border="0" width="80%">
+            <tr>
+                <td width="20%" align="right">First Name: </td>
+                <td width="60%" align="left"><input type ="text" name ="firstname"></td>
+            </tr>
+
+            <tr>
+                <td width="20%" align="right">Street: </td>
+                <td width="60%" align="left"><input type ="text" name ="street"></td>
+            </tr>
+
+            <tr>
+                <td width="20%" align="right">City</td>
+                <td width="60%" align="left"><input type ="text" name ="city"></td>
+            </tr>
+
+
+            <tr>
+			<!-- Select Provience -->
+			<td align="right">Province</td><td align="left">
+				 <select name="PickProvince">
+				    <option value="0">--Province--</option>
+					<option value="AB">Alberta</option>
+					<option value="BC">British Columbia</option>
+					<option value="MB">Manitoba</option>
+					<option value="NB">New Brunswick</option>
+					<option value="NL">Newfoundland and Labrador</option>
+					<option value="NS">Nova Scotia</option>
+					<option value="ON">Ontario</option>
+					<option value="PE">Prince Edward Island</option>
+					<option value="QC">Quebec</option>
+					<option value="SK">Saskatchewan</option>
+					<option value="NT">Northwest Territories</option>
+					<option value="NU">Nunavut</option>
+					<option value="YT">Yukon</option>
+				</select>
+			</tr>
+			
+			<tr>
+			<!-- Postal Code -->
+                <td width="20%" align="right">Postal Code</td>
+				<td width="60%" align="left"><input type ="text" name ="postalCode"></td>
+			</tr>
+			<tr>
+				<td width="30%" align="right">
+					<input value="faculty" type="radio" name="schoolMember" onclick="StudentOrTeacher(this)"> Faculty 
+				</td>	
+				<td width="20%" align="left">		
+				<input value="student" type="radio" name="schoolMember" onclick="StudentOrTeacher(this)"> Student 
+				</td>
+			</tr>
+				<!-- To display the choices for students -->
+			 	<table id="DisplayOptionForStudent" style="display:none;">
+				 	<tr>
+						<td width="50%" align="right"><input type="checkbox" id = "IT" name="StudentChoice">Study in Information Technology</td>
+						<td width="30%" align="left"><input type="checkbox" id = "Laptop" name="StudentChoice">Own a Laptop Computer</td>
+					</tr>
+					<tr>
+						<td width="50%" align="right"><input type="checkbox" id = "Bus" name="StudentChoice" >Take Bus to School</td>
+						<td width="20%" align="left"><input type="checkbox" id = "music" name="StudentChoice">Own a Portable Music Player</td>
+					</tr>
+				</table>
+
+				<!-- To display the choices for Faculty -->
+				<table id="DisplayOptionForFaculty" style="display:none;">
+				<tr>
+			 		<td width="60%" align="right"><input type="checkbox" id = "Teach" name="TeacherFaculty" >Teach in Engineering</td>
+					<td width="30%" align="left"><input type="checkbox" id = "Drive" name="TeacherFaculty">Drive Car to Work</td>
+					<td width="50%" align="right"><input type="checkbox" id = "BringLunch" name="TeacherFaculty" >Bring Lunch</td>
+				</table>   
+
+	            <tr>
+					<td width="50%"><input type="submit" name = "toBeSubmitted" value="Submit"/></td>
+					<td width="50%"><input type="reset" value="Cancel!" onclick="hide()"/></td>
+				</tr>
+		</table>
+	</form>
+	</body>
+</html>
+
+
