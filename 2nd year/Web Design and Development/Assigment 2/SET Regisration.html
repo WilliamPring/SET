@@ -75,37 +75,54 @@
 
         function validate()
         { 
+        	var counter =0;
         	var status = true;
         	var message = "";
         	//check to see if first name is empty or is valid
-     		if (document.SETFORM.firstname.value == "")
+     		if ((document.SETFORM.firstname.value == "") ||
+     			 (/^[a-zA-Z ]+$/.test(document.SETFORM.firstname.value) == false))
      		{
      			status = false;
-     			message+="1. Invalid Name!\n";
+     			counter++;
+     			message+=counter;
+     			message+=". Invalid Name!\n";
      		}
      		//check to see if last name is emoty or valid
      		if (document.SETFORM.street.value == "")
      		{
      			 status = false;
-     			 message+="2. Invalid Street\n";
+     			 counter++;
+     			 message+=counter;
+     			 message+=". Invalid Street\n";
      		}
      		//check to see if a city was choosen
-     		if (document.SETFORM.city.value == 0)
+     		if ((document.SETFORM.city.value == 0)
+     			||(/^[a-zA-Z ]+$/.test(document.SETFORM.firstname.value) == false))
      		{
      			 status = false;
-     			 message+="3. Invalid City\n";
+     			 counter++;
+     			 message+=counter;
+     			 message+=". Invalid City\n";
      		}
      		//check to see if either student or faculty was choosen
      		if((document.getElementById("DisplayOptionForFaculty").style.display == "none") && 
      			(document.getElementById("DisplayOptionForStudent").style.display == "none"))
      		{
      			 status = false;
-     			 message+="4. Must Select Student or Faculty\n";
+     			 counter++;
+     			 message+=counter;
+     			 message+=". Must Select Student or Faculty\n";
      		}
      		if (/^[a-zA-Z][0-9][a-zA-Z][ ]?[0-9][a-zA-Z][0-9]$/.test(document.SETFORM.postalCode.value) == false)
      		{
      			status = false;
-     			message+="4. Postal Code Invalid";
+     			counter++;
+     			message+=counter;
+     			message+=". Postal Code Invalid";
+     		}
+     		if (message ==="")
+     		{
+     			message += "Sucess!";
      		}
      		window.alert(message);
      		return status;
@@ -134,7 +151,8 @@
 
             <tr>
 			<!-- Select Provience -->
-			<td align="right">Province</td><td align="left">
+			<td align="right">Province</td>
+				<td>
 				 <select name="PickProvince">
 				    <option value="0">--Province--</option>
 					<option value="AB">Alberta</option>
@@ -151,6 +169,7 @@
 					<option value="NU">Nunavut</option>
 					<option value="YT">Yukon</option>
 				</select>
+				</td>
 			</tr>
 			
 			<tr>
@@ -166,29 +185,47 @@
 				<input value="student" type="radio" name="schoolMember" onclick="StudentOrTeacher(this)"> Student 
 				</td>
 			</tr>
+			<tr width="30%" align="right">
 				<!-- To display the choices for students -->
 			 	<table id="DisplayOptionForStudent" style="display:none;">
 				 	<tr>
-						<td width="50%" align="right"><input type="checkbox" id = "IT" name="StudentChoice">Study in Information Technology</td>
-						<td width="30%" align="left"><input type="checkbox" id = "Laptop" name="StudentChoice">Own a Laptop Computer</td>
+				 		<td width="55%"></td>
+						<td align="left"><input type="checkbox" id = "IT" name="ITStudentChoice">Study in Information Technology</td>
 					</tr>
 					<tr>
-						<td width="50%" align="right"><input type="checkbox" id = "Bus" name="StudentChoice" >Take Bus to School</td>
-						<td width="20%" align="left"><input type="checkbox" id = "music" name="StudentChoice">Own a Portable Music Player</td>
+						<td width="55%"></td>
+						<td align="left"><input type="checkbox" id = "Laptop" name="LaptopStudentChoice">Own a Laptop Computer</td>
+					</tr>
+					<tr>
+						<td width="55%"></td>
+						<td align="left"><input type="checkbox" id = "Bus" name="BusStudentChoice" >Take Bus to School</td>
+					</tr>
+					<tr>
+						<td width="55%"></td>
+						<td align="left"><input type="checkbox" id = "music" name="MusicPlayerStudentChoice">Own a Portable Music Player</td>
 					</tr>
 				</table>
-
+			</tr>	
+			<tr>
 				<!-- To display the choices for Faculty -->
 				<table id="DisplayOptionForFaculty" style="display:none;">
+					<tr>
+						<td width="65%"></td>
+				 		<td><input type="checkbox" id = "Teach" name="EngineeringTeacherFaculty" >Teach in Engineering</td>
+				 	</tr>
+				 	<tr>
+				 		<td width="65%"></td>
+						<td><input type="checkbox" id = "Drive" name="DriveCarTeacherFaculty">Drive Car to Work</td>
+					</tr>
+					<tr>
+						<td width="65%"></td>
+						<td><input type="checkbox" id = "BringLunch" name="LunchTeacherFaculty" >Bring Lunch</td>
+					</tr>
+				</table> 
+			</tr>
 				<tr>
-			 		<td width="60%" align="right"><input type="checkbox" id = "Teach" name="TeacherFaculty" >Teach in Engineering</td>
-					<td width="30%" align="left"><input type="checkbox" id = "Drive" name="TeacherFaculty">Drive Car to Work</td>
-					<td width="50%" align="right"><input type="checkbox" id = "BringLunch" name="TeacherFaculty" >Bring Lunch</td>
-				</table>   
-
-	            <tr>
-					<td width="50%"><input type="submit" name = "toBeSubmitted" value="Submit"/></td>
-					<td width="50%"><input type="reset" value="Cancel!" onclick="hide()"/></td>
+					<td align="left"><input type="submit" name = "toBeSubmitted" value="Submit"/></td>
+					<td align="right"><input type="reset" value="Cancel!" onclick="hide()"/></td>
 				</tr>
 		</table>
 	</form>
