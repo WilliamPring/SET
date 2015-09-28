@@ -1,0 +1,3 @@
+Simple javascript showing knowlage about how GET, POST, Web froms, radio button, alerts, drop down box works.
+This project is allowing user to put their name, city, adress, provience and postal code it will validate and if sucessful it 
+will allow you to proceed if not it will display the error message in form of a prompt. 
