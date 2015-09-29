@@ -79,8 +79,7 @@
         	var status = true;
         	var message = "";
         	//check to see if first name is empty or is valid
-     		if ((document.SETFORM.firstname.value == "") ||
-     			 (/^[a-zA-Z ]+$/.test(document.SETFORM.firstname.value) == false))
+     		if (/^[a-zA-Z ]+$/.test(document.SETFORM.firstname.value) == false)
      		{
      			status = false;
      			counter++;
@@ -89,20 +88,26 @@
      			//catted the error to the message
      			message+=". Invalid Name!\n";
      		}
+			if(document.SETFORM.PickProvince.value =="0")
+			{
+				 status = false;
+     			 counter++;
+     			 //catted the counter to message
+     			 message+=counter;
+     			 message+=". Must pick a Province\n";
+			}
      		//check to see if street name is emoty
      		//did not check for numbers because street contains number in NA
-     		if (document.SETFORM.street.value == "")
+     		if (/^[a-zA-Z ]+$/.test(document.SETFORM.street.value) == false)
      		{
-
      			 status = false;
      			 counter++;
      			  //catted the counter to message
      			 message+=counter;
      			 message+=". Invalid Street\n";
      		}
-     		//check to see if a city was choosen or if city was valid which means no number
-     		if ((document.SETFORM.city.value == 0)
-     			||(/^[a-zA-Z ]+$/.test(document.SETFORM.firstname.value) == false))
+     		//check to see if a city was chosen or if city was valid which means no number
+     		if (/^[a-zA-Z ]+$/.test(document.SETFORM.city.value) == false)
      		{
      			 status = false;
      			 //catted the counter to message
@@ -128,11 +133,10 @@
      			message+=counter;
      			message+=". Postal Code Invalid";
      		}
-     		if (message ==="")
+     		if (message !="")
      		{
-     			message += "Sucess!";
+     			window.alert(message);
      		}
-     		window.alert(message);
      		return status;
         }      
     </script>     
@@ -143,17 +147,17 @@
  		<table border="0" width="80%">
             <tr>
                 <td width="20%" align="right">First Name: </td>
-                <td width="60%" align="left"><input type ="text" name ="firstname"></td>
+                <td width="60%" align="left"><input type ="text" name ="firstname" required></td>
             </tr>
 
             <tr>
-                <td width="20%" align="right">Street: </td>
-                <td width="60%" align="left"><input type ="text" name ="street"></td>
+                <td width="20%" align="right" required>Street: </td>
+                <td width="60%" align="left"><input type ="text" name ="street" required></td>
             </tr>
 
             <tr>
                 <td width="20%" align="right">City</td>
-                <td width="60%" align="left"><input type ="text" name ="city"></td>
+                <td width="60%" align="left"><input type ="text" name ="city" required></td>
             </tr>
 
 
@@ -163,7 +167,7 @@
 				<td>
 				 <select name="PickProvince">
 				 	<!-- Defult Name for the dropdown menu -->
-				    <option value="0">--Province--</option>
+				    <option value="0" require>--Province--</option>
 					<option value="AB">Alberta</option>
 					<option value="BC">British Columbia</option>
 					<option value="MB">Manitoba</option>
@@ -184,7 +188,7 @@
 			<tr>
 			<!-- Postal Code -->
                 <td width="20%" align="right">Postal Code</td>
-				<td width="60%" align="left"><input type ="text" name ="postalCode"></td>
+				<td width="60%" align="left"><input type ="text" name ="postalCode" required></td>
 			</tr>
 			<tr>
 				<td width="30%" align="right">
@@ -198,19 +202,19 @@
 				<!-- To display the choices for students -->
 			 	<table id="DisplayOptionForStudent" style="display:none;">
 				 	<tr>
-				 		<td width="55%"></td>
+				 		<td width="64%"></td>
 						<td align="left"><input type="checkbox" id = "IT" name="ITStudentChoice">Study in Information Technology</td>
 					</tr>
 					<tr>
-						<td width="55%"></td>
+						<td width="64%"></td>
 						<td align="left"><input type="checkbox" id = "Laptop" name="LaptopStudentChoice">Own a Laptop Computer</td>
 					</tr>
 					<tr>
-						<td width="55%"></td>
+						<td width="64%"></td>
 						<td align="left"><input type="checkbox" id = "Bus" name="BusStudentChoice" >Take Bus to School</td>
 					</tr>
 					<tr>
-						<td width="55%"></td>
+						<td width="64%"></td>
 						<td align="left"><input type="checkbox" id = "music" name="MusicPlayerStudentChoice">Own a Portable Music Player</td>
 					</tr>
 				</table>
@@ -219,15 +223,15 @@
 				<!-- To display the choices for Faculty -->
 				<table id="DisplayOptionForFaculty" style="display:none;">
 					<tr>
-						<td width="65%"></td>
+						<td width="73%"></td>
 				 		<td><input type="checkbox" id = "Teach" name="EngineeringTeacherFaculty" >Teach in Engineering</td>
 				 	</tr>
 				 	<tr>
-				 		<td width="65%"></td>
+				 		<td width="73%"></td>
 						<td><input type="checkbox" id = "Drive" name="DriveCarTeacherFaculty">Drive Car to Work</td>
 					</tr>
 					<tr>
-						<td width="65%"></td>
+						<td width="73%"></td>
 						<td><input type="checkbox" id = "BringLunch" name="LunchTeacherFaculty" >Bring Lunch</td>
 					</tr>
 				</table> 
