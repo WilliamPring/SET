@@ -31,14 +31,17 @@
             this.LineThickness = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.pnDrawScreen = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbShapes = new System.Windows.Forms.GroupBox();
             this.rbEllipse = new System.Windows.Forms.RadioButton();
             this.rbRectangle = new System.Windows.Forms.RadioButton();
             this.rbLine = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
-            this.statusBar = new System.Windows.Forms.StatusStrip();
+            this.bnLineColour = new System.Windows.Forms.Button();
+            this.ssMouseCoordinate = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btFillColour = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.LineThickness)).BeginInit();
-            this.groupBox1.SuspendLayout();
+            this.gbShapes.SuspendLayout();
+            this.ssMouseCoordinate.SuspendLayout();
             this.SuspendLayout();
             // 
             // LineThickness
@@ -64,24 +67,25 @@
             // pnDrawScreen
             // 
             this.pnDrawScreen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnDrawScreen.Location = new System.Drawing.Point(13, 13);
+            this.pnDrawScreen.Location = new System.Drawing.Point(12, 12);
             this.pnDrawScreen.Name = "pnDrawScreen";
-            this.pnDrawScreen.Size = new System.Drawing.Size(391, 343);
+            this.pnDrawScreen.Size = new System.Drawing.Size(392, 326);
             this.pnDrawScreen.TabIndex = 4;
-            this.pnDrawScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.pnDrawScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.pnDrawScreen_Paint);
+            this.pnDrawScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnDrawScreen_MouseDown);
+            this.pnDrawScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pnDrawScreen_MouseUp);
             // 
-            // groupBox1
+            // gbShapes
             // 
-            this.groupBox1.Controls.Add(this.rbEllipse);
-            this.groupBox1.Controls.Add(this.rbRectangle);
-            this.groupBox1.Controls.Add(this.rbLine);
-            this.groupBox1.Location = new System.Drawing.Point(410, 80);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(94, 104);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Shapes";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            this.gbShapes.Controls.Add(this.rbEllipse);
+            this.gbShapes.Controls.Add(this.rbRectangle);
+            this.gbShapes.Controls.Add(this.rbLine);
+            this.gbShapes.Location = new System.Drawing.Point(410, 80);
+            this.gbShapes.Name = "gbShapes";
+            this.gbShapes.Size = new System.Drawing.Size(94, 104);
+            this.gbShapes.TabIndex = 5;
+            this.gbShapes.TabStop = false;
+            this.gbShapes.Text = "Shapes";
             // 
             // rbEllipse
             // 
@@ -105,7 +109,7 @@
             this.rbRectangle.TabStop = true;
             this.rbRectangle.Text = "Rectangle";
             this.rbRectangle.UseVisualStyleBackColor = true;
-            this.rbRectangle.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.rbRectangle.CheckedChanged += new System.EventHandler(this.rbRectangle_CheckedChanged);
             // 
             // rbLine
             // 
@@ -117,35 +121,53 @@
             this.rbLine.TabStop = true;
             this.rbLine.Text = "Lines";
             this.rbLine.UseVisualStyleBackColor = true;
-            this.rbLine.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
-            // button1
+            // bnLineColour
             // 
-            this.button1.Location = new System.Drawing.Point(410, 199);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Colour";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bnLineColour.Location = new System.Drawing.Point(410, 199);
+            this.bnLineColour.Name = "bnLineColour";
+            this.bnLineColour.Size = new System.Drawing.Size(94, 23);
+            this.bnLineColour.TabIndex = 6;
+            this.bnLineColour.Text = "Line Colour";
+            this.bnLineColour.UseVisualStyleBackColor = true;
+            this.bnLineColour.Click += new System.EventHandler(this.bnLineColour_Click);
             // 
-            // statusBar
+            // ssMouseCoordinate
             // 
-            this.statusBar.Location = new System.Drawing.Point(0, 368);
-            this.statusBar.Name = "statusBar";
-            this.statusBar.Size = new System.Drawing.Size(511, 22);
-            this.statusBar.TabIndex = 7;
-            this.statusBar.Text = "statusStrip1";
-            this.statusBar.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked_1);
+            this.ssMouseCoordinate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.ssMouseCoordinate.Location = new System.Drawing.Point(0, 368);
+            this.ssMouseCoordinate.Name = "ssMouseCoordinate";
+            this.ssMouseCoordinate.Size = new System.Drawing.Size(511, 22);
+            this.ssMouseCoordinate.TabIndex = 7;
+            this.ssMouseCoordinate.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click_1);
+            // 
+            // btFillColour
+            // 
+            this.btFillColour.Location = new System.Drawing.Point(410, 243);
+            this.btFillColour.Name = "btFillColour";
+            this.btFillColour.Size = new System.Drawing.Size(94, 23);
+            this.btFillColour.TabIndex = 8;
+            this.btFillColour.Text = "Fill Colour";
+            this.btFillColour.UseVisualStyleBackColor = true;
+            this.btFillColour.Click += new System.EventHandler(this.btFillColour_Click);
             // 
             // SETPaint
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(511, 390);
-            this.Controls.Add(this.statusBar);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btFillColour);
+            this.Controls.Add(this.ssMouseCoordinate);
+            this.Controls.Add(this.bnLineColour);
+            this.Controls.Add(this.gbShapes);
             this.Controls.Add(this.pnDrawScreen);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.LineThickness);
@@ -154,8 +176,10 @@
             this.Text = "SETPaint";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.LineThickness)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbShapes.ResumeLayout(false);
+            this.gbShapes.PerformLayout();
+            this.ssMouseCoordinate.ResumeLayout(false);
+            this.ssMouseCoordinate.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,12 +190,14 @@
         private System.Windows.Forms.TrackBar LineThickness;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnDrawScreen;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbShapes;
         private System.Windows.Forms.RadioButton rbLine;
         private System.Windows.Forms.RadioButton rbRectangle;
         private System.Windows.Forms.RadioButton rbEllipse;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.StatusStrip statusBar;
+        private System.Windows.Forms.Button bnLineColour;
+        private System.Windows.Forms.StatusStrip ssMouseCoordinate;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.Button btFillColour;
     }
 }
 

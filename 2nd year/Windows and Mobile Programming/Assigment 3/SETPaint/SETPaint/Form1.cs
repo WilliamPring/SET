@@ -12,15 +12,19 @@ namespace SETPaint
 {
     public partial class SETPaint : Form
     {
+        private int X;
+        private int Y;
         private int penWidth;
         private Point p0, p1, p2, p3;
-        //private CrossHair ch1, ch2, ch3, ch4;
+        private CrossHair ch1, ch2, ch3, ch4;
         private Color penColour = new Color();
         private Point[] DifferentPoint = new Point[4];
         private bool mouseDown;
 
         public SETPaint()
         {
+            X = 0;
+            Y = 0;
             penColour = Color.Blue;
             DifferentPoint[0] = p0;
             DifferentPoint[1] = p1;
@@ -42,7 +46,7 @@ namespace SETPaint
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
-        {   
+        {
             //set the value of the width
             penWidth = LineThickness.Value;
             //Invalidates the entire surface of the control and causes the control to be redrawn.
@@ -60,10 +64,7 @@ namespace SETPaint
 
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -80,34 +81,64 @@ namespace SETPaint
 
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
+     
 
         private void rbEllipse_CheckedChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            //Invalidates the entire surface of the control and causes the control to be redrawn.
-            
-        }
 
-        private void statusStrip1_ItemClicked_1(object sender, ToolStripItemClickedEventArgs e)
-        {
-            statusBar.Text = string.Format("X: {0} , Y: {0} ");
 
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+    
+
+        private void toolStripStatusLabel1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pnDrawScreen_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void pnDrawScreen_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (rbLine.Checked == true)
+            {
+
+                X = e.X;
+                Y = e.Y;
+                toolStripStatusLabel1.Text = "X: " + X.ToString() + " Y: " + Y.ToString();
+                DifferentPoint[0] = new Point(X, Y);
+
+            }
+
+        }
+
+        private void pnDrawScreen_MouseUp(object sender, MouseEventArgs e)
+        {
+   
+        
+        }
+
+
+        private void rbRectangle_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btFillColour_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bnLineColour_Click(object sender, EventArgs e)
         {
             ColorDialog cDialog = new ColorDialog();
             //putting the defult colour to equal to pen colour which is blue in this case
@@ -120,9 +151,19 @@ namespace SETPaint
             pnDrawScreen.Invalidate();
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+      
+
+        private void pnDrawScreen_Paint(object sender, PaintEventArgs e)
         {
 
         }
+
+
+
+     
+
+       
+
+        
     }
 }
