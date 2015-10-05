@@ -12,11 +12,11 @@ namespace SETPaint
 {
     public partial class SETPaint : Form
     {
+        private List<Shape> myShape = new List<Shape>(); 
         private int X;
         private int Y;
         private int penWidth;
         private Point p0, p1, p2, p3;
-        private CrossHair ch1, ch2, ch3, ch4;
         private Color penColour = new Color();
         private Point[] DifferentPoint = new Point[4];
         private bool mouseDown;
@@ -111,12 +111,10 @@ namespace SETPaint
         {
             if (rbLine.Checked == true)
             {
-
                 X = e.X;
                 Y = e.Y;
                 toolStripStatusLabel1.Text = "X: " + X.ToString() + " Y: " + Y.ToString();
-                DifferentPoint[0] = new Point(X, Y);
-
+                
             }
 
         }
@@ -155,15 +153,17 @@ namespace SETPaint
 
         private void pnDrawScreen_Paint(object sender, PaintEventArgs e)
         {
+            Graphics g = e.Graphics;
+            Pen pen = new Pen(penColour);
 
         }
 
 
 
-     
 
-       
 
-        
+
+
+
     }
 }

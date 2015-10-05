@@ -16,13 +16,10 @@ namespace SETPaint
             myPenEndPoint = new Point(0, 0);
             myPenStartPoint = new Point(0, 0);
         } 
-        public Line(Point myPenStartPoint, Point myPenEndPoint, Pen pen)
+        public Line(Point myPenStartPoint, Point myPenEndPoint, Pen pen) : base(pen)
         {
             this.myPenStartPoint = myPenStartPoint;
             this.myPenEndPoint = myPenEndPoint;
-
-
-
         }
 
     }

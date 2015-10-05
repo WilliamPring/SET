@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SETPaint
 {
-    class Rectangle
+    class Rectangle : Shape
     {
     }
 }
