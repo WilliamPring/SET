@@ -131,6 +131,11 @@ namespace SETPaint
 
         }
 
+        private void pnDrawScreen_MouseMove_1(object sender, MouseEventArgs e)
+        {
+
+        }
+
         private void btFillColour_Click(object sender, EventArgs e)
         {
 

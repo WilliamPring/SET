@@ -73,6 +73,7 @@
             this.pnDrawScreen.TabIndex = 4;
             this.pnDrawScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.pnDrawScreen_Paint);
             this.pnDrawScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pnDrawScreen_MouseDown);
+            this.pnDrawScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnDrawScreen_MouseMove);
             this.pnDrawScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pnDrawScreen_MouseUp);
             // 
             // gbShapes

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SETPaint
 {
-    class Shape
+    abstract class Shape
     {
         private Pen myPen; 
         public Shape()
@@ -26,6 +26,7 @@ namespace SETPaint
         {
             this.myPen = new Pen(myPen.Color, myPen.Width);
         }
+        abstract public void Draw(Graphics toDraw);
         
     }
 }

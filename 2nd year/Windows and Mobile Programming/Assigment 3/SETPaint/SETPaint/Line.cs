@@ -21,6 +21,9 @@ namespace SETPaint
             this.myPenStartPoint = myPenStartPoint;
             this.myPenEndPoint = myPenEndPoint;
         }
-
+        override public void Draw(Graphics toDraw)
+        {
+            toDraw.DrawLine(MyPen, myPenStartPoint, myPenEndPoint);
+        }
     }
 }
