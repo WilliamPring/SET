@@ -16,5 +16,17 @@ namespace Mystify
         {
             InitializeComponent();
         }
+
+        private void pnScreen_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+    
+
+        private void bnPause_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
