@@ -51,6 +51,7 @@
             this.bnNewStick.TabIndex = 1;
             this.bnNewStick.Text = "New Stick";
             this.bnNewStick.UseVisualStyleBackColor = true;
+            this.bnNewStick.Click += new System.EventHandler(this.bnNewStick_Click);
             // 
             // bnPause
             // 
