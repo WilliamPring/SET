@@ -45,7 +45,7 @@
             // 
             // bnNewStick
             // 
-            this.bnNewStick.Location = new System.Drawing.Point(346, 150);
+            this.bnNewStick.Location = new System.Drawing.Point(346, 76);
             this.bnNewStick.Name = "bnNewStick";
             this.bnNewStick.Size = new System.Drawing.Size(75, 23);
             this.bnNewStick.TabIndex = 1;
@@ -54,7 +54,7 @@
             // 
             // bnPause
             // 
-            this.bnPause.Location = new System.Drawing.Point(346, 191);
+            this.bnPause.Location = new System.Drawing.Point(346, 120);
             this.bnPause.Name = "bnPause";
             this.bnPause.Size = new System.Drawing.Size(75, 23);
             this.bnPause.TabIndex = 2;
@@ -64,7 +64,7 @@
             // 
             // bnEnd
             // 
-            this.bnEnd.Location = new System.Drawing.Point(346, 62);
+            this.bnEnd.Location = new System.Drawing.Point(346, 217);
             this.bnEnd.Name = "bnEnd";
             this.bnEnd.Size = new System.Drawing.Size(75, 23);
             this.bnEnd.TabIndex = 3;
@@ -73,7 +73,7 @@
             // 
             // bnResume
             // 
-            this.bnResume.Location = new System.Drawing.Point(346, 106);
+            this.bnResume.Location = new System.Drawing.Point(346, 169);
             this.bnResume.Name = "bnResume";
             this.bnResume.Size = new System.Drawing.Size(75, 23);
             this.bnResume.TabIndex = 4;
