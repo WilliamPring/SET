@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -28,7 +29,14 @@ namespace Mystify
                 t.Join();
             }
         }
+        public void Add(string name, ParameterizedThreadStart threadSt, Graphics mLine)
+        {
+            Thread trd = new Thread(threadSt);
+            trd.Name = name;
+            threads.Add(trd);
+            trd.Start(mLine);
 
+        }
 
 
 
