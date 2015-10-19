@@ -37,8 +37,13 @@ namespace Mystify
             trd.Start(mLine);
 
         }
+        public void AddStuct(string name, ParameterizedThreadStart threadSt, ref Line.lineInfo mLine)
+        {
+            Thread trd = new Thread(threadSt);
+            trd.Name = name;
+            threads.Add(trd);
+            trd.Start(mLine);
 
-
-
+        }
     }
 }

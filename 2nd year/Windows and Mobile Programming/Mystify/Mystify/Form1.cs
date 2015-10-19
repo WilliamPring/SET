@@ -28,6 +28,7 @@ namespace Mystify
         private Pen penType;
         private Color penColour = new Color();
         private int penWidth;
+        private Object thisLock = new Object();
 
         public Form1()
         {
@@ -35,6 +36,7 @@ namespace Mystify
             run = true; 
             penWidth = 2;
             g = this.pnScreen.CreateGraphics();
+            pnScreen.BackColor = Color.White; 
             penColour = Color.Black;
             penType = new Pen(penColour, penWidth);
             startLinePoint = new Point(0, 0);
@@ -57,6 +59,9 @@ namespace Mystify
 
         }
 
+
+
+
         private void bnNewStick_Click(object sender, EventArgs e)
         {
             randomX = rndPoint.Next(0, pnScreen.Width);
@@ -66,29 +71,8 @@ namespace Mystify
             startLinePoint = new Point(randomX, RandomY);
             endLinePoint = new Point(randomX1, RandomY1);
             myLine =  new Line(startLinePoint, endLinePoint, penType);
-            
             tRepo.Add("Th", new ParameterizedThreadStart(myLine.draw), g);
-
-            //tRepo.Add("Th", new Pram(drawTheLine(myLine))); 
-
-           
+            Thread.Sleep(1000);
         }
-       
-
-
-                    /*
-                    myLine.Draw();
-                    Thread.Sleep(200);
-                    myLine.Move();
-                    new Thread (function for tail lines) ;
-
-                    myLine.Draw();
-                        -> Graphics;
-                        drawTheLine on the graphics/ Bitmap /...
-                    */
-          
-
-
-
-    }
+    }       
 }
