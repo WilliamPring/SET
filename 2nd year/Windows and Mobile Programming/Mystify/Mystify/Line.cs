@@ -111,7 +111,7 @@ namespace Mystify
                 Point tempStart = new Point();
                 
 
-                if (MainList.Count == 5)
+                if (MainList.Count == 3)
                 {
                     tempStart = MainList.ElementAt(0).myLineStartPoint;
                     tempEnd = MainList.ElementAt(0).myLineEndPoint;
@@ -126,7 +126,7 @@ namespace Mystify
                     Move();
                     ShadowLines.DrawLine(myPen, myLineStartPoint, myLineEndPoint);
                     MainList.Add(new Line(myLineStartPoint, myLineEndPoint, myPen));
-                    Thread.Sleep(80);
+                    Thread.Sleep(50);
                 }
             }
 
@@ -145,9 +145,9 @@ namespace Mystify
                     myLineStartPoint.X = 0;
                     StartLoop = false;
                 }
-                if (myLineStartPoint.X > 328)
+                if (myLineStartPoint.X > 326)
                 {
-                    myLineStartPoint.X = 328;
+                    myLineStartPoint.X = 326;
                     StartLoop = false;
                 }
                 if (myLineStartPoint.Y < 0)
@@ -155,9 +155,9 @@ namespace Mystify
                     myLineStartPoint.Y = 0;
                     StartLoop = false;
                 }
-                if (myLineStartPoint.Y > 308)
+                if (myLineStartPoint.Y >= 307)
                 {
-                    myLineStartPoint.Y = 308;
+                    myLineStartPoint.Y = 307;
                     StartLoop = false;
                 }
                 if (StartLoop == true)
@@ -180,9 +180,9 @@ namespace Mystify
                     myLineEndPoint.X = 0;
                     StartLoop = false;
                 }
-                if (myLineEndPoint.X > 328)
+                if (myLineEndPoint.X > 326)
                 {
-                    myLineEndPoint.X = 328;
+                    myLineEndPoint.X = 326;
                     StartLoop = false;
                 }
                 if (myLineEndPoint.Y < 0)
@@ -190,9 +190,9 @@ namespace Mystify
                     myLineEndPoint.Y = 0;
                     StartLoop = false;
                 }
-                if (myLineEndPoint.Y > 308)
+                if (myLineEndPoint.Y > 307)
                 {
-                    myLineEndPoint.Y = 308;
+                    myLineEndPoint.Y = 307;
                     StartLoop = false;
                 }
                 if (StartLoop == true)
