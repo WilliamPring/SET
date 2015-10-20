@@ -14,29 +14,25 @@ namespace Mystify
 
     class Line
     {
-        List<List <Line> > ListOfThreadOfLine = new List<List<Line>>();
-        private int counter;
-        private Random newRnd = new Random();
         private Pen myPen;
-        ThreadRepository tRepoStartShadowLine = new ThreadRepository();
+        private ThreadRepository tRepoStartShadowLine;
         private Point myLineStartPoint;
         private Point myLineEndPoint;
-        private int rnd;
-        bool status;
-        static private Object thisLock = new Object();
-        public struct lineInfo
-        {
-           public List<Line> listToPass;
-           public Graphics toDraw;
-           public Point myPrevEnd;
-           public Point myPrevStart;
-           public Pen myTempPen;
-        }
-
+        private Random rnd = new Random();
+        private bool status;
+        private static Object thisLock = new Object();
+        private int vector;
+        private int borderX;
+        private int borderY; 
 
         public Line()
         {
-            myPen = new Pen(Color.Black); 
+            tRepoStartShadowLine = new ThreadRepository();
+            myPen = new Pen(Color.Red, 1);
+            vector = 0;
+            status = true;
+            myLineEndPoint = new Point(0, 0);
+            myLineEndPoint = new Point(0, 0);
         }
         public Line(Point myLineStartPoint, Point myLineEndPoint, Pen myPen)
         {
@@ -44,21 +40,210 @@ namespace Mystify
             this.myLineEndPoint = myLineEndPoint;
             this.myPen = myPen;
             status = true;
-            rnd = 0;
-        }
-        public void RandomNumber()
-        {
-            rnd = newRnd.Next(-6, 10);
+           
         }
 
-        public void MoveLine(Graphics drawing)
-        {
 
-        }
-        public void drawShadowLine(object drawingShadowLines)
+        public void changeVelocityForEndPoint(MoveLine whereToMoveForEnd)
         {
             lock (thisLock)
             {
+                Main_Mystify temp = new Main_Mystify();
+                int randomNumber = 0;
+                vector = rnd.Next(1, 8);
+                randomNumber = rnd.Next(-5, 10);
+                int checkForBounce = 0;
+
+                int width = temp.MaxXScreen;
+                int height = temp.MaxYScreen;
+                if (vector == 1)
+                {
+
+                    whereToMoveForEnd.myPrevEnd.Y = whereToMoveForEnd.myPrevEnd.Y + 8 + randomNumber;
+
+
+                }
+                //NORTH EAST
+                else if (vector == 2)
+                {
+                    whereToMoveForEnd.myPrevEnd.X = whereToMoveForEnd.myPrevEnd.X + 8 + randomNumber;
+                    whereToMoveForEnd.myPrevEnd.Y = whereToMoveForEnd.myPrevEnd.Y + 8 + randomNumber;
+
+
+                }
+                //EAST
+                else if (vector == 3)
+                {
+                    whereToMoveForEnd.myPrevEnd.X = whereToMoveForEnd.myPrevEnd.X + 8 + randomNumber;
+
+                }
+                //EAST South
+                else if (vector == 4)
+                {
+                    whereToMoveForEnd.myPrevEnd.X = whereToMoveForEnd.myPrevEnd.X + 8 + randomNumber;
+                    whereToMoveForEnd.myPrevEnd.Y = whereToMoveForEnd.myPrevEnd.Y - 8 + randomNumber;
+
+                }
+                //South
+                else if (vector == 5)
+                {
+                    whereToMoveForEnd.myPrevEnd.Y = whereToMoveForEnd.myPrevEnd.Y - 8 + randomNumber;
+
+                }
+                //south West
+                else if (vector == 6)
+                {
+                    whereToMoveForEnd.myPrevEnd.X = whereToMoveForEnd.myPrevEnd.X - 8 + randomNumber;
+                    whereToMoveForEnd.myPrevEnd.Y = whereToMoveForEnd.myPrevEnd.Y - 8 + randomNumber;
+
+                }
+                //West
+                else if (vector == 7)
+                {
+                    whereToMoveForEnd.myPrevEnd.X = whereToMoveForEnd.myPrevEnd.X - 8 + randomNumber;
+
+                }
+                //West North
+                else
+                {
+                    whereToMoveForEnd.myPrevEnd.X = whereToMoveForEnd.myPrevEnd.X - 8 + randomNumber;
+
+                    whereToMoveForEnd.myPrevEnd.Y = whereToMoveForEnd.myPrevEnd.Y + 8 + randomNumber;
+
+                }
+            }
+        }
+
+        public void changeVelocityForStartPoint(MoveLine whereToMoveForStart)
+        {
+            Main_Mystify temp = new Main_Mystify();
+
+            int width = temp.MaxXScreen;
+            int height = temp.MaxYScreen;
+            int randomNumber = 0;
+            Main_Mystify tempCheckBoxRange = new Main_Mystify();
+            randomNumber = rnd.Next(-10, 2);
+            int tryingScreenSize = 0;
+            int checkForBounce = 0;
+            vector = rnd.Next(1, 8);
+            //if vector is North 
+            if (vector == 1)
+            {
+                checkForBounce = whereToMoveForStart.myPrevStart.Y + 5 + randomNumber;
+                if (checkForBounce > height)
+                {
+
+                }
+                whereToMoveForStart.myPrevStart.Y = whereToMoveForStart.myPrevStart.Y + 5 + randomNumber;
+
+            }
+            //NORTH EAST
+            else if (vector == 2)
+            {
+                whereToMoveForStart.myPrevStart.X = whereToMoveForStart.myPrevStart.X + 5 + randomNumber;
+
+                whereToMoveForStart.myPrevStart.Y = whereToMoveForStart.myPrevStart.Y + 5 + randomNumber;
+
+
+            }
+            //EAST
+            else if (vector == 3)
+            {
+                whereToMoveForStart.myPrevStart.X = whereToMoveForStart.myPrevStart.X + 5 + randomNumber;
+            }
+            //EAST South
+            else if (vector == 4)
+            {
+                whereToMoveForStart.myPrevStart.X = whereToMoveForStart.myPrevStart.X + 5 + randomNumber;
+                whereToMoveForStart.myPrevStart.Y = whereToMoveForStart.myPrevStart.Y - 5 + randomNumber;
+            }
+            //South
+            else if (vector == 5)
+            {
+                whereToMoveForStart.myPrevStart.Y = whereToMoveForStart.myPrevStart.Y - 5 + randomNumber;
+            }
+            //south West
+            else if (vector == 6)
+            {
+                whereToMoveForStart.myPrevStart.X = whereToMoveForStart.myPrevStart.X - 5 + randomNumber;
+                whereToMoveForStart.myPrevStart.Y = whereToMoveForStart.myPrevStart.Y - 5 + randomNumber;
+            }
+            //West
+            else if (vector == 7)
+            {
+                whereToMoveForStart.myPrevStart.X = whereToMoveForStart.myPrevStart.X - 5 + randomNumber;
+            }
+            //West North
+            else
+            {
+                whereToMoveForStart.myPrevStart.X = whereToMoveForStart.myPrevStart.X - 5 + randomNumber;
+                whereToMoveForStart.myPrevStart.Y = whereToMoveForStart.myPrevStart.Y + 5 + randomNumber;
+
+            }
+        }
+
+
+        private Point SetVector()
+        {
+            int vector = rnd.Next(1, 8);
+            Point directionToMove = new Point();
+
+            if (vector == 1)
+            {
+                directionToMove.X = -7;
+                directionToMove.Y = 7;
+            }
+
+            if (vector == 2)
+            {
+                directionToMove.X = 0;
+                directionToMove.Y = 7;
+            }
+
+            if (vector == 3)
+            {
+                directionToMove.X = 7;
+                directionToMove.Y = 7;
+            }
+
+            if (vector == 4)
+            {
+                directionToMove.X = 7;
+                directionToMove.Y = 0;
+            }
+
+            if (vector == 5)
+            {
+                directionToMove.X = 7;
+                directionToMove.Y = -7;
+            }
+
+            if (vector == 6)
+            {
+                directionToMove.X = 0;
+                directionToMove.Y = -7;
+            }
+
+            if (vector == 7)
+            {
+                directionToMove.X = -7;
+                directionToMove.Y = -7;
+            }
+
+            if (vector == 8)
+            {
+                directionToMove.X = -7;
+                directionToMove.Y = 0;
+            }
+
+            return directionToMove;
+        }
+
+
+
+        public void drawShadowLine(object drawingShadowLines)
+        {
+           
 
                 MoveLine tempDrawingShadowLines = (MoveLine)drawingShadowLines;
                 Point tempEnd = new Point();
@@ -76,28 +261,65 @@ namespace Mystify
                     tempDrawingShadowLines.myTempPen.Color = Color.White;
                     tempDrawingShadowLines.toDraw.DrawLine(tempDrawingShadowLines.myTempPen, temStart, tempEnd);
                     tempDrawingShadowLines.listToPass.RemoveAt(0);
-                    //myTempStruct.listToPass.RemoveRange(0, 1);
-                    //drawingShadowLines = myTempStruct;
-                    Thread.Sleep(20);
-                    tempDrawingShadowLines.myTempPen.Color = Color.Black;
+                    tempDrawingShadowLines.myTempPen.Color = Color.Red;
+       
                 }
                 else
                 {
-                    //RandomNumber();
-                    tempDrawingShadowLines.myPrevStart.X = tempDrawingShadowLines.myPrevStart.X + 5;
-                    //RandomNumber();
-                    tempDrawingShadowLines.myPrevStart.Y = tempDrawingShadowLines.myPrevStart.Y + 3;
-                    //RandomNumber();
-                    tempDrawingShadowLines.myPrevEnd.X = tempDrawingShadowLines.myPrevEnd.X + 5;
-                    //RandomNumber();
-                    tempDrawingShadowLines.myPrevEnd.Y = tempDrawingShadowLines.myPrevEnd.Y + 3;
+                    //changeVelocityForStartPoint(tempDrawingShadowLines);
+                    //changeVelocityForEndPoint(tempDrawingShadowLines);
                     tempDrawingShadowLines.toDraw.DrawLine(tempDrawingShadowLines.myTempPen, tempDrawingShadowLines.myPrevStart, tempDrawingShadowLines.myPrevEnd);
                     tempDrawingShadowLines.listToPass.Add(new Line(tempDrawingShadowLines.myPrevStart, tempDrawingShadowLines.myPrevEnd, tempDrawingShadowLines.myTempPen));
                     //drawingShadowLines = myTempStruct;
-                    Thread.Sleep(20);
+                    Thread.Sleep(50);
                 }
             }
         
+
+
+        public void drawS(MoveLine drawingShadowLines)
+        {
+            lock (thisLock)
+            {
+
+                Point tempEnd = new Point();
+                Point temStart = new Point();
+
+
+                if (drawingShadowLines.listToPass.Count == 7)
+                {
+
+                    //start temp
+                    temStart = drawingShadowLines.listToPass.ElementAt(0).myLineStartPoint;
+                    //end temp
+                    tempEnd = drawingShadowLines.listToPass.ElementAt(0).myLineEndPoint;
+                    drawingShadowLines.myTempPen.Color = Color.White;
+                    drawingShadowLines.toDraw.DrawLine(drawingShadowLines.myTempPen, temStart, tempEnd);
+                    drawingShadowLines.listToPass.RemoveAt(0);
+                    drawingShadowLines.myTempPen.Color = Color.Red;
+        
+                }
+                else
+                {
+                    //changeVelocityForStartPoint(drawingShadowLines);
+                    // changeVelocityForEndPoint(drawingShadowLines);
+                    Move(drawingShadowLines);
+                    drawingShadowLines.toDraw.DrawLine(drawingShadowLines.myTempPen, drawingShadowLines.myPrevStart, drawingShadowLines.myPrevEnd);
+                    drawingShadowLines.listToPass.Add(new Line(drawingShadowLines.myPrevStart, drawingShadowLines.myPrevEnd, drawingShadowLines.myTempPen));
+                    //drawingShadowLines = myTempStruct;
+                    Thread.Sleep(80);
+                }
+            }
+
+        }
+
+        public void Move(MoveLine moveIt)
+        {
+            moveIt.myPrevStart.X = moveIt.myPrevStart.X + moveIt.VelocityForStartingPoint.X;
+            moveIt.myPrevStart.Y = moveIt.myPrevStart.Y + moveIt.VelocityForStartingPoint.Y;
+            moveIt.myPrevEnd.X = moveIt.myPrevEnd.X  + moveIt.VelocityForEndingPoint.X;
+            moveIt.myPrevEnd.Y = moveIt.myPrevEnd.Y + moveIt.VelocityForEndingPoint.Y;
+
         }
         public void draw(object toDraw)
         {
@@ -105,11 +327,14 @@ namespace Mystify
             Line temp = new Line();
             Graphics drawing = (Graphics)toDraw;
             List<Line> Main = new List<Line>();
+            //filling up class
             shadowLines.toDraw = drawing;
             shadowLines.listToPass = Main;
             shadowLines.myTempPen = myPen;
             shadowLines.myPrevEnd = myLineEndPoint;
             shadowLines.myPrevStart = myLineStartPoint;
+            shadowLines.VelocityForEndingPoint = SetVector();
+            shadowLines.VelocityForStartingPoint = SetVector();
             //add line to the list
             shadowLines.listToPass.Add(new Line(myLineStartPoint, myLineEndPoint, myPen));
             
@@ -118,7 +343,8 @@ namespace Mystify
                 lock (thisLock)
                 {
                     //draw the first line
-                    tRepoStartShadowLine.AddClass("ShadowLine", new ParameterizedThreadStart(temp.drawShadowLine), shadowLines);
+                    //tRepoStartShadowLine.AddClass("ShadowLine", new ParameterizedThreadStart(temp.drawShadowLine), shadowLines);
+                    drawS(shadowLines); 
                 }
             }
 

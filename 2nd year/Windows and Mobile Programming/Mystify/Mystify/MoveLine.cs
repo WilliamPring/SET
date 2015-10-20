@@ -14,12 +14,19 @@ namespace Mystify
         public Pen myTempPen;
         public Point myPrevEnd;
         public Point myPrevStart;
-        
+        public Point VelocityForStartingPoint;
+        public Point VelocityForEndingPoint;
+
         public MoveLine()
         {
+            myTempPen = new Pen(Color.Red, 1);
+            myPrevEnd = new Point(0, 0);
+            myPrevStart = new Point(0, 0);
+            VelocityForStartingPoint = new Point(0, 0);
+            VelocityForEndingPoint = new Point(0, 0);
 
         }
 
 
-    }
+}
 }

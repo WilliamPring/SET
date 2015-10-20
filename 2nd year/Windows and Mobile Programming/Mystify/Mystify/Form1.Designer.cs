@@ -1,6 +1,6 @@
 ﻿namespace Mystify
 {
-    partial class Form1
+    partial class Main_Mystify
     {
         /// <summary>
         /// Required designer variable.
@@ -81,7 +81,7 @@
             this.bnResume.Text = "Resume";
             this.bnResume.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // Main_Mystify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -91,8 +91,9 @@
             this.Controls.Add(this.bnPause);
             this.Controls.Add(this.bnNewStick);
             this.Controls.Add(this.pnScreen);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Main_Mystify";
+            this.Text = "Mystify";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
