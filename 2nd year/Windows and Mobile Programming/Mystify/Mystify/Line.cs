@@ -19,7 +19,6 @@ namespace Mystify
         private Random newRnd = new Random();
         private Pen myPen;
         ThreadRepository tRepoStartShadowLine = new ThreadRepository();
-
         private Point myLineStartPoint;
         private Point myLineEndPoint;
         private int rnd;
@@ -29,6 +28,9 @@ namespace Mystify
         {
            public List<Line> listToPass;
            public Graphics toDraw;
+           public Point myPrevEnd;
+           public Point myPrevStart;
+           public Pen myTempPen;
         }
 
 
@@ -46,7 +48,7 @@ namespace Mystify
         }
         public void RandomNumber()
         {
-            rnd = newRnd.Next(-5, 5);
+            rnd = newRnd.Next(-6, 10);
         }
 
         public void MoveLine(Graphics drawing)
@@ -55,65 +57,75 @@ namespace Mystify
         }
         public void drawShadowLine(object drawingShadowLines)
         {
-            
-            lineInfo myTempStruct = new lineInfo();
-            myTempStruct = (lineInfo)drawingShadowLines;
-            drawingShadowLines = myTempStruct;
-           
-            RandomNumber();
-            myLineStartPoint.X = myLineStartPoint.X - rnd;
-            RandomNumber();
-            myLineStartPoint.Y = myLineStartPoint.Y - rnd;
-            RandomNumber();
-            myLineEndPoint.X = myLineEndPoint.X - rnd;
-            RandomNumber();
-            myLineEndPoint.Y = myLineEndPoint.Y - rnd;
-            myTempStruct.toDraw.DrawLine(myPen, myLineStartPoint, myLineEndPoint);
-            myTempStruct.listToPass.Add(new Line(myLineStartPoint, myLineEndPoint, myPen));
-            drawingShadowLines = myTempStruct;
-            
+            lock (thisLock)
+            {
+
+                MoveLine tempDrawingShadowLines = (MoveLine)drawingShadowLines;
+                Point tempEnd = new Point();
+                Point temStart = new Point();
+                //penType = Pen(Color.Black, 2);
+
+
+                if (tempDrawingShadowLines.listToPass.Count == 4)
+                {
+
+                    //start temp
+                    temStart = tempDrawingShadowLines.listToPass.ElementAt(0).myLineStartPoint;
+                    //end temp
+                    tempEnd = tempDrawingShadowLines.listToPass.ElementAt(0).myLineEndPoint;
+                    tempDrawingShadowLines.myTempPen.Color = Color.White;
+                    tempDrawingShadowLines.toDraw.DrawLine(tempDrawingShadowLines.myTempPen, temStart, tempEnd);
+                    tempDrawingShadowLines.listToPass.RemoveAt(0);
+                    //myTempStruct.listToPass.RemoveRange(0, 1);
+                    //drawingShadowLines = myTempStruct;
+                    Thread.Sleep(20);
+                    tempDrawingShadowLines.myTempPen.Color = Color.Black;
+                }
+                else
+                {
+                    //RandomNumber();
+                    tempDrawingShadowLines.myPrevStart.X = tempDrawingShadowLines.myPrevStart.X + 5;
+                    //RandomNumber();
+                    tempDrawingShadowLines.myPrevStart.Y = tempDrawingShadowLines.myPrevStart.Y + 3;
+                    //RandomNumber();
+                    tempDrawingShadowLines.myPrevEnd.X = tempDrawingShadowLines.myPrevEnd.X + 5;
+                    //RandomNumber();
+                    tempDrawingShadowLines.myPrevEnd.Y = tempDrawingShadowLines.myPrevEnd.Y + 3;
+                    tempDrawingShadowLines.toDraw.DrawLine(tempDrawingShadowLines.myTempPen, tempDrawingShadowLines.myPrevStart, tempDrawingShadowLines.myPrevEnd);
+                    tempDrawingShadowLines.listToPass.Add(new Line(tempDrawingShadowLines.myPrevStart, tempDrawingShadowLines.myPrevEnd, tempDrawingShadowLines.myTempPen));
+                    //drawingShadowLines = myTempStruct;
+                    Thread.Sleep(20);
+                }
+            }
         
         }
         public void draw(object toDraw)
         {
-            Line temp = new Line(); 
-            //casting a new graphinc to the object
+            MoveLine shadowLines = new MoveLine();
+            Line temp = new Line();
             Graphics drawing = (Graphics)toDraw;
-            //list of lines
             List<Line> Main = new List<Line>();
-            //declaring a struct
-            lineInfo myStruct= new lineInfo();
-            //setting the list to eachother
-            myStruct.listToPass = Main;
-            //setting each graphic to each other
-            myStruct.toDraw = drawing;
-            //adding the fisrt Line in the list
-            myStruct.listToPass.Add(new Line(myLineStartPoint, myLineEndPoint, myPen));              
-            //ListOfThreadOfLine.Add(drawing.DrawLine(myPen, myLineStartPoint, myLineEndPoint);
+            shadowLines.toDraw = drawing;
+            shadowLines.listToPass = Main;
+            shadowLines.myTempPen = myPen;
+            shadowLines.myPrevEnd = myLineEndPoint;
+            shadowLines.myPrevStart = myLineStartPoint;
+            //add line to the list
+            shadowLines.listToPass.Add(new Line(myLineStartPoint, myLineEndPoint, myPen));
+            
             while (status)
             {
                 lock (thisLock)
                 {
                     //draw the first line
-                    drawing.DrawLine(myPen, myLineStartPoint, myLineEndPoint);
-                    tRepoStartShadowLine.AddStuct("ShadowLine", new ParameterizedThreadStart(temp.drawShadowLine), ref myStruct);
-                    Thread.Sleep(50);
+                    tRepoStartShadowLine.AddClass("ShadowLine", new ParameterizedThreadStart(temp.drawShadowLine), shadowLines);
                 }
             }
 
         }
 
        
-            /*
-            myLine.Draw();
-            Thread.Sleep(200);
-            myLine.Move();
-            new Thread (function for tail lines) ;
-
-            myLine.Draw();
-                -> Graphics;
-                drawTheLine on the graphics/ Bitmap /...
-            */
+      
 
 
         }
