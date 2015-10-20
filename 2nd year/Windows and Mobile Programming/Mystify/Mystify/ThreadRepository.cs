@@ -37,12 +37,6 @@ namespace Mystify
             trd.Start(mLine);
 
         }
-        public void AddClass(string name, ParameterizedThreadStart threadSt, MoveLine mLine)
-        {
-            Thread trd = new Thread(threadSt);
-            trd.Name = name;
-            trd.Start(mLine);
-
-        }
+ 
     }
 }

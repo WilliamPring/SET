@@ -95,10 +95,15 @@ namespace Mystify
             endLinePoint = new Point(randomX1, RandomY1);
             myLine =  new Line(startLinePoint, endLinePoint, penType);
             tRepo.Add("Th", new ParameterizedThreadStart(myLine.draw), g);
-            Thread.Sleep(1000);
+           
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bnResume_Click(object sender, EventArgs e)
         {
 
         }

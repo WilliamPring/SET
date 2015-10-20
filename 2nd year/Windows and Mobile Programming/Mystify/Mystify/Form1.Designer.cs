@@ -80,6 +80,7 @@
             this.bnResume.TabIndex = 4;
             this.bnResume.Text = "Resume";
             this.bnResume.UseVisualStyleBackColor = true;
+            this.bnResume.Click += new System.EventHandler(this.bnResume_Click);
             // 
             // Main_Mystify
             // 
