@@ -23,7 +23,7 @@ namespace Mystify
         private Point VelocityForEndingPoint = new Point();
         private Point VelocityForStartingPoint = new Point();
         private Random rnd = new Random();
-        private bool status;
+        public static bool status;
         private static Object thisLock = new Object();
         private int vector;
         private int borderX;

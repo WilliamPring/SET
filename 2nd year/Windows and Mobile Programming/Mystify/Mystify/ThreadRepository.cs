@@ -15,16 +15,13 @@ namespace Mystify
         {
             //do nothing
         }
-
-
-        public void StartAll()
+        public void JoinAll()
         {
-            foreach (Thread t in threads)
+            foreach (Thread th in threads)
             {
-                t.Start();
+                th.Join();
             }
         }
-
         public void Add(string name, ParameterizedThreadStart threadSt, Graphics mLine)
         {
             Thread trd = new Thread(threadSt);

@@ -94,7 +94,10 @@ namespace Mystify
 
         private void bnEnd_Click(object sender, EventArgs e)
         {
-
+            Line.status = false;
+            Line.wait_handle.Set();
+            tRepo.JoinAll();
+            Application.Exit();
         }
     }       
 }
