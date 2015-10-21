@@ -71,6 +71,7 @@
             this.bnEnd.TabIndex = 3;
             this.bnEnd.Text = "End";
             this.bnEnd.UseVisualStyleBackColor = true;
+            this.bnEnd.Click += new System.EventHandler(this.bnEnd_Click);
             // 
             // bnResume
             // 

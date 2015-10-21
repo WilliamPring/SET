@@ -14,6 +14,8 @@ namespace Mystify
 
     class Line
     {
+        public static ManualResetEvent wait_handle = new ManualResetEvent(true);
+
         private Pen myPen;
         private ThreadRepository tRepoStartShadowLine;
         private Point myLineStartPoint;
@@ -51,53 +53,54 @@ namespace Mystify
         {
             int vector = rnd.Next(1, 8);
             Point directionToMove = new Point();
-
+            //North
             if (vector == 1)
             {
-                directionToMove.X = -3;
-                directionToMove.Y = 3;
+                //directionToMove.X = -4;
+                //directionToMove.Y = 4;
+                directionToMove.X = 0;
+                directionToMove.Y = 4;
             }
 
             if (vector == 2)
             {
                 directionToMove.X = 0;
-                directionToMove.Y = 3;
+                directionToMove.Y = 4;
             }
 
             if (vector == 3)
             {
-                directionToMove.X = 3;
-                directionToMove.Y = 3;
+                directionToMove.X = 4;
+                directionToMove.Y = 4;
             }
 
             if (vector == 4)
             {
-                directionToMove.X = 3;
+                directionToMove.X = 4;
                 directionToMove.Y = 0;
             }
 
             if (vector == 5)
             {
-                directionToMove.X = 3;
-                directionToMove.Y = -3;
+                directionToMove.X = 4;
+                directionToMove.Y = -4;
             }
 
             if (vector == 6)
             {
                 directionToMove.X = 0;
-                directionToMove.Y = -3;
+                directionToMove.Y = -4;
             }
 
             if (vector == 7)
             {
-                directionToMove.X = -3;
-                directionToMove.Y = -3;
+                directionToMove.X = -4;
+                directionToMove.Y = -4;
             }
 
             if (vector == 8)
             {
-                directionToMove.X = -3;
-                directionToMove.Y = 0;
+                
             }
 
             return directionToMove;
@@ -111,7 +114,7 @@ namespace Mystify
                 Point tempStart = new Point();
                 
 
-                if (MainList.Count == 3)
+                if (MainList.Count == 4)
                 {
                     tempStart = MainList.ElementAt(0).myLineStartPoint;
                     tempEnd = MainList.ElementAt(0).myLineEndPoint;
@@ -140,7 +143,7 @@ namespace Mystify
                 StartLoop = true;
                 myLineStartPoint.X = myLineStartPoint.X + VelocityForStartingPoint.X;
                 myLineStartPoint.Y = myLineStartPoint.Y + VelocityForStartingPoint.Y;
-                if (myLineStartPoint.X < 0)
+                if (myLineStartPoint.X <= 0)
                 {
                     myLineStartPoint.X = 0;
                     StartLoop = false;
@@ -150,14 +153,14 @@ namespace Mystify
                     myLineStartPoint.X = 326;
                     StartLoop = false;
                 }
-                if (myLineStartPoint.Y < 0)
+                if (myLineStartPoint.Y <= 0)
                 {
                     myLineStartPoint.Y = 0;
                     StartLoop = false;
                 }
-                if (myLineStartPoint.Y >= 307)
+                if (myLineStartPoint.Y > 308)
                 {
-                    myLineStartPoint.Y = 307;
+                    myLineStartPoint.Y = 308;
                     StartLoop = false;
                 }
                 if (StartLoop == true)
@@ -175,7 +178,7 @@ namespace Mystify
                 StartLoop = true;
                 myLineEndPoint.X = myLineEndPoint.X + VelocityForEndingPoint.X;
                 myLineEndPoint.Y = myLineEndPoint.Y + VelocityForEndingPoint.Y;
-                if (myLineEndPoint.X < 0)
+                if (myLineEndPoint.X <= 0)
                 {
                     myLineEndPoint.X = 0;
                     StartLoop = false;
@@ -185,14 +188,14 @@ namespace Mystify
                     myLineEndPoint.X = 326;
                     StartLoop = false;
                 }
-                if (myLineEndPoint.Y < 0)
+                if (myLineEndPoint.Y <= 0)
                 {
                     myLineEndPoint.Y = 0;
                     StartLoop = false;
                 }
-                if (myLineEndPoint.Y > 307)
+                if (myLineEndPoint.Y > 308)
                 {
-                    myLineEndPoint.Y = 307;
+                    myLineEndPoint.Y = 308;
                     StartLoop = false;
                 }
                 if (StartLoop == true)
@@ -223,6 +226,7 @@ namespace Mystify
                 { 
                     drawS(drawing); 
                 }
+                wait_handle.WaitOne();
             }
 
         }

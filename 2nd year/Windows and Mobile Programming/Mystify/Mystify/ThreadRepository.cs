@@ -15,6 +15,8 @@ namespace Mystify
         {
             //do nothing
         }
+
+
         public void StartAll()
         {
             foreach (Thread t in threads)
@@ -22,13 +24,7 @@ namespace Mystify
                 t.Start();
             }
         }
-        public void JoinAll()
-        {
-            foreach (Thread t in threads)
-            {
-                t.Join();
-            }
-        }
+
         public void Add(string name, ParameterizedThreadStart threadSt, Graphics mLine)
         {
             Thread trd = new Thread(threadSt);

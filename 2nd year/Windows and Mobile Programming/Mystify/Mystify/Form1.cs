@@ -16,6 +16,7 @@ namespace Mystify
         Graphics g;
         private bool run;
         Thread t;
+
         ThreadRepository tRepo = new ThreadRepository();
         private Point startLinePoint;
         private Point endLinePoint;
@@ -23,7 +24,7 @@ namespace Mystify
         Random rndPoint = new Random();
         private int maxXScreen;
         private int maxYScreen;
-
+        
         private int randomX;
         private int RandomY;
         private int randomX1;
@@ -33,23 +34,6 @@ namespace Mystify
         private int penWidth;
         private Object thisLock = new Object();
 
-        public int MaxXScreen
-        {
-            get
-            {
-                return maxXScreen;
-            }
-        }
-
- 
-
-        public int MaxYScreen
-        {
-            get
-            {
-                return maxYScreen;
-            }
-        }
 
         public Main_Mystify()
         {
@@ -77,7 +61,7 @@ namespace Mystify
 
         private void bnPause_Click(object sender, EventArgs e)
         {
-
+            Line.wait_handle.Reset(); 
         }
 
 
@@ -104,6 +88,11 @@ namespace Mystify
         }
 
         private void bnResume_Click(object sender, EventArgs e)
+        {
+            Line.wait_handle.Set(); 
+        }
+
+        private void bnEnd_Click(object sender, EventArgs e)
         {
 
         }
