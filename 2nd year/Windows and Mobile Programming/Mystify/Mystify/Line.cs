@@ -14,7 +14,7 @@ namespace Mystify
 
     class Line
     {
-        public static ManualResetEvent wait_handle = new ManualResetEvent(true);
+        public volatile static ManualResetEvent wait_handle = new ManualResetEvent(true);
 
         private Pen myPen;
         private ThreadRepository tRepoStartShadowLine;
@@ -23,18 +23,14 @@ namespace Mystify
         private Point VelocityForEndingPoint = new Point();
         private Point VelocityForStartingPoint = new Point();
         private Random rnd = new Random();
-        public static bool status;
+        public static volatile bool status = true;
         private static Object thisLock = new Object();
-        private int vector;
-        private int borderX;
-        private int borderY;
+
         List<Line> MainList = new List<Line>();
         public Line()
         {
             tRepoStartShadowLine = new ThreadRepository();
             myPen = new Pen(Color.Red, 1);
-            vector = 0;
-            status = true;
             myLineEndPoint = new Point(0, 0);
             myLineEndPoint = new Point(0, 0);
         }
@@ -42,9 +38,7 @@ namespace Mystify
         {
             this.myLineStartPoint = myLineStartPoint;
             this.myLineEndPoint = myLineEndPoint;
-            this.myPen = myPen;
-            status = true;
-           
+            this.myPen = myPen;           
         }
 
        
@@ -56,8 +50,7 @@ namespace Mystify
             //North
             if (vector == 1)
             {
-                //directionToMove.X = -4;
-                //directionToMove.Y = 4;
+     
                 directionToMove.X = 0;
                 directionToMove.Y = 4;
             }
@@ -107,14 +100,12 @@ namespace Mystify
         }
         public void drawS(Graphics ShadowLines)
         {
-            lock (thisLock)
-            {
-
+          
                 Point tempEnd = new Point();
                 Point tempStart = new Point();
                 
 
-                if (MainList.Count == 4)
+                if (MainList.Count == 6)
                 {
                     tempStart = MainList.ElementAt(0).myLineStartPoint;
                     tempEnd = MainList.ElementAt(0).myLineEndPoint;
@@ -129,9 +120,8 @@ namespace Mystify
                     Move();
                     ShadowLines.DrawLine(myPen, myLineStartPoint, myLineEndPoint);
                     MainList.Add(new Line(myLineStartPoint, myLineEndPoint, myPen));
-                    Thread.Sleep(50);
                 }
-            }
+          
 
         }
 
@@ -222,11 +212,12 @@ namespace Mystify
 
             while (status)
             {
+                wait_handle.WaitOne();
                 lock (thisLock)
                 { 
-                    drawS(drawing); 
+                   drawS(drawing);
+                   Thread.Sleep(5);
                 }
-                wait_handle.WaitOne();
             }
 
         }

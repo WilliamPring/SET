@@ -24,7 +24,7 @@ namespace Mystify
         Random rndPoint = new Random();
         private int maxXScreen;
         private int maxYScreen;
-        
+        bool clickNewButton;
         private int randomX;
         private int RandomY;
         private int randomX1;
@@ -61,7 +61,8 @@ namespace Mystify
 
         private void bnPause_Click(object sender, EventArgs e)
         {
-            Line.wait_handle.Reset(); 
+            Line.wait_handle.Reset();
+            bnNewStick.Enabled = false; 
         }
 
 
@@ -82,22 +83,27 @@ namespace Mystify
            
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void bnResume_Click(object sender, EventArgs e)
         {
-            Line.wait_handle.Set(); 
+            Line.wait_handle.Set();
+            bnNewStick.Enabled = true;
+
         }
 
         private void bnEnd_Click(object sender, EventArgs e)
         {
+            Line.wait_handle.Set();
+            Line.status = false;
+            tRepo.JoinAll();
+            pnScreen.BackColor = Color.White;
+            pnScreen.Invalidate(); 
+        }
+
+        private void Main_Mystify_FormClosing(object sender, FormClosingEventArgs e)
+        {
             Line.status = false;
             Line.wait_handle.Set();
             tRepo.JoinAll();
-            Application.Exit();
         }
     }       
 }

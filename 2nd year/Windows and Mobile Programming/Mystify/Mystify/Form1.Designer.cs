@@ -95,7 +95,7 @@
             this.Controls.Add(this.pnScreen);
             this.Name = "Main_Mystify";
             this.Text = "Mystify";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_Mystify_FormClosing);
             this.ResumeLayout(false);
 
         }
