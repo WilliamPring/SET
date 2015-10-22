@@ -100,6 +100,7 @@ namespace Mystify
             pnScreen.Invalidate();
             bnNewStick.Enabled = true;
             Line.status = true;
+
         }
 
         private void Main_Mystify_FormClosing(object sender, FormClosingEventArgs e)
