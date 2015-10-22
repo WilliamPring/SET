@@ -216,7 +216,7 @@ namespace Mystify
                 lock (thisLock)
                 { 
                    drawS(drawing);
-                   Thread.Sleep(5);
+                    Thread.Sleep(5);
                 }
             }
 

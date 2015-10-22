@@ -95,8 +95,11 @@ namespace Mystify
             Line.wait_handle.Set();
             Line.status = false;
             tRepo.JoinAll();
+            tRepo.EndALL(); 
             pnScreen.BackColor = Color.White;
-            pnScreen.Invalidate(); 
+            pnScreen.Invalidate();
+            bnNewStick.Enabled = true;
+            Line.status = true;
         }
 
         private void Main_Mystify_FormClosing(object sender, FormClosingEventArgs e)

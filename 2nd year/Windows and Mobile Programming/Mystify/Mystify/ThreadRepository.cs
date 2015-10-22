@@ -22,6 +22,10 @@ namespace Mystify
                 th.Join();
             }
         }
+        public void EndALL()
+        {
+            threads.Clear();
+        }
         public void Add(string name, ParameterizedThreadStart threadSt, Graphics mLine)
         {
             Thread trd = new Thread(threadSt);
