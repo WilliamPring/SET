@@ -19,6 +19,14 @@ namespace Mystify
 {
     class ThreadRepository
     {
+
+        /*
+         Name: ThreadRepository
+         Purpose: Keep track of the threads and have supporting functions for the threads
+         Data Members : threads - list of thread 
+         Type:  Nothing
+
+          */
         List<Thread> threads = new List<Thread>();
         public ThreadRepository()
         {

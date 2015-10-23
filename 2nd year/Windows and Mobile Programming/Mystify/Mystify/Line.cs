@@ -21,11 +21,26 @@ namespace Mystify
     /*
    Name: Program 
    Purpose: Line class which will change veloctiy of the points, create points, draw points and a thread that creates lines
-   Data Members :  None
    Type: None
     */
     class Line
     {
+
+        /*
+           Name: Line
+           Purpose: Defines and declares the specifics and functionality of what my Line would be able to do 
+           Data Members : thisLock - Lock important resources so other threads must wait 
+                          wait_handle - Will pause threads depending on the signel 
+                          myLineStartPoint- A Point type which is the starting point
+                          myLineEndPoint - A Point type which is the ending point
+                          VelocityForEndingPoint - A end point for the myLineEndPoint Speed
+                          VelocityForStartingPoint A Start point for the myLineStartPoint Speed
+                          rnd - random number 
+                          status - for the loop so the thread will continue to do it purpose
+                          MainList - conatiner for the list of lines (each thread will have it own threads)
+           Type:  Nothing
+
+            */
         //a lock for my lines so other thread cannot acess it
         private static Object thisLock = new Object();
         //This will be use throughout the program so it can puase threads
@@ -38,6 +53,7 @@ namespace Mystify
         private Point VelocityForStartingPoint = new Point();
         private Random rnd = new Random();
         public static volatile bool status = true;
+        public static int lineCount = 4;
         //containers of lines
         List<Line> MainList = new List<Line>();
         public Line()
@@ -51,14 +67,14 @@ namespace Mystify
         {
             this.myLineStartPoint = myLineStartPoint;
             this.myLineEndPoint = myLineEndPoint;
-            this.myPen = myPen;           
+            this.myPen = myPen;
         }
 
        
 
         private Point SetVector()
         {
-            int vector = rnd.Next(1, 9);
+            int vector = rnd.Next(1, 8);
             Point directionToMove = new Point();
             //North
             if (vector == 1)
@@ -112,12 +128,7 @@ namespace Mystify
 
             return directionToMove;
         }
-        /*
-        Function: draw_borders()
-        Description: This function arranges the video screen that will be used to display the clients messages 
-        Parameter(s): WINDOW *screen: 
-        Return: void, nothing
-        */
+   
         public void drawLn(Graphics ShadowLines)
         {
           
@@ -125,7 +136,7 @@ namespace Mystify
                 Point tempStart = new Point();
                 
 
-                if (MainList.Count == 6)
+                if (MainList.Count == lineCount)
                 {
                     tempStart = MainList.ElementAt(0).myLineStartPoint;
                     tempEnd = MainList.ElementAt(0).myLineEndPoint;
@@ -241,7 +252,7 @@ namespace Mystify
                 { 
                    drawLn(drawing);
                     //sleep threads
-                    Thread.Sleep(4);
+                    Thread.Sleep(5);
                 }
             }
 

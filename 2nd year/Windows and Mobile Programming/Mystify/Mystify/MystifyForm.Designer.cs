@@ -33,6 +33,8 @@
             this.bnPause = new System.Windows.Forms.Button();
             this.bnEnd = new System.Windows.Forms.Button();
             this.bnResume = new System.Windows.Forms.Button();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnScreen
@@ -83,11 +85,22 @@
             this.bnResume.UseVisualStyleBackColor = true;
             this.bnResume.Click += new System.EventHandler(this.bnResume_Click);
             // 
+            // trackBar1
+            // 
+            this.trackBar1.Location = new System.Drawing.Point(347, 247);
+            this.trackBar1.Minimum = 4;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(74, 45);
+            this.trackBar1.TabIndex = 5;
+            this.trackBar1.Value = 5;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
             // Main_Mystify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(424, 332);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.bnResume);
             this.Controls.Add(this.bnEnd);
             this.Controls.Add(this.bnPause);
@@ -96,7 +109,9 @@
             this.Name = "Main_Mystify";
             this.Text = "Mystify";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_Mystify_FormClosing);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -107,6 +122,7 @@
         private System.Windows.Forms.Button bnPause;
         private System.Windows.Forms.Button bnEnd;
         private System.Windows.Forms.Button bnResume;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }
 

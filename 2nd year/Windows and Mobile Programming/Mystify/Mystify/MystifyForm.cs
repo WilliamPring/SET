@@ -154,5 +154,15 @@ namespace Mystify
             Line.wait_handle.Set();
             tRepo.JoinAll();
         }
+
+        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            Line.lineCount = trackBar1.Value; 
+        }
     }       
 }
