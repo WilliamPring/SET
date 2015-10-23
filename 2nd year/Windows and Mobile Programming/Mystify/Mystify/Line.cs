@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+File name: Line.cs
+Project: Mystify
+By: William Pring 
+Date: October 23, 2015
+Description: Recreate Mystify in Windows allowing users to add sticks, pause, resume and close the thread 
+gracefully
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,31 +18,35 @@ using System.Threading.Tasks;
 
 namespace Mystify
 {
-
-
-
+    /*
+   Name: Program 
+   Purpose: Line class which will change veloctiy of the points, create points, draw points and a thread that creates lines
+   Data Members :  None
+   Type: None
+    */
     class Line
     {
+        //a lock for my lines so other thread cannot acess it
+        private static Object thisLock = new Object();
+        //This will be use throughout the program so it can puase threads
         public volatile static ManualResetEvent wait_handle = new ManualResetEvent(true);
-
         private Pen myPen;
-        private ThreadRepository tRepoStartShadowLine;
         private Point myLineStartPoint;
         private Point myLineEndPoint;
+        //velocity 
         private Point VelocityForEndingPoint = new Point();
         private Point VelocityForStartingPoint = new Point();
         private Random rnd = new Random();
         public static volatile bool status = true;
-        private static Object thisLock = new Object();
-
+        //containers of lines
         List<Line> MainList = new List<Line>();
         public Line()
         {
-            tRepoStartShadowLine = new ThreadRepository();
             myPen = new Pen(Color.Red, 1);
             myLineEndPoint = new Point(0, 0);
             myLineEndPoint = new Point(0, 0);
         }
+
         public Line(Point myLineStartPoint, Point myLineEndPoint, Pen myPen)
         {
             this.myLineStartPoint = myLineStartPoint;
@@ -45,13 +58,13 @@ namespace Mystify
 
         private Point SetVector()
         {
-            int vector = rnd.Next(1, 8);
+            int vector = rnd.Next(1, 9);
             Point directionToMove = new Point();
             //North
             if (vector == 1)
             {
      
-                directionToMove.X = 0;
+                directionToMove.X = -4;
                 directionToMove.Y = 4;
             }
 
@@ -93,12 +106,19 @@ namespace Mystify
 
             if (vector == 8)
             {
-                
+                directionToMove.X = -4;
+                directionToMove.Y = 0;
             }
 
             return directionToMove;
         }
-        public void drawS(Graphics ShadowLines)
+        /*
+        Function: draw_borders()
+        Description: This function arranges the video screen that will be used to display the clients messages 
+        Parameter(s): WINDOW *screen: 
+        Return: void, nothing
+        */
+        public void drawLn(Graphics ShadowLines)
         {
           
                 Point tempEnd = new Point();
@@ -133,7 +153,7 @@ namespace Mystify
                 StartLoop = true;
                 myLineStartPoint.X = myLineStartPoint.X + VelocityForStartingPoint.X;
                 myLineStartPoint.Y = myLineStartPoint.Y + VelocityForStartingPoint.Y;
-                if (myLineStartPoint.X <= 0)
+                if (myLineStartPoint.X < 0)
                 {
                     myLineStartPoint.X = 0;
                     StartLoop = false;
@@ -143,7 +163,7 @@ namespace Mystify
                     myLineStartPoint.X = 326;
                     StartLoop = false;
                 }
-                if (myLineStartPoint.Y <= 0)
+                if (myLineStartPoint.Y < 0)
                 {
                     myLineStartPoint.Y = 0;
                     StartLoop = false;
@@ -201,6 +221,8 @@ namespace Mystify
        
 
         }
+
+
         public void draw(object toDraw)
         {
             
@@ -209,14 +231,17 @@ namespace Mystify
             VelocityForStartingPoint = SetVector();
             //add line to the list
             MainList.Add(new Line(myLineStartPoint, myLineEndPoint, myPen));
-
+            //loop until status is equal true
             while (status)
             {
+                //pause threads
                 wait_handle.WaitOne();
+                //lock threads
                 lock (thisLock)
                 { 
-                   drawS(drawing);
-                    Thread.Sleep(5);
+                   drawLn(drawing);
+                    //sleep threads
+                    Thread.Sleep(4);
                 }
             }
 

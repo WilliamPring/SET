@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+File name: ThreadRepository.cs
+Project: Mystify
+By: William Pring 
+Date: October 23, 2015
+Description: Keep track of my threads and have supporting thread functions
+*/
+
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -22,7 +31,7 @@ namespace Mystify
                 th.Join();
             }
         }
-        public void EndALL()
+        public void EndAll()
         {
             threads.Clear();
         }
