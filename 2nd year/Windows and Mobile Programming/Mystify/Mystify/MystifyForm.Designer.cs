@@ -43,7 +43,6 @@
             this.pnScreen.Name = "pnScreen";
             this.pnScreen.Size = new System.Drawing.Size(328, 308);
             this.pnScreen.TabIndex = 0;
-            this.pnScreen.Paint += new System.Windows.Forms.PaintEventHandler(this.pnScreen_Paint);
             // 
             // bnNewStick
             // 

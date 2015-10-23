@@ -74,6 +74,9 @@ namespace Mystify
         private Object thisLock = new Object();
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Main_Mystify"/> class.
+        /// </summary>
         public Main_Mystify()
         {
             InitializeComponent();
@@ -88,11 +91,6 @@ namespace Mystify
             RandomY = 0;
             RandomY1 = 0;
             randomX = 0;
-        }
-
-        private void pnScreen_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
     
@@ -114,19 +112,27 @@ namespace Mystify
             maxXScreen = pnScreen.Width;
             //set the max screen height
             maxYScreen = pnScreen.Height;
+            //random point for x
             randomX = rndPoint.Next(0, pnScreen.Width);
+            //random point for x1
             randomX1 = rndPoint.Next(0, pnScreen.Width);
+            //random point for y
             RandomY = rndPoint.Next(0, pnScreen.Height );
+            //random point Y1
             RandomY1 = rndPoint.Next(0 , pnScreen.Height );
+            //start point with the x and y
             startLinePoint = new Point(randomX, RandomY);
+            //end point 
             endLinePoint = new Point(randomX1, RandomY1);
             myLine =  new Line(startLinePoint, endLinePoint, penType);
+            //name thread and add it the function and pass the graphic var
             tRepo.Add("Th", new ParameterizedThreadStart(myLine.draw), g);
            
         }
 
         private void bnResume_Click(object sender, EventArgs e)
         {
+            //resume the waitone
             Line.wait_handle.Set();
             bnNewStick.Enabled = true;
 
@@ -137,10 +143,13 @@ namespace Mystify
             Line.wait_handle.Set();
             //end the loop
             Line.status = false;
-            //
+            //join all threads
             tRepo.JoinAll();
+            //clear the list
             tRepo.EndAll(); 
+            //set the screen to white
             pnScreen.BackColor = Color.White;
+            //refresh the screen
             pnScreen.Invalidate();
             bnNewStick.Enabled = true;
             //set it back to true just in case person want to add new sticks again
@@ -150,8 +159,10 @@ namespace Mystify
 
         private void Main_Mystify_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //end the threads loop
             Line.status = false;
             Line.wait_handle.Set();
+            //wait
             tRepo.JoinAll();
         }
 
@@ -162,6 +173,7 @@ namespace Mystify
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
+            //set the line count
             Line.lineCount = trackBar1.Value; 
         }
     }       
