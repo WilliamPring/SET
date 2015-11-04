@@ -137,47 +137,20 @@ namespace ChatProgram
                 output.WriteLine(userName + " >> " + printToScreen + "\n");
                 output.Flush();
                 //Write to the screen 
+                ChatScreen.SelectionColor = Color.Black; 
                 ChatScreen.Text += userName + " >> " + printToScreen + "\n";
                 ChatScreen.SelectionStart = ChatScreen.Text.Length; 
                 ChatScreen.ScrollToCaret(); 
             }
         }
 
-        /******************************************************************/
-
-
-        
-        /*************** Non-UI Thread Reading From Queue ***************/
-        
-        private void RequestChatLog()
-        {
-            server = new NamedPipeServerStream(pipeNameTwo);
-            server.WaitForConnection();
-            StreamReader input = new StreamReader(server); 
-            
-            while(!finished)
-            {
-                string screenMsg = input.ReadLine();                 
-
-                if(ChatScreen.InvokeRequired)
-                {
-                    ChatScreen.BeginInvoke(new updateTextBox(writeToScreen), new object[] { screenMsg }); //Print the message with safe thread call 
-                }
-            }
-        }
-
-        private void writeToScreen(object text) //Used from the NON-UI Threads 
-        {
-            string print = (string)text;
-            ChatScreen.Text += print + "\n";
-            ChatScreen.SelectionStart = ChatScreen.Text.Length;
-            ChatScreen.ScrollToCaret();
-        }
+        /******************************************************************/             
 
         //Disconnect the client from the conversation
 
         private void Disconnect_Click(object sender, EventArgs e)
         {
+            newthread.Join();
             Form1.finished = true; //End the writing loop
 
             //Disable most buttons 
@@ -198,13 +171,15 @@ namespace ChatProgram
 
             //Clear variables
             userName = "";
-        }  
+        }
+
+        /*************** Non-UI Thread Reading From Queue ***************/
           
         private void Host(object sender, EventArgs e)
         {
-            pipeNameTwo = ServerName.Text;
+            string pipeServerName = ServerName.Text;
 
-            if(pipeNameTwo != "")
+            if (pipeServerName != "")
             {
                 ServerName.ReadOnly = true;
                 HostButton.Enabled  = false; 
@@ -213,10 +188,45 @@ namespace ChatProgram
                 UserName.ReadOnly      = false;
                 LocalComputer.ReadOnly = false; 
 
-                newthread = new Thread(new ThreadStart(RequestChatLog)); //Method invoked when thread is created 
-                newthread.Start();
+                newthread = new Thread(new ParameterizedThreadStart(RequestChatLog)); //Method invoked when thread is created 
+                newthread.Start(pipeServerName); //Name from the serverName textbox 
             }
-        }   
+        }
+
+        private void RequestChatLog(object pipeArgName)
+        {
+            string pipeName = (string)pipeArgName; 
+            
+            server = new NamedPipeServerStream(pipeName);
+            server.WaitForConnection();
+            StreamReader input = new StreamReader(server);
+
+            while (!finished)
+            {
+                string screenMsg = input.ReadLine();
+
+                if (ChatScreen.InvokeRequired)
+                {
+                    ChatScreen.BeginInvoke(new updateTextBox(writeToScreen), new object[] { screenMsg }); //Print the message with safe thread call 
+                }
+            }
+        }
+
+        private void writeToScreen(object text) //Used from the NON-UI Threads 
+        {
+            string print = (string)text;
+            ChatScreen.SelectionColor = Color.Red;
+            ChatScreen.Text += print + "\n";
+            ChatScreen.SelectionStart = ChatScreen.Text.Length;
+            ChatScreen.ScrollToCaret();
+        }
+
+        private void closingForm(object sender, FormClosingEventArgs e)
+        {
+            Form1.finished = true;
+            server.Dispose();
+            server = null; 
+        }
     }
 }
 
