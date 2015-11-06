@@ -11,25 +11,28 @@ using System.Threading;
 using System.Messaging;
 using System.IO; 
 using System.IO.Pipes;
+using System.Net; 
 
 namespace ChatProgram
 {
     public partial class Form1 : Form
     {
+        /**** DATA MEMBERS ****/
+        
+        public static bool ableToPost = false;
+
+        delegate void updateTextBox(string text); //To update the textbox from a NON-UI thread 
+
         string userName;
+        string compName;
+        string machineName; 
         string printToScreen;
 
         StreamWriter output;
         StreamReader input;
 
         bool isItServer;
-
-        public static bool ableToPost = true;
-        public static bool finished = false;
-        public static bool connectClient = false; 
-        
-        delegate void updateTextBox(string text); //To update the textbox from a NON-UI thread 
-
+    
         Thread newthread;
 
         NamedPipeServerStream serverWriting;
@@ -44,64 +47,17 @@ namespace ChatProgram
             //Read only textboxes, some are temporary 
             ChatScreen.ReadOnly    = true;
             TextScreen.ReadOnly    = true;
-            UserName.ReadOnly      = true;
-            LocalComputer.ReadOnly = true;
-
-            isItServer = false;
-
-            Connect.Enabled     = false;
+            Send.Enabled = false; 
+            isItServer   = false;
+            Disconnect.Enabled = false; 
 
             //For the user name and path of the queue 
-            userName         = "BIRRIAM";
-            printToScreen    = "";
-        }
- 
-        private void LocalComputer_TextChanged(object sender, EventArgs e)
-        {
-            //Only submit when the user has entered something in the Pipe Name textbox 
-            if(LocalComputer.Lines.Length != 0)
-            {
-                Connect.Enabled = true; 
-            }
-            else
-            {
-                Connect.Enabled = false;
-            }
-        }
-
-        /************************************/
-        
-        private void Connect_Click_1(object sender, EventArgs e)
-        {
-            //string[] user = UserName.Lines;
-
-            ////Enable more form options
-            //TextScreen.ReadOnly = false;
-            
-            //for (int i = 0; i < user.Length; i++)
-            //{
-            //    userName += user[i]; 
-            //}
-
-            //if(userName == "")
-            //{
-            //    userName = "Anonymous"; 
-            //}    
-
-            //pipeNameOne = LocalComputer.Text;          
-
-            //client = new NamedPipeClientStream(".", pipeNameOne); //The name of the server pipe
-            //client.Connect();
-            //output = new StreamWriter(client); //Write to the client stream
-
-            ////Turn on all of the buttons for use 
-            //Connect.Enabled = false;
-            //UserName.ReadOnly = true;
-            //LocalComputer.ReadOnly = true;                        
-                    
-        }
-
-
+            userName = "";
+            compName = "";
+            machineName = ""; 
+            printToScreen = "";
+        } 
+     
         /*************** UI MAINT THREAD Send to Queue ***************/
         
         private void Send_Click(object sender, EventArgs e)
@@ -118,8 +74,8 @@ namespace ChatProgram
         }
 
         private void ChatLog()
-        {                    
-            if(ableToPost)
+        {
+            if (ableToPost)
             {
                 string[] sendMessage = TextScreen.Lines;
                 printToScreen = "";
@@ -134,9 +90,8 @@ namespace ChatProgram
                     TextScreen.Text = "";
                     //Send to the other chat
 
-                    if(isItServer)
+                    if (isItServer)
                     {
-                        //output = new StreamWriter(serverWriting);
                         output = new StreamWriter(serverReading);
                         output.WriteLine(userName + " >> " + printToScreen);
                         output.Flush();
@@ -144,12 +99,10 @@ namespace ChatProgram
                     else
                     {
                         output = new StreamWriter(clientWriting);
-                        //output = new StreamWriter(clientReading);
                         output.WriteLine(userName + " >> " + printToScreen);
                         output.Flush();
-
-                    }              
-
+                    }
+                    
                     //Write to the screen 
                     ChatScreen.Text += userName + " >> " + printToScreen + "\n";
                     ChatScreen.SelectionStart = ChatScreen.Text.Length;
@@ -158,59 +111,117 @@ namespace ChatProgram
             }                   
         }
 
-        /******************************************************************/                
-
-        /*************** Non-UI Thread Reading From Queue ***************/
-                
+        /******************************************************************/   
+        
+        private void configureButtons()
+        {
+            ServerButton.Enabled = false;
+            HostButton.Enabled   = false;
+            PipeName_One.ReadOnly = true;
+            UserName.ReadOnly     = true;
+            TextScreen.ReadOnly  = false; //Let user type in textbox
+            Send.Enabled = true;
+            Disconnect.Enabled = true;
+            
+            userName = UserName.Text; //Get the username the user typed in
+            
+            if(userName == "")
+            {
+                userName = "Anonymous"; //Default username 
+            }
+        } 
 
         /***** Implementing Client and Server With Invoke of New Thread ******/
-
+        
         private void Server_Click(object sender, EventArgs e)
         {
-            string pipeServerNameOne = PipeName_One.Text; //Name of the first server pipe 
-            
-            if (pipeServerNameOne != "")
+            try
             {
-                serverWriting = new NamedPipeServerStream(pipeServerNameOne + "write"); //Start the writing thread               
-                serverReading = new NamedPipeServerStream(pipeServerNameOne + "read");
+                string pipeServerNameOne = PipeName_One.Text; //Name of the first server pipe      
 
-                serverReading.WaitForConnection(); //Wait for both the server pipes to be connected 
-                serverWriting.WaitForConnection();
+                if (pipeServerNameOne != "")
+                {
+                    ChatScreen.Text = ""; 
 
-                TextScreen.ReadOnly = false; //Let user type in textbox
+                    serverWriting = new NamedPipeServerStream(pipeServerNameOne + "write"); //Start the writing thread               
+                    serverReading = new NamedPipeServerStream(pipeServerNameOne + "read");
 
-                //Start the new threads 
-                newthread = new Thread(new ParameterizedThreadStart(RequestChatLog)); //Method invoked when thread is created 
-                newthread.Start("server"); //Name from the serverName textbox 
-                isItServer = true; 
+                    serverReading.WaitForConnection(); //Wait for both the server pipes to be connected 
+                    serverWriting.WaitForConnection();
+
+                    configureButtons(); //Type out what's currently known about the server and computer hosting it
+
+                    //Start the new threads 
+                    newthread = new Thread(new ParameterizedThreadStart(RequestChatLog)); //Method invoked when thread is created 
+                    newthread.Start("server"); //Name from the serverName textbox 
+                    isItServer = true;
+                }
+                else
+                {
+                    MessageBox.Show("You must enter a pipe name");
+                }
             }
+            catch(IOException)
+            {
+                MessageBox.Show("Pipe name already taken");
+                UserName.Text = ""; //Clear out the textbox 
+                PipeName_One.Text = ""; 
+            }           
         }
 
         private void Host_Click(object sender, EventArgs e)
         {
-            string pipeClientNameOne = PipeName_One.Text;
+            try
+            {
+                string pipeClientNameOne = PipeName_One.Text;
+                machineName = MachineServer.Text; //Name of the computer machine
 
-            if (pipeClientNameOne != "")
-            {                
-                clientWriting = new NamedPipeClientStream(".", pipeClientNameOne + "write");
-                clientReading = new NamedPipeClientStream(".", pipeClientNameOne + "read");
+                if(machineName == "")
+                {
+                    machineName = "."; //Default will connect to local machine 
+                }
 
-                clientReading.Connect(); //Connect to both pipes from the server 
-                clientWriting.Connect();
+                if (pipeClientNameOne != "")
+                {
+                    ChatScreen.Text = ""; 
+                    
+                    clientWriting = new NamedPipeClientStream(machineName, pipeClientNameOne + "write");
+                    clientReading = new NamedPipeClientStream(machineName, pipeClientNameOne + "read");
 
-                TextScreen.ReadOnly = false; //Let user type in textbox
+                    clientReading.Connect(250); //Connect to both pipes from the server 
+                    clientWriting.Connect(250);
+
+                    configureButtons(); 
                 
-                //Start the threads 
-                newthread = new Thread(new ParameterizedThreadStart(RequestChatLog)); //Method invoked when thread is created 
-                newthread.Start("client"); //Name from the serverName textbox 
+                    //Start the threads 
+                    newthread = new Thread(new ParameterizedThreadStart(RequestChatLog)); //Method invoked when thread is created 
+                    newthread.Start("client"); //Name from the serverName textbox
+                    isItServer = false; 
+                }
+                else
+                {
+                    MessageBox.Show("You must enter a pipe name");
+                }
             }
-
+            catch(TimeoutException)
+            {
+                MessageBox.Show("Unable to connect to pipe");
+                UserName.Text = ""; //Clear out the textbox 
+                PipeName_One.Text = ""; 
+            } 
+            catch(IOException ex)
+            {
+                MessageBox.Show(ex.Message); 
+            }
         }
 
-        /************** Method invoked when the thread is started *************/
+        /*************** Non-UI Thread Reading From Queue ***************/
 
         private void RequestChatLog(object pName)
-        {    
+        {           
+
+            ableToPost = true; 
+            
             //Once the connection has been established run a loop to continuously get input
 
             string typeReader = (string)pName;
@@ -226,25 +237,18 @@ namespace ChatProgram
             }
 
             while (true)
-            {          
-
-                string screenMsg = input.ReadLine();
-
-                //if (screenMsg == "|Client Has Disconnected|")
-                //{
-                //    continue; 
-                //}
+            {      
+                string screenMsg = input.ReadLine();              
 
                 if (screenMsg == "|Client Has Disconnected|")
                 {
                     if (ChatScreen.InvokeRequired)
                     {
-                        ChatScreen.BeginInvoke(new updateTextBox(writeToScreen), new object[] { screenMsg }); //Print the message with safe thread call 
+                        ChatScreen.BeginInvoke(new updateTextBox(writeToScreen), new object[] { "Disconnected Successfully" }); //Print the message with safe thread call 
                     }
-                    ableToPost = false; 
-                    break; 
-                }
 
+                    break; //Close the loop and thread altogether succesfully 
+                }
                 
                 if(screenMsg == "|exit|")
                 {
@@ -253,29 +257,76 @@ namespace ChatProgram
                         output = new StreamWriter(serverReading);
                         output.WriteLine("|Client Has Disconnected|");
                         output.Flush();
+
+                        //CLOSE PIPES 
+
+                        serverWriting.Dispose();
+                        serverReading.Dispose();
+
+                        serverWriting.Close();
+                        serverReading.Close(); 
+
+                        if (ChatScreen.InvokeRequired)
+                        {
+                            ChatScreen.BeginInvoke(new updateTextBox(writeToScreen), new object[] { "Client Disconnected\nAll Pipes Have Closed" }); //Print the message with safe thread call 
+                        }
                     }
                     else
-                    {
+                    {                                             
                         output = new StreamWriter(clientWriting);
                         output.WriteLine("|Client Has Disconnected|");
                         output.Flush();
+
+                        //CLOSE PIPES 
+
+                        clientWriting.Dispose();
+                        clientReading.Dispose();
+
+                        clientWriting.Close();
+                        clientReading.Close(); 
+
+                        if (ChatScreen.InvokeRequired)
+                        {
+                            ChatScreen.BeginInvoke(new updateTextBox(writeToScreen), new object[] { "Client Disconnected\nAll Pipes Have Closed" }); //Print the message with safe thread call 
+                        }
                     }
                     ableToPost = false; 
                     break;
                 }
 
-                //Call the Safe Thread Call, Delegate 
-
+                //Call the Safe Thread Call, Delegate
                 if (ChatScreen.InvokeRequired)
-                {
+                {                    
                     ChatScreen.BeginInvoke(new updateTextBox(writeToScreen), new object[] { screenMsg }); //Print the message with safe thread call 
                 }
-            }
+            }  
         }
 
         private void writeToScreen(object text) //Used from the NON-UI Threads 
         {
             string print = (string)text;
+
+            if (print == "Client Disconnected\nAll Pipes Have Closed" || print == "Disconnected Successfully")
+            {
+                ServerButton.Enabled = true;
+                HostButton.Enabled   = true;
+                isItServer   = false;
+                ableToPost   = false;
+
+                Send.Enabled = false;
+                Disconnect.Enabled = false;
+
+                PipeName_One.Text  = "";
+                UserName.Text      = "";
+                MachineServer.Text = "";
+
+                PipeName_One.ReadOnly = false;
+                UserName.ReadOnly = false; 
+
+                ChatScreen.Text = ""; //Clear the chat screen
+
+            }
+
             ChatScreen.Text += print + "\n";
             ChatScreen.SelectionStart = ChatScreen.Text.Length;
             ChatScreen.ScrollToCaret();
@@ -297,11 +348,29 @@ namespace ChatProgram
                     output.WriteLine("|exit|");
                     output.Flush();
                 }
-
             }            
         
-            //Exiting the thread 
+            //Exiting the threads and program entirely
         }
+
+        private void Disconnect_Click(object sender, EventArgs e)
+        {
+            if (ableToPost)
+            {
+                if (isItServer)
+                {
+                    output = new StreamWriter(serverReading);
+                    output.WriteLine("|exit|");
+                    output.Flush();
+                }
+                else
+                {
+                    output = new StreamWriter(clientWriting);
+                    output.WriteLine("|exit|");
+                    output.Flush();
+                }
+            }    
+        } 
     }
 }
 
