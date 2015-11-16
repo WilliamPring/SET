@@ -13,6 +13,15 @@ namespace Hi_Low_Game {
     public partial class _Default {
         
         /// <summary>
+        /// body control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl body;
+        
+        /// <summary>
         /// serverForm control.
         /// </summary>
         /// <remarks>
@@ -58,48 +67,12 @@ namespace Hi_Low_Game {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator validateRegex;
         
         /// <summary>
-        /// askForRandomNumber control.
+        /// buttonID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label askForRandomNumber;
-        
-        /// <summary>
-        /// hashNumberKey control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox hashNumberKey;
-        
-        /// <summary>
-        /// requiredNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator requiredNumber;
-        
-        /// <summary>
-        /// numberValidatorTwo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator numberValidatorTwo;
-        
-        /// <summary>
-        /// numberRangeValidator control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RangeValidator numberRangeValidator;
+        protected global::System.Web.UI.WebControls.Button buttonID;
     }
 }
