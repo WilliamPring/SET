@@ -22,13 +22,13 @@
 
             <Storyboard x:Name="xAxisStoryBoard" x:Key="FirstOneAnimation" Storyboard.TargetName="myRobot">
                 <DoubleAnimation x:Name="myRobotAnimationXAxis"
-                                 Duration="0:0:3"
+                                 Duration="0:0:0.4"
                                  Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.X)"
                                  From="0" To="300"/>
             </Storyboard>
             <Storyboard x:Name="yAxisStoryBoard" x:Key="SecondOneAnimation" Storyboard.TargetName="myRobot">
                 <DoubleAnimation x:Name="myRobotAnimationYAxis"
-                                 Duration="0:0:3"
+                                 Duration="0:0:0.4"
                                  Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.Y)"
                                  From="0" To="300"/>
             </Storyboard>

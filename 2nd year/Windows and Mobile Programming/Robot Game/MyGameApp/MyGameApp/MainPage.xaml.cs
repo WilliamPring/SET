@@ -14,7 +14,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 
-
 using Windows.UI.Xaml.Shapes;
 using Windows.UI; 
 
@@ -25,7 +24,7 @@ namespace MyGameApp
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    
+    ///     
     public sealed partial class MainPage : Page
     {
         private int canvasRows;
@@ -38,6 +37,7 @@ namespace MyGameApp
         Random randBomb;        
 
         List<Rectangle> bombList;  //list ofthe bomb being stored
+
         Random bombToDelete;  //what bomb to delete in the bombList
 
         int x; //Represent the X Grid
@@ -47,6 +47,10 @@ namespace MyGameApp
 
         int currBomb; //the current amount of bomb in this project
         int positonOfBombToDelete; //which bomb to delete
+
+
+        int lastRobotXPos;
+        int lastRobotYPos; 
 
 
 
@@ -65,14 +69,12 @@ namespace MyGameApp
             x = 8;
             y = 8;
 
+
+            lastRobotXPos = 0;
+            lastRobotYPos = 0;
+
             maxBombCount = (int)(x * y * (0.40)); //Formula for max number of mines 
-            currBomb = randBomb.Next(10, maxBombCount - 5); //Calculate number of mines for the game       
-     
-            
-            
-
-
-
+            currBomb = randBomb.Next(10, maxBombCount); //Calculate number of mines for the game  
         }
 
 
@@ -88,81 +90,130 @@ namespace MyGameApp
             myRobot.Width  = (double)canvasXCell;
             myRobot.Height = (double)canvasXCell;
 
-            int spacesDown  = 0;
-            int spacesRight = 0; 
+            createRandomBombs();      
+        }
 
 
-            //Create and add all the bombs to the game
-            for (int i = 0; i < currBomb; i++)
+        private void createRandomBombs()
+        {
+            for (int i = 1; i <= 8; i++)
             {
-                //Create rectangle dynamically
+                for (int boundary = 1; boundary <= 8; boundary++)
+                {
+                    Rectangle mineBox = new Rectangle();
+                    mineBox.Width = canvasXCell / 2;
+                    mineBox.Height = canvasXCell;
 
-                Rectangle mineBox = new Rectangle();
-                //Always have it the same size and colour
-                mineBox.Width  = canvasXCell / 2;
-                mineBox.Height = canvasXCell;
-                mineBox.Fill = new SolidColorBrush(Colors.LightGreen);
+                    Canvas.SetTop(mineBox, canvasYCell * i);
+                    Canvas.SetLeft(mineBox, canvasXCell * boundary);
 
-                //Randomizing the margin it is located from the canvas and screen layout
-                //mineBox.Margin = new Thickness(randBomb.Next(0, canvasColumns) - 50, randBomb.Next(0, canvasRows) - 100, randBomb.Next(0, canvasRows) + 100, randBomb.Next(0, canvasColumns) + 50);
+                    mineBox.Fill = new SolidColorBrush(Colors.LightGreen);
 
-                spacesRight = randBomb.Next(1, 7);
-                spacesDown  = randBomb.Next(1, 11);               
-
-
-                mineBox.Margin = new Thickness(canvasXCell * spacesRight, canvasXCell * spacesDown, 0, 0);
-
-                myCanvas.Children.Insert(0, mineBox); //Insert it into the canvas 
-
-                bombList.Add(mineBox); //Add to the total mine list in the game 
+                    bombList.Add(mineBox); //Keep track of tiles
+                }
             }
 
+            List<Rectangle> randomList = new List<Rectangle>();
 
-           // spacesDown = canvasXCell;
+            Random r = new Random();
+            int randomIndex = 0;
+            while (bombList.Count > 0)
+            {
+                randomIndex = r.Next(0, bombList.Count); //Choose a random object in the list
+                randomList.Add(bombList[randomIndex]); //add it to the new, random list
+                bombList.RemoveAt(randomIndex); //remove to avoid duplicates
+            }
+            bombList = randomList;
+            for (int i = 0; i < 40; i++)
+            {
+                positonOfBombToDelete = randBomb.Next(0, bombList.Count);
+                bombList.RemoveAt(positonOfBombToDelete);
+            }
 
-
-
-
-
+            foreach (var bomb in bombList)
+            {
+                myCanvas.Children.Insert(0, bomb); //Draw
+            }
         }
 
         /** Click Related Event Handlers **/
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            yAxisStoryBoard.Begin();
+            if(lastRobotYPos > 0)
+            {
+                yAxisStoryBoard.Begin();
+                myRobotAnimationYAxis.From = lastRobotYPos;
+                lastRobotYPos -= canvasYCell;
+                myRobotAnimationYAxis.To = lastRobotYPos;
 
-            myRobotAnimationYAxis.From = this.canvasRows - this.canvasXCell;
-            myRobotAnimationYAxis.To = 0;
+            }
 
-
-            
-
-
+            foreach(var bomb in bombList)
+            {
+                if (lastRobotYPos == Canvas.GetTop(bomb) && lastRobotXPos == Canvas.GetLeft(bomb))
+                {
+                    myCanvas.Children.Remove(bomb);
+                }
+            }               
         }
 
         private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
-            yAxisStoryBoard.Begin();
+            if (lastRobotYPos <= this.canvasRows - this.canvasXCell)
+            {
+                yAxisStoryBoard.Begin();
+                myRobotAnimationYAxis.From = lastRobotYPos;
+                lastRobotYPos += canvasYCell;
+                myRobotAnimationYAxis.To = lastRobotYPos;
 
-            myRobotAnimationYAxis.From = 0;
-            myRobotAnimationYAxis.To = this.canvasRows - this.canvasXCell; //- this.canvasXCell;
+                foreach(var bomb in bombList)
+                {
+                    if (lastRobotYPos == Canvas.GetTop(bomb) && lastRobotXPos == Canvas.GetLeft(bomb))
+                    {
+                        myCanvas.Children.Remove(bomb);
+                    }
+                }           
+            }       
         }
 
         private void AppBarButton_Click_2(object sender, RoutedEventArgs e)
         {
-            xAxisStoryBoard.Begin();
+            if (lastRobotXPos < this.canvasColumns - this.canvasXCell)
+            {
+                xAxisStoryBoard.Begin();
+                myRobotAnimationXAxis.From = lastRobotXPos;
+                lastRobotXPos += canvasXCell;
+                myRobotAnimationXAxis.To = lastRobotXPos;
 
-            myRobotAnimationXAxis.From = 0;
-            myRobotAnimationXAxis.To = this.canvasColumns - this.canvasXCell;
+                foreach(var bomb in bombList)
+                {
+                    if (lastRobotYPos == Canvas.GetTop(bomb) && lastRobotXPos == Canvas.GetLeft(bomb))
+                    {
+                        myCanvas.Children.Remove(bomb);
+                    }
+                }   
+            }
         }
 
         private void AppBarButton_Click_3(object sender, RoutedEventArgs e)
         {
-            xAxisStoryBoard.Begin();
+            if (lastRobotXPos > 0)
+            {
+                xAxisStoryBoard.Begin();
+                myRobotAnimationXAxis.From = lastRobotXPos;
+                lastRobotXPos -= canvasXCell;
+                myRobotAnimationXAxis.To = lastRobotXPos;
+            }
 
-            myRobotAnimationXAxis.From = this.canvasColumns - this.canvasXCell;
-            myRobotAnimationXAxis.To = 0;
+            foreach(var bomb in bombList)
+            {
+                if (lastRobotYPos == Canvas.GetTop(bomb) && lastRobotXPos == Canvas.GetLeft(bomb))
+                {
+                    myCanvas.Children.Remove(bomb);
+                }
+            }              
         }
     }
 }
+
