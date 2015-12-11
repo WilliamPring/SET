@@ -5,53 +5,13 @@
     xmlns:local="using:MyGameApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="Main_Page_Loaded_Event">
-    
-    
-   
+    mc:Ignorable="d">
 
-    <Canvas Background="#222" x:Name="myCanvas">
-        <Canvas.Resources>
-            <Style TargetType="Ellipse">
-                <Setter Property="Fill" Value="Red"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Width" Value="85"/>
-                <Setter Property="Height" Value="85"/>
-            </Style>           
+    <Grid Background="#222">
+        <Button x:Name="button" Content="Play Game" HorizontalAlignment="left" Margin="101,138,0,0" VerticalAlignment="Center" Background="LightSalmon" Height="64" Width="136" Tapped="Go_To_Game"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="15,124,0,0" TextWrapping="Wrap" Text="Robot Mine Game" VerticalAlignment="Top" Height="68" Width="284" Foreground="LightSalmon" FontSize="26" TextAlignment="Center"/>
+       
+    </Grid>
 
-            <Storyboard x:Name="xAxisStoryBoard" x:Key="FirstOneAnimation" Storyboard.TargetName="myRobot">
-                <DoubleAnimation x:Name="myRobotAnimationXAxis"
-                                 Duration="0:0:0.4"
-                                 Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.X)"
-                                 From="0" To="300"/>
-            </Storyboard>
-            <Storyboard x:Name="yAxisStoryBoard" x:Key="SecondOneAnimation" Storyboard.TargetName="myRobot">
-                <DoubleAnimation x:Name="myRobotAnimationYAxis"
-                                 Duration="0:0:0.4"
-                                 Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.Y)"
-                                 From="0" To="300"/>
-            </Storyboard>
-        </Canvas.Resources>
-
-        <Ellipse x:Name="myRobot">
-            <Ellipse.RenderTransform>
-                <TranslateTransform/>
-            </Ellipse.RenderTransform>
-        </Ellipse>        
-    </Canvas>
-
-
-    <Page.BottomAppBar>
-        <CommandBar x:Name="myBottomBar">
-            <CommandBar.Content>
-                <Grid/>
-            </CommandBar.Content>
-            <AppBarButton Icon="Up" Label="UP" Click="AppBarButton_Click"/>
-            <AppBarButton Icon="Download" Label="DOWN" Click="AppBarButton_Click_1"/>
-            <AppBarButton Icon="Up" Label="RIGHT" Click="AppBarButton_Click_2"/>
-            <AppBarButton Icon="Up" Label="LEFT" Click="AppBarButton_Click_3"/>
-        </CommandBar>
-    </Page.BottomAppBar>
 
 </Page>

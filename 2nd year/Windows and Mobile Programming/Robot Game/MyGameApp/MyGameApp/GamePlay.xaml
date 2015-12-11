@@ -1,14 +1,13 @@
 ﻿<Page
-    x:Class="MyGameApp.MainPage"
+    x:Class="MyGameApp.GamePlay"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MyGameApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="Main_Page_Loaded_Event">
-    
-    
-   
+    mc:Ignorable="d" Loaded="Game_Loaded">
+
+
 
     <Canvas Background="#222" x:Name="myCanvas">
         <Canvas.Resources>
@@ -16,19 +15,19 @@
                 <Setter Property="Fill" Value="Red"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Width" Value="85"/>
-                <Setter Property="Height" Value="85"/>
-            </Style>           
+                <Setter Property="Width" Value=""/>
+                <Setter Property="Height" Value=""/>
+            </Style>
 
             <Storyboard x:Name="xAxisStoryBoard" x:Key="FirstOneAnimation" Storyboard.TargetName="myRobot">
                 <DoubleAnimation x:Name="myRobotAnimationXAxis"
-                                 Duration="0:0:3"
+                                 Duration="0:0:0.1"
                                  Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.X)"
                                  From="0" To="300"/>
             </Storyboard>
             <Storyboard x:Name="yAxisStoryBoard" x:Key="SecondOneAnimation" Storyboard.TargetName="myRobot">
                 <DoubleAnimation x:Name="myRobotAnimationYAxis"
-                                 Duration="0:0:3"
+                                 Duration="0:0:0.1"
                                  Storyboard.TargetProperty="(Ellipse.RenderTransform).(ScaleTransform.Y)"
                                  From="0" To="300"/>
             </Storyboard>
@@ -38,7 +37,13 @@
             <Ellipse.RenderTransform>
                 <TranslateTransform/>
             </Ellipse.RenderTransform>
-        </Ellipse>        
+        </Ellipse>
+        <TextBlock x:Name="textBlock" Canvas.Left="247" TextWrapping="Wrap" Text="Sec: " Canvas.Top="10" Foreground="White"/>
+        <TextBlock x:Name="myBombCount" Canvas.Left="247" TextWrapping="Wrap" Text="Left: " Canvas.Top="30" Foreground="White"/>
+        <TextBlock x:Name="deletedBombs" Canvas.Left="250" TextWrapping="Wrap" Text="Del: " Canvas.Top="50" Foreground="White"/>
+        <TextBlock x:Name="xPos" Canvas.Left="10" TextWrapping="Wrap" Text="X Pos: " Canvas.Top="372" Foreground="White"/>
+        <TextBlock x:Name="yPos" Canvas.Left="10" TextWrapping="Wrap" Text="Y Pos: " Canvas.Top="397" Foreground="White" RenderTransformOrigin="-0.229,0.95"/>
+
     </Canvas>
 
 
@@ -47,10 +52,21 @@
             <CommandBar.Content>
                 <Grid/>
             </CommandBar.Content>
-            <AppBarButton Icon="Up" Label="UP" Click="AppBarButton_Click"/>
-            <AppBarButton Icon="Download" Label="DOWN" Click="AppBarButton_Click_1"/>
-            <AppBarButton Icon="Up" Label="RIGHT" Click="AppBarButton_Click_2"/>
-            <AppBarButton Icon="Up" Label="LEFT" Click="AppBarButton_Click_3"/>
+
+
+            <AppBarButton x:Name="pauseButton" Icon="Pause" Label="PAUSE" Tapped="Pause_Time" Width="20" />
+            <AppBarSeparator></AppBarSeparator>
+
+            <AppBarButton x:Name="leaderBoardButton" Icon="Page" Label="LeaderBoard" Width="20" Tapped="Go_To_Leaderboard" />
+            <AppBarSeparator></AppBarSeparator>
+
+            <AppBarButton x:Name="rotateScreen" Icon="Rotate" Label="LeaderBoard" Width="20"/>
+            <AppBarSeparator></AppBarSeparator>
+
+            <AppBarButton x:Name="restartGame" Icon="Redo" Label="LeaderBoard" Width="20" Tapped="Start_Game" />
+            <AppBarSeparator></AppBarSeparator>
+
+
         </CommandBar>
     </Page.BottomAppBar>
 
