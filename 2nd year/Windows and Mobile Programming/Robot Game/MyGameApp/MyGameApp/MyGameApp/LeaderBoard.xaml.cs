@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Navigation;
 
 using Windows.UI;
 
+//Final version of the game app 
+
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,20 +28,35 @@ namespace MyGameApp
     public sealed partial class BlankPage1 : Page
     {
         private List<Player> leaderTable;
-
+        /*
+          Name: BlankPage1 
+          Purpose: Constructor that set the list of the player 
+          Data Members : Void
+          Return: void
+        */
         public BlankPage1()
         {
             this.InitializeComponent();
             leaderTable = new List<Player>();
 
             this.NavigationCacheMode = NavigationCacheMode.Enabled; 
-        }    
-
+        }
+        /*
+            Name: Back_To_Game 
+            Purpose: Go back to the GamePlay page
+                Data Members : object sender, TappedRoutedEventArgs 
+            Return: void
+        */
         private void Back_To_Game(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.GoBack();
-        }      
-
+        }
+        /*
+         Name: OnNavigatedTo 
+         Purpose: Display the leaderboard
+             Data Members : object sender, TappedRoutedEventArgs 
+         Return: void
+     */
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
            try
@@ -49,7 +66,7 @@ namespace MyGameApp
 
                 foreach (var leader in leaderTable)
                 {
-                    myLeaderBoard.Items.Add(leader.GetUserName + ": " + leader.GetTime);
+                    myLeaderBoard.Items.Add(leader.GetUserName + ": " + leader.GetTime + "seconds");
                 }
             }
             catch(Exception)

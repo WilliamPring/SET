@@ -41,8 +41,8 @@
         <TextBlock x:Name="textBlock" Canvas.Left="247" TextWrapping="Wrap" Text="Sec: " Canvas.Top="10" Foreground="White"/>
         <TextBlock x:Name="myBombCount" Canvas.Left="247" TextWrapping="Wrap" Text="Left: " Canvas.Top="30" Foreground="White"/>
         <TextBlock x:Name="deletedBombs" Canvas.Left="250" TextWrapping="Wrap" Text="Del: " Canvas.Top="50" Foreground="White"/>
-        <TextBlock x:Name="xPos" Canvas.Left="10" TextWrapping="Wrap" Text="X Pos: " Canvas.Top="372" Foreground="White"/>
-        <TextBlock x:Name="yPos" Canvas.Left="10" TextWrapping="Wrap" Text="Y Pos: " Canvas.Top="397" Foreground="White" RenderTransformOrigin="-0.229,0.95"/>
+        <TextBlock x:Name="xPos" Canvas.Left="80" TextWrapping="Wrap" Text="X Pos: " Canvas.Top="14" Foreground="White"/>
+        <TextBlock x:Name="yPos" Canvas.Left="80" TextWrapping="Wrap" Text="Y Pos: " Canvas.Top="54" Foreground="White" RenderTransformOrigin="-0.229,0.95"/>
 
     </Canvas>
 
@@ -60,7 +60,7 @@
             <AppBarButton x:Name="leaderBoardButton" Icon="Page" Label="LeaderBoard" Width="20" Tapped="Go_To_Leaderboard" />
             <AppBarSeparator></AppBarSeparator>
 
-            <AppBarButton x:Name="rotateScreen" Icon="Rotate" Label="LeaderBoard" Width="20"/>
+            <AppBarButton x:Name="rotateScreen" Icon="Rotate" Label="LeaderBoard" Width="20" Click="rotateScreen_Click"/>
             <AppBarSeparator></AppBarSeparator>
 
             <AppBarButton x:Name="restartGame" Icon="Redo" Label="LeaderBoard" Width="20" Tapped="Start_Game" />

@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+File name: MainPage.xaml.cs
+Project: Windows 10 universal Application
+By: William Pring and Naween Mehanmal
+Date: 
+Description: The starting view
+*/
+
+
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,16 +32,27 @@ using Windows.UI;
 namespace MyGameApp
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// The main page the game when starting
     /// </summary>
     ///     
     public sealed partial class MainPage : Page
-    {    
+    {
+        /*
+         Name: MainPage 
+         Purpose: Constructor
+         Data Members : Void
+         Return: void
+      */
         public MainPage()
         {
             this.InitializeComponent();        
         }
-
+        /*
+            Name: MainPage 
+            Purpose: Starts the game
+            Data member: void
+            Return: void
+        */
         private void Go_To_Game(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(GamePlay));
