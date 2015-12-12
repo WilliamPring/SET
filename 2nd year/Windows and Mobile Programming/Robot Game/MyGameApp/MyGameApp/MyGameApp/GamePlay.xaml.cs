@@ -180,7 +180,7 @@ namespace MyGameApp
         private void resizeScreen(object sender, object obj2)
         {
             var newBoundary = Window.Current.Bounds;
-
+            //sdfasdf
             if (newBoundary.Height > newBoundary.Width)
             {
                 this.canvasRows = (int)myCanvas.ActualHeight;
