@@ -191,7 +191,7 @@ namespace MyGameApp
 
                 lastRobotXPos = canvasXCell;
                 lastRobotYPos = canvasYCell;
-
+                //
                 myRobot.Height = canvasXCell;
                 myRobot.Width = canvasXCell;
                 lastIndexAvailable = 9;
