@@ -1,0 +1,211 @@
+<!-- 
+	File Name: index.html
+	Assignment: Assignment 5 WDD
+	By: Naween Mehanmal and William Pring 
+	Date: December 4, 2015
+	Description: This interactive HTML page through the use of Javascript makes asynchronous calls
+	to the server to store and load from files from the server. The purpose of this program is to 
+	demonstrate a textpad on the browser, meaing allowing options for users to type in text and save
+	it to a file and or load a file that already contains text in it onto the browser for viewing and
+	editing. The ajax calls also use the json method of parsing data and sending/retrieving data from the
+	server. 
+-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SET Text Editor</title>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+	<script>
+
+		//Beginning of the Jquery function, the one the first gets called when the page loads  
+		$( document ).ready(function() { 
+
+			var mySaveFileName; //Global variable containing the name of the file that the user chooses to save by 
+
+
+			/*
+				Name: $("#buttonOpen").click 
+				Description: This event is triggered when the user clicks on the open button on the browser, basically it makes a call to the server
+				with the specified file name by the user to open on the browser for viewing and editing 
+				Paramters: None
+				Return: None
+			*/
+			$("#buttonOpen").click(function(){
+
+				if($("#dropDown").val() != "||") //No empty file inputs are acceptable
+				{
+					$("#errorMsg").html(""); //Erase the error message 
+
+					var pipe = "|"; //Parse out the pipes
+					var realFileName = $("#dropDown").val().replace(pipe, ''); 
+						
+					//Create json object that specifies to the server the specific filename the user desires to open and view 				
+					var sendMsg = {
+						FileName: realFileName.replace(pipe, '')
+					}	
+
+					mySaveFileName = sendMsg.FileName; //Set variable to be accessed elsewhere				
+					$.ajax({
+						type: "POST",
+						dataType: "json",
+						url: "Write_File.php",
+						cache: false,
+						data: sendMsg,
+						success: function(data){
+							//Clear out textpad area buffer
+							$('#informStatus').show(0).html(data.Status).delay(3000).hide(0); //Show the message for a short time
+							$("#textpadArea").val(data.FileContent);
+						}
+					});
+				}
+				else
+				{
+					$("#errorMsg").html("*Please select a filename!");
+				}			
+			});
+
+		
+
+			/*
+				Name: $("#saveButton").click 
+				Description: This event is triggered when the user clicks on the save button on the browser, basically it makes a call to the server
+				with the specified file name to store and save the content on a specific server file directory (MyFiles)
+				Paramters: None
+				Return: None
+			*/
+			$("#saveButton").click(function() { 
+				//Create json object that has the name of the file and the content that must be stored in that file 
+				var sendSaveMsg = {
+					SaveFileName: mySaveFileName,
+					Content: $("#textpadArea").val()
+				}
+
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					url: "Write_File.php",
+					cache: false,
+					data: sendSaveMsg,
+					success: function(data){
+						//alert(data.Status);
+						$('#informStatus').show(0).html(data.Status).delay(3000).hide(0); //Show the message for a short time 
+					},
+					error: function(){
+						$('#informStatus').show(0).html("Sorry! Unable to Save File!").delay(3000).hide(0); //Show the message for a short time
+					}
+				});				
+			}); 
+
+
+
+			/*
+				Name: $("#buttonSaveAs").click 
+				Description: This event is triggered when the user clicks on the SaveAs button on the browser, basically it makes a call to the server
+				with the specified file name by the user to store and save file content on a specific server directory. Closely related to the 
+				saveButton event that is clicked, however in this one there must be a file name specified specifically for it to work, or an error message
+				will appear saying it cannot perform the desired save action  
+				Paramters: None
+				Return: None
+			*/
+			$("#buttonSaveAs").click(function() { 
+				
+				if($("#saveName").val() != "")
+				{
+					//Create json object that has the name of the file to save as and the content that must be stored in that saved file
+					var sendSaveAsMsg = {
+						SaveAsFileName: $("#saveName").val() + ".txt",
+						SaveAsContent: $("#textpadArea").val()
+					}
+
+					$("#errorSaveMsg").html(""); //Erase the error message once action is successful 
+
+					$.ajax({
+							type: "POST",
+							dataType: "json",
+							url: "Write_File.php",
+							cache: false,
+							data: sendSaveAsMsg,
+							success: function(data){
+								$('#informStatus').show(0).html(data.Status).delay(3000).hide(0); //Show the message for a short time
+								mySaveFileName = sendSaveAsMsg.SaveAsFileName;
+								$("#dropDown").append("<option value=" + "'|" + sendSaveAsMsg.SaveAsFileName + "|'" + ">" + sendSaveAsMsg.SaveAsFileName + "</option>");
+								$("#saveName").val(""); 
+							},
+							error: function(){
+								$('#informStatus').show(0).html("Sorry! Unable to Save File!").delay(3000).hide(0); //Show the message for a short time
+							}
+					});
+				}
+				else
+				{
+					$("#errorSaveMsg").html("*Please type a file you want to 'save' it as!");
+				}					
+			});
+
+		
+			
+			var jsonObj = {Empty : ""} //Send nothing to the server, implying to the server that file names are being requested 
+
+			/*
+				Name: $.ajax 
+				Description: This event is triggered as soon as the html page is loaded onto the browser, basically makes an ajax call to the server
+				requesting all of the files contained on the MyFiles directory, grabs the returned message array, parses and stores on a drop down
+				select list option so that the user can view their option from the files they can choose from to open 
+				Paramters: None
+				Return: None
+			*/
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: "MyFiles\\Load_Files.php",
+				cache: false,
+				data: jsonObj,
+				success: function(data){
+					//Intro message that will quickly appear then disappear shortly after a few seconds 
+					$('#informStatus').show(0).html("Welcome to SET Textpad! :D").delay(5000).hide(0); //Show the message for a short time
+
+					$("#dropDown").append("<option value='||'></option>"); //Append default empty option to the list
+
+					for(var i = 0; i < data.FileName.length; i++)
+					{
+						//Append file to drop down list 
+						$("#dropDown").append("<option value=" + "'|" + data.FileName[i] + "|'" + ">" + data.FileName[i] + "</option>"); 
+					} 
+				},
+				error: function(){
+					$('#informStatus').show(0).html("Sorry! Unable to Load File!").delay(3000).hide(0); //Show the message for a short time
+				}
+			});
+		
+
+	});
+	</script>
+
+</head>
+<body style="background-color:#222;padding:0px;margin:0px">
+	<h1 id="TitleHeader" style="text-align:center;background-color:purple;color:white;border-style:solid;border-color:black">SET TextPad</h1>
+
+	<!-- Message that continuousy pop up and disappear when an event is triggered  -->
+	<h3 id="informStatus" style="background-color:orange;color:purple;text-align:center"></h3>
+
+	<form id="myForm">
+		<input type="button" value="Open" id="buttonOpen" />
+		<select name="dropDown" id="dropDown"></select>
+		<!-- <input type="button" value="Update List" id="updateButton" /> -->
+		<!-- Error message to continuousy pop up and disappear when an event is triggered -->
+		<span id="errorMsg" style="color:white"></span><br><br>
+			
+		<input type="button" value="Save"   id="saveButton" />
+		<input type="button" value="Save As" id="buttonSaveAs" /> 
+		<input type="textbox" name="saveName" id="saveName" />
+		<!-- Error message to continuousy pop up and disappear when an event is triggered -->
+		<span id="errorSaveMsg" style="color:white"></span><br><br>
+
+		<!-- Area in which user may type in content for the file they want to create/view/edit -->
+		<textarea id="textpadArea" rows="20" cols="110"></textarea>
+	</form>
+
+</body>
+</html>
