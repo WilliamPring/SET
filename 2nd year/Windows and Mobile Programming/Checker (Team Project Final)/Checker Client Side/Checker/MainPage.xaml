@@ -1,0 +1,217 @@
+﻿<Page
+    x:Class="Checker.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Checker"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="myGrid" Loaded="Grid_Loaded" Background="#222">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+
+        </Grid.ColumnDefinitions>
+
+        <!-- First Row -->
+
+        <Canvas x:Name="Row1Col0" Background="Black" Grid.Column="0" Grid.Row="1" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30"  Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="1" Grid.Column="1" Fill="White"  />
+
+        <Canvas x:Name="Row1Col2" Background="Black" Grid.Column="2" Grid.Row="1" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="1" Grid.Column="3" Fill="White"  />
+
+        <Canvas x:Name="Row1Col4" Background="Black" Grid.Column="4" Grid.Row="1" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="1" Grid.Column="5" Fill="White" />
+
+        <Canvas x:Name="Row1Col6" Background="Black" Grid.Column="6" Grid.Row="1" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="1" Grid.Column="7" Fill="White"  />
+
+
+        <!-- Second Row -->
+        <Rectangle Grid.Row="2" Grid.Column="0" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row2Col1" Background="Black" Grid.Column="1" Grid.Row="2" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3" Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="2" Grid.Column="2" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row2Col3" Background="Black" Grid.Column="3" Grid.Row="2" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3" Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="2" Grid.Column="4" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row2Col5" Background="Black" Grid.Column="5" Grid.Row="2" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="2" Grid.Column="6" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row2Col7" Background="Black" Grid.Column="7" Grid.Row="2" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+
+        <!-- Third Row -->
+        <Canvas x:Name="Row3Col0" Background="Black" Grid.Column="0" Grid.Row="3" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="3" Grid.Column="1" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row3Col2" Background="Black" Grid.Column="2" Grid.Row="3" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="3" Grid.Column="3" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row3Col4" Background="Black" Grid.Column="4" Grid.Row="3" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="3" Grid.Column="5" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row3Col6" Background="Black" Grid.Column="6" Grid.Row="3" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Red" Fill="Red" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="3" Grid.Column="7" Fill="White" Tapped="Clicked" />
+
+
+        <!-- Fourth Row -->
+        <Rectangle Grid.Row="4" Grid.Column="0" Fill="White" Tapped="Clicked" />
+        <Canvas  x:Name="Row4Col1" Background="Black" Grid.Column="1" Grid.Row="4" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Black" Width="30" Height="30" Margin="5, 10, 5, 10" Opacity="0" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="4" Grid.Column="2" Fill="White" Tapped="Clicked" />
+        <Canvas  x:Name="Row4Col3" Background="Black" Grid.Column="3" Grid.Row="4" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Black" Width="30" Height="30" Margin="5, 10, 5, 10" Opacity="0" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="4" Grid.Column="4" Fill="White" Tapped="Clicked" />
+        <Canvas  x:Name="Row4Col5" Background="Black" Grid.Column="5" Grid.Row="4" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Black" Width="30" Height="30" Margin="5, 10, 5, 10" Opacity="0" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="4" Grid.Column="6" Fill="White" Tapped="Clicked" />
+        <Canvas  x:Name="Row4Col7" Background="Black" Grid.Column="7" Grid.Row="4" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Black" Width="30" Height="30" Margin="5, 10, 5, 10"  Opacity="0"></Ellipse>
+        </Canvas>
+
+        <!-- Fifth Row -->
+        <Canvas  x:Name="Row5Col0" Background="Black" Grid.Column="0" Grid.Row="5" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Black" Width="30" Height="30" Margin="5, 10, 5, 10" Opacity="0" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="5" Grid.Column="1" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row5Col2" Background="Black" Grid.Column="2" Grid.Row="5" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Black" Width="30" Height="30" Margin="5, 10, 5, 10" Opacity="0" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="5" Grid.Column="3" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row5Col4" Background="Black" Grid.Column="4" Grid.Row="5" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Black" Width="30" Height="30" Margin="5, 10, 5, 10" Opacity="0" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="5" Grid.Column="5" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row5Col6" Background="Black" Grid.Column="6" Grid.Row="5" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Black" Width="30" Height="30" Margin="5, 10, 5, 10" Opacity="0" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="5" Grid.Column="7" Fill="White" Tapped="Clicked" />
+
+        <!-- Sixth Row -->
+        <Rectangle Grid.Row="6" Grid.Column="0" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row6Col1" Background="Black" Grid.Column="1" Grid.Row="6" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="6" Grid.Column="2" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row6Col3" Background="Black" Grid.Column="3" Grid.Row="6" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="6" Grid.Column="4" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row6Col5" Background="Black" Grid.Column="5" Grid.Row="6" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="6" Grid.Column="6" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row6Col7" Background="Black" Grid.Column="7" Grid.Row="6" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <!-- Seventh Row -->
+        <Canvas x:Name="Row7Col0" Background="Black" Grid.Column="0" Grid.Row="7" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="7" Grid.Column="1" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row7Col2" Background="Black" Grid.Column="2" Grid.Row="7" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="7" Grid.Column="3" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row7Col4" Background="Black" Grid.Column="4" Grid.Row="7" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="7" Grid.Column="5" Fill="White" Tapped="Clicked" />
+
+        <Canvas x:Name="Row7Col6" Background="Black" Grid.Column="6" Grid.Row="7" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3"  Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+        <Rectangle Grid.Row="7" Grid.Column="7" Fill="White" Tapped="Clicked" />
+
+
+        <!-- Eigth Row -->
+        <Rectangle Grid.Row="8" Grid.Column="0" Fill="White" Tapped="Clicked" />
+        <Canvas x:Name="Row8Col1" Background="Black" Grid.Column="1" Grid.Row="8" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3" Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="8" Grid.Column="2" Fill="White" Tapped="Clicked" />
+        <Canvas  x:Name="Row8Col3" Background="Black" Grid.Column="3" Grid.Row="8" Tapped="clickBoard">
+            <Ellipse  StrokeThickness="3" Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="8" Grid.Column="4" Fill="White" Tapped="Clicked" />
+        <Canvas  x:Name="Row8Col5" Background="Black" Grid.Column="5" Grid.Row="8" Tapped="clickBoard">
+            <Ellipse StrokeThickness="3" Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Rectangle Grid.Row="8" Grid.Column="6" Fill="White" Tapped="Clicked" />
+        <Canvas  x:Name="Row8Col7" Background="Black" Grid.Column="7" Grid.Row="8" Tapped="clickBoard">
+            <Ellipse StrokeThickness="3" Stroke="Orange" Fill="Orange" Width="30" Height="30" Margin="5, 10, 5, 10" ></Ellipse>
+        </Canvas>
+
+        <Button x:Name="goBackToStartUp" Grid.ColumnSpan="4" Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Gray" Content="Go Back" Foreground="LightCyan" FontSize="24" Click="goBackToStartUp_Click" />
+        
+        <TextBlock x:Name="gameOutcomeMsg" Grid.ColumnSpan="4" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" Text="Waiting For Opponent" Foreground="LightYellow" FontSize="20" TextAlignment="Center"/>
+        <TextBlock x:Name="turnStatus" Grid.ColumnSpan="4" Grid.Column="2" Grid.Row="9" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" Text="" Foreground="LightYellow" FontSize="20" TextAlignment="Center"/>
+
+    </Grid>
+</Page>
