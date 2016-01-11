@@ -119,40 +119,42 @@ int __cdecl main(int argc, char **argv)
 				package = atoi(PackageSend);
 				if (choice == 1)
 				{
-					memset(Size1k, '$', 996);
+					//memset(Size1k, '$', 996);
 					//sent the amount of time it will loop
 					iResult = send(ConnectSocket, PackageSend, package, 0);
-					for (int i = 0; i <= package; i++)
+					for (int i = 0; i < package; i++)
 					{
-						memset(Size1k, '$', 996);
-						sprintf(NumberBuffer, "%004d", i);
+						memset(Size1k, 0, 1000);
+						//memset(Size1k, '$', 996);
+						sprintf(NumberBuffer, "%005d", i);
 						strcat(Size1k, NumberBuffer);
 						send(ConnectSocket, Size1k, 1000, 0);
+						Sleep(2);
 						memset(Size1k, 0, 1000);
 					}
 				}
 				else if (choice == 2)
 				{
 					memset(Size2k, '$', 1996);
-					iResult = send(ConnectSocket, Size2k, strlen(Size2k), 0);
+					iResult = send(ConnectSocket, Size2k, package, 0);
 					for (int i = 0; i <= package; i++)
 					{
 						memset(Size2k, '$', 1996);
-						sprintf(NumberBuffer, "%004d", i);
+						sprintf(NumberBuffer, "%005d", i);
 						strcat(Size2k, NumberBuffer);
-						send(ConnectSocket, Size2k, 1000, 0);
+						send(ConnectSocket, Size2k, 2000, 0);
 						memset(Size2k, 0, 1000);
 					}
 				}
 				else if (choice ==3)
 				{
 					memset(Size1k, '$', 4996);
-					iResult = send(ConnectSocket, Size5k, strlen(Size5k), 0);
+					iResult = send(ConnectSocket, Size5k, package, 0);
 				}
 				else
 				{
 					memset(Size1k, '$', 9996);
-					iResult = send(ConnectSocket, Size10K, strlen(Size10K), 0);
+					iResult = send(ConnectSocket, Size10K, package, 0);
 				}
 
 
