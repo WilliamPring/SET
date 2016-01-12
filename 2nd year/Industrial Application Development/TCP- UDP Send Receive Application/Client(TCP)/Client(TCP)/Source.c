@@ -95,6 +95,7 @@ int __cdecl main(int argc, char **argv)
 	int userInput = 0;
 	int choice = 0;
 	int package = 0;
+	int TotalPack = 0;
 	do
 	{
 		printf("Pick the bytes you want to send to the server (1 - 4) \n");
@@ -116,7 +117,7 @@ int __cdecl main(int argc, char **argv)
 						break;
 					}
 				}
-				if (strlen(PackageSend) <= 6)
+				if (strlen(PackageSend) <= 7)
 				{
 					package = atoi(PackageSend);
 					if (package == 0)
@@ -131,32 +132,31 @@ int __cdecl main(int argc, char **argv)
 				}
 				if (choice == 1)
 				{
-					int TotalPack = 0;
 					TotalPack = atoi(PackageSend);
 					iResult = send(ConnectSocket, PackageSend, 10000, 0);
 					for (int i = 0; i < TotalPack; i++)
 					{
 						memset(Size1k, 0, 1000);
-						sprintf(NumberBuffer, "%d", i);
-						strcat(Size1k, NumberBuffer);	
-						send(ConnectSocket, Size1k, 1000, 0);
-						Sleep(1);
+						strcpy(Size1k, "1");	
+						iResult = send(ConnectSocket, Size1k, 1000, 0);
+						
 					}
 				}
 				else if (choice == 2)
 				{
-					iResult = send(ConnectSocket, Size2k, package, 0);
-					for (int i = 0; i < package; i++)
+					TotalPack = atoi(PackageSend);
+					iResult = send(ConnectSocket, PackageSend, 10000, 0);
+					for (int i = 0; i < TotalPack; i++)
 					{
 						memset(Size2k, 0, 2000);
-						sprintf(NumberBuffer, "%d", i);
-						strcat(Size2k, NumberBuffer);
-						send(ConnectSocket, Size2k, 2000, 0);
+						strcpy(Size2k, "1");
+						iResult = send(ConnectSocket, Size2k, 2000, 0);
 					}
 				}
 				else if (choice ==3)
 				{
-					iResult = send(ConnectSocket, Size5k, package, 0);
+					TotalPack = atoi(PackageSend);
+					iResult = send(ConnectSocket, PackageSend, 10000, 0);
 
 					for (int i = 0; i < package; i++)
 					{
@@ -170,7 +170,8 @@ int __cdecl main(int argc, char **argv)
 				}
 				else
 				{
-					iResult = send(ConnectSocket, Size10K, package, 0);
+					TotalPack = atoi(PackageSend);
+					iResult = send(ConnectSocket, PackageSend, 10000, 0);
 
 					for (int i = 0; i < package; i++)
 					{

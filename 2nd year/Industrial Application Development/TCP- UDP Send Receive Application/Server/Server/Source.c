@@ -15,7 +15,7 @@
 #define DEFAULT_BUFLEN 10000
 #define DEFAULT_PORT "27015"
 
-int __cdecl main(void)
+int main(int argc, char ** argv)
 {
 	WSADATA wsaData;
 	int iResult =0;
@@ -28,11 +28,12 @@ int __cdecl main(void)
 	struct addrinfo *result = NULL;
 	struct addrinfo hints;
 	double totalTime = 0.0;
-	int iSendResult;
 	char recvbuf[DEFAULT_BUFLEN] = {0};
-	int recvbuflen = DEFAULT_BUFLEN;
 	int totalLoop = 0;
 	// Initialize Winsock
+	char wrapNumber[20] = "";
+
+	char arrayCheck[100] = { 0 };
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0) {
 		printf("WSAStartup failed with error: %d\n", iResult);
@@ -104,19 +105,34 @@ int __cdecl main(void)
 			int packageInOrder = 0;
 			int totalPackageSent = 0;
 			time(&start);
+			int packageGain = 0;
+			int recvBuffInterger = 0;
 			totalLoop = atoi(recvbuf);
+			strcpy(wrapNumber, argv[1]);
+			recvBuffInterger = atoi(wrapNumber);
+			int checkBufferInterger = 0;
 			for (int i = 0; i < totalLoop; i++)
 			{
-				iResult = recv(ClientSocket, recvbuf, 10000, 0);
+				memset(recvbuf,2, 10000);
+				iResult = recv(ClientSocket, recvbuf, recvBuffInterger, 0);
+				if (iResult != -1)
+				{
+					packageGain++; 
+				}
 				totalPackageSent = totalPackageSent + iResult;
-				if (atoi(recvbuf) != i)
+				checkBufferInterger = atoi(recvbuf);
+
+				if (checkBufferInterger != 1)
 				{
 					packageInOrder++;
 				}
+			
 			}
 			time(&stop);
 			totalTime = difftime(stop, start);
-			printf("Package that are not in order %d\n Time: %f\n", packageInOrder, totalTime);
+			printf("Package that are not in order %d\n Time: %f\nPackage Recv: %d", packageInOrder, totalTime, packageGain);
+			Sleep(1);
+			break;
 		}
 		else if (iResult == 0)
 		{
