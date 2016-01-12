@@ -100,6 +100,10 @@ int __cdecl main(int argc, char **argv)
 		printf("Pick the bytes you want to send to the server (1 - 4) \n");
 		printf("1) 1000 bytes \n2) 2000 bytes \n3) 5000 bytes \n4) 10000 bytes \n");
 		fgets(BytesSend, 121, stdin);
+		if (BytesSend == "exit\n")
+		{
+
+		}
 		userInput = myIsDigt(BytesSend);
 		if (userInput == 1)
 		{
@@ -119,17 +123,16 @@ int __cdecl main(int argc, char **argv)
 				package = atoi(PackageSend);
 				if (choice == 1)
 				{
-					//memset(Size1k, '$', 996);
-					//sent the amount of time it will loop
+					
 					iResult = send(ConnectSocket, PackageSend, package, 0);
 					for (int i = 0; i < package; i++)
 					{
 						memset(Size1k, 0, 1000);
 						//memset(Size1k, '$', 996);
-						sprintf(NumberBuffer, "%005d", i);
-						strcat(Size1k, NumberBuffer);
+						sprintf(NumberBuffer, "%d", i);
+						strcat(Size1k, NumberBuffer);	
 						send(ConnectSocket, Size1k, 1000, 0);
-						Sleep(2);
+						Sleep(1);
 						memset(Size1k, 0, 1000);
 					}
 				}

@@ -99,13 +99,19 @@ int __cdecl main(void)
 		//get the amount of package that are being sent
 		amountOfPackeage = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (amountOfPackeage > 0) {
+			int packageInOrder = 0;
+			int totalPackageSent = 0;
 			for (int i = 0; i < amountOfPackeage; i++)
 			{
 				iResult = recv(ClientSocket, recvbuf, 10000, 0);
+				totalPackageSent = totalPackageSent + iResult;
+				if (atoi(recvbuf) != i)
+				{
+					packageInOrder++;
+				}
 				printf("%s\n", recvbuf);
 			}
-
-			//printf("Bytes received: %d\n", iResult);
+			printf("Package not in order %d\nTotal Package Sent %d\n", packageInOrder, totalPackageSent);
 
 			// Echo the buffer back to the sender
 			iSendResult = send(ClientSocket, recvbuf, iResult, 0);
@@ -115,7 +121,6 @@ int __cdecl main(void)
 				WSACleanup();
 				return 1;
 			}
-			printf("Bytes sent: %d\n", iSendResult);
 		}
 		else if (iResult == 0)
 			printf("Connection closing...\n");
