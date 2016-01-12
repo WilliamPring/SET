@@ -90,7 +90,7 @@ int __cdecl main(int argc, char **argv)
 	char Size2k[2000] = { -1 };
 	char Size5k[5000] = { -1 };
 	char Size10K[10000] = { -1 };
-	char BytesSend[500] = { 0 }; 
+	char BytesSend[10000] = { 0 }; 
 	char PackageSend[10000] = { 0 };
 	int userInput = 0;
 	int choice = 0;
@@ -100,10 +100,6 @@ int __cdecl main(int argc, char **argv)
 		printf("Pick the bytes you want to send to the server (1 - 4) \n");
 		printf("1) 1000 bytes \n2) 2000 bytes \n3) 5000 bytes \n4) 10000 bytes \n");
 		fgets(BytesSend, 121, stdin);
-		if (BytesSend == "exit\n")
-		{
-
-		}
 		userInput = myIsDigt(BytesSend);
 		if (userInput == 1)
 		{
@@ -120,44 +116,69 @@ int __cdecl main(int argc, char **argv)
 						break;
 					}
 				}
-				package = atoi(PackageSend);
+				if (strlen(PackageSend) <= 6)
+				{
+					package = atoi(PackageSend);
+					if (package == 0)
+					{
+						printf("Package cannot be 0! \n");
+						continue;
+					}
+				}
+				else
+				{
+					printf("Number To large! Enter amount of packages between 1 - 999999\n");
+				}
 				if (choice == 1)
 				{
-					
-					iResult = send(ConnectSocket, PackageSend, package, 0);
-					for (int i = 0; i < package; i++)
+					int TotalPack = 0;
+					TotalPack = atoi(PackageSend);
+					iResult = send(ConnectSocket, PackageSend, 10000, 0);
+					for (int i = 0; i < TotalPack; i++)
 					{
 						memset(Size1k, 0, 1000);
-						//memset(Size1k, '$', 996);
 						sprintf(NumberBuffer, "%d", i);
 						strcat(Size1k, NumberBuffer);	
 						send(ConnectSocket, Size1k, 1000, 0);
 						Sleep(1);
-						memset(Size1k, 0, 1000);
 					}
 				}
 				else if (choice == 2)
 				{
-					memset(Size2k, '$', 1996);
 					iResult = send(ConnectSocket, Size2k, package, 0);
-					for (int i = 0; i <= package; i++)
+					for (int i = 0; i < package; i++)
 					{
-						memset(Size2k, '$', 1996);
-						sprintf(NumberBuffer, "%005d", i);
+						memset(Size2k, 0, 2000);
+						sprintf(NumberBuffer, "%d", i);
 						strcat(Size2k, NumberBuffer);
 						send(ConnectSocket, Size2k, 2000, 0);
-						memset(Size2k, 0, 1000);
 					}
 				}
 				else if (choice ==3)
 				{
-					memset(Size1k, '$', 4996);
 					iResult = send(ConnectSocket, Size5k, package, 0);
+
+					for (int i = 0; i < package; i++)
+					{
+						memset(Size5k, 0, 5000);
+						sprintf(NumberBuffer, "%d", i);
+						strcat(Size5k, NumberBuffer);
+						send(ConnectSocket, Size5k, 5000, 0);
+					}
+
+
 				}
 				else
 				{
-					memset(Size1k, '$', 9996);
 					iResult = send(ConnectSocket, Size10K, package, 0);
+
+					for (int i = 0; i < package; i++)
+					{
+						memset(Size10K, 0, 10000);
+						sprintf(NumberBuffer, "%d", i);
+						strcat(Size10K, NumberBuffer);
+						send(ConnectSocket, Size10K, 10000, 0);
+					}
 				}
 
 
@@ -193,9 +214,6 @@ int __cdecl main(int argc, char **argv)
 		WSACleanup();
 		return 1;
 	}
-
-	printf("Bytes Sent: %ld\n", iResult);
-
 	// shutdown the connection since no more data will be sent
 	iResult = shutdown(ConnectSocket, SD_SEND);
 	if (iResult == SOCKET_ERROR) {
@@ -204,20 +222,6 @@ int __cdecl main(int argc, char **argv)
 		WSACleanup();
 		return 1;
 	}
-
-	// Receive until the peer closes the connection
-	do {
-
-		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
-		if (iResult > 0)
-			printf("Bytes received: %d\n", iResult);
-		else if (iResult == 0)
-			printf("Connection closed\n");
-		else
-			printf("recv failed with error: %d\n", WSAGetLastError());
-
-	} while (iResult > 0);
-
 	// cleanup
 	closesocket(ConnectSocket);
 	WSACleanup();

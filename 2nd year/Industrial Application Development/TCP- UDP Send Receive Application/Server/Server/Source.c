@@ -23,14 +23,15 @@ int __cdecl main(void)
 	int amountOfPackeage = 0;
 	SOCKET ListenSocket = INVALID_SOCKET;
 	SOCKET ClientSocket = INVALID_SOCKET;
-
+	time_t start;
+	time_t stop;
 	struct addrinfo *result = NULL;
 	struct addrinfo hints;
-
+	double totalTime = 0.0;
 	int iSendResult;
 	char recvbuf[DEFAULT_BUFLEN] = {0};
 	int recvbuflen = DEFAULT_BUFLEN;
-
+	int totalLoop = 0;
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0) {
@@ -97,11 +98,14 @@ int __cdecl main(void)
 	do {
 
 		//get the amount of package that are being sent
-		amountOfPackeage = recv(ClientSocket, recvbuf, recvbuflen, 0);
+		amountOfPackeage = recv(ClientSocket, recvbuf, 10000, 0);
+		printf("%d %s\n", amountOfPackeage, recvbuf);
 		if (amountOfPackeage > 0) {
 			int packageInOrder = 0;
 			int totalPackageSent = 0;
-			for (int i = 0; i < amountOfPackeage; i++)
+			time(&start);
+			totalLoop = atoi(recvbuf);
+			for (int i = 0; i < totalLoop; i++)
 			{
 				iResult = recv(ClientSocket, recvbuf, 10000, 0);
 				totalPackageSent = totalPackageSent + iResult;
@@ -109,26 +113,21 @@ int __cdecl main(void)
 				{
 					packageInOrder++;
 				}
-				printf("%s\n", recvbuf);
 			}
-			printf("Package not in order %d\nTotal Package Sent %d\n", packageInOrder, totalPackageSent);
-
-			// Echo the buffer back to the sender
-			iSendResult = send(ClientSocket, recvbuf, iResult, 0);
-			if (iSendResult == SOCKET_ERROR) {
-				printf("send failed with error: %d\n", WSAGetLastError());
-				closesocket(ClientSocket);
-				WSACleanup();
-				return 1;
-			}
+			time(&stop);
+			totalTime = difftime(stop, start);
+			printf("Package that are not in order %d\n Time: %f\n", packageInOrder, totalTime);
 		}
 		else if (iResult == 0)
+		{
 			printf("Connection closing...\n");
+			break;
+		}
 		else {
 			printf("recv failed with error: %d\n", WSAGetLastError());
 			closesocket(ClientSocket);
 			WSACleanup();
-			return 1;
+			break;
 		}
 
 	} while (iResult > 0);
@@ -139,7 +138,6 @@ int __cdecl main(void)
 		printf("shutdown failed with error: %d\n", WSAGetLastError());
 		closesocket(ClientSocket);
 		WSACleanup();
-		return 1;
 	}
 
 	// cleanup
