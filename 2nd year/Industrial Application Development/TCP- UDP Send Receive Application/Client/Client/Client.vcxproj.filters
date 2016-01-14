@@ -15,10 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TCP Server.c">
+    <ClCompile Include="Clinet.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
