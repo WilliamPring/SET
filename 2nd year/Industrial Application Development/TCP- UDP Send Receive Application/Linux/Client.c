@@ -102,7 +102,7 @@ return -1;
 			//10000
 			else if (totalSize == 10000 )
 			{
-				buffer = buffer1000;
+				buffer = buffer10000;
 
 			}
 			amountOfPackage = atoi(argv[3]); 
