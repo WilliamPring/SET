@@ -177,15 +177,15 @@ int convertToInt = 0;
 			//clean the buffer
 			memset(buffer, 0, size);
 			
-			if (retval < 0) {
-				printf("recv() failed: error\n");
+		//	if (retval < 0) {
+			//	printf("recv() failed: error\n");
 #ifdef _WIN32			
-				closesocket(msgsock);
+				//closesocket(msgsock);
 #else
 close(msgsock);
 #endif
-				continue;
-			}
+				//continue;
+			//}
 			if (retval == 0) {
 				printf("Client closed connection\n");
 #ifdef _WIN32			
@@ -197,7 +197,6 @@ close(msgsock);
 			}
 			continue;
 			}
-			printf("%d\n", i);
 #ifdef _WIN32			
 end = clock();
 #else
