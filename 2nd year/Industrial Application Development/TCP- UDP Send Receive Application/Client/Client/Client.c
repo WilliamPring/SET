@@ -6,6 +6,9 @@ Date: 1/16/2016
 Description: Client that will connect to the server and will have a choice in the command line to input the server IP adress,
 Amount of bytes and the amount of time to send
 */
+
+
+
 #define DEFAULT_PORT 5001
 #define WIN32_LEAN_AND_MEAN
 //Execute when in Windows

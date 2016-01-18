@@ -1,3 +1,13 @@
+/*
+File name: Server.cs
+Project:
+By: William Pring and Denys Polituk
+Date: 1/16/2016
+Description: Server will process all of the send and keep track of the missing packages and if the packages arrive in order
+
+*/
+
+
 #define DEFAULT_PORT 5001
 #define WIN32_LEAN_AND_MEAN
 #ifdef _WIN32
