@@ -117,29 +117,36 @@ int main(int argc, char* argv[])
 				}
 				//amount of packages
 				amountOfPackage = atoi(argv[3]);
-				int i = 0;
-				//loop base on the thrid agrument
-				for (; i < amountOfPackage; i++)
+				if ((amountOfPackage == 0) || (amountOfPackage > 1000000))
 				{
-					sprintf(buffer, "%d", i);
-					retval = send(conn_socket, buffer, totalSize, 0);
-					//check to see if it was sent sucessfully
-					if (retval < 0) {
-						printf("send() failed: error %d\n", i);
-#ifdef _WIN32					
-						WSACleanup();
-#endif					
-						break;
-
-					}
-					memset(buffer, 0, totalSize);
+					printf("Number is invalid number\n");
 				}
+				else
+				{
+					int i = 0;
+					//loop base on the thrid agrument
+					for (; i < amountOfPackage; i++)
+					{
+						sprintf(buffer, "%d", i);
+						retval = send(conn_socket, buffer, totalSize, 0);
+						//check to see if it was sent sucessfully
+						if (retval < 0) {
+							printf("send() failed: error %d\n", i);
+#ifdef _WIN32					
+							WSACleanup();
+#endif					
+							break;
+
+						}
+						memset(buffer, 0, totalSize);
+					}
 #ifdef _WIN32
-				closesocket(conn_socket);
-				WSACleanup();
+					closesocket(conn_socket);
+					WSACleanup();
 #else
-				close(conn_socket);
+					close(conn_socket);
 #endif
+				}
 			}
 		}
 	}

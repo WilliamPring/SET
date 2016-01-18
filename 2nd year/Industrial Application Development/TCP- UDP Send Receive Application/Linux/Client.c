@@ -71,18 +71,18 @@ int main(int argc, char* argv[])
 #endif
 				return -1;
 			}
-			if (connect(conn_socket, (struct sockaddr*)&server, sizeof(server))< 0) {
+			if (connect(conn_socket, (struct sockaddr*)&server, sizeof(server)) < 0) {
 				printf("connect() failed: \n");
-	#ifdef _WIN32									
-WSACleanup();
-	#endif			
-return -1;
+#ifdef _WIN32									
+				WSACleanup();
+#endif			
+				return -1;
 			}
 
 			// cook up a string to send
 			//
 			totalSize = atoi(argv[2]);
-			
+
 			if (totalSize == 1000)
 			{
 				buffer = buffer1000;
@@ -100,38 +100,46 @@ return -1;
 
 			}
 			//10000
-			else if (totalSize == 10000 )
+			else if (totalSize == 10000)
 			{
 				buffer = buffer10000;
 
 			}
-			amountOfPackage = atoi(argv[3]); 
-			int i = 0;
-			for (; i < amountOfPackage; i++)
+			amountOfPackage = atoi(argv[3]);
+			if ((amountOfPackage == 0) || (numberToSend > 1000000))
 			{
 
-				sprintf(buffer, "%d", i);
-				retval = send(conn_socket, buffer, totalSize, 0);
-				if (retval < 0) {
-					printf("send() failed: error %d\n", i);
-				#ifdef _WIN32					
-					WSACleanup();
-				#endif					
-				//return -1;
-				break;
-				
-				}
-				
-
-
-				memset(buffer, 0, totalSize); 
 			}
-			printf("hi %d\n", i);
+			else
+			{
+				int i = 0;
+				for (; i < amountOfPackage; i++)
+				{
+
+					sprintf(buffer, "%d", i);
+					retval = send(conn_socket, buffer, totalSize, 0);
+					if (retval < 0) {
+						printf("send() failed: error %d\n", i);
+#ifdef _WIN32					
+						WSACleanup();
+#endif					
+						//return -1;
+						break;
+
+					}
+
+
+
+					memset(buffer, 0, totalSize);
+				}
+				printf("hi %d\n", i);
+
+			}
 #ifdef _WIN32
 			closesocket(conn_socket);
 			WSACleanup();
 #else
-close(conn_socket);
+			close(conn_socket);
 #endif
 		}
 	}
