@@ -18,8 +18,8 @@ namespace Unit_Testing
         //Function name space | String Breakout Class| Bondary Test | NumberOfDigit | Test 2
         public void F_S_B_NOB_2()
         {
-            int number = StringBreakout.NumberOfDigits("1.10");
-            Assert.AreEqual(number, 3);
+            int number = StringBreakout.NumberOfDigits("0");
+            Assert.AreEqual(number, 1);
         }
 
 
@@ -51,6 +51,8 @@ namespace Unit_Testing
             int number = StringBreakout.NumberOfAlphas("2345");
             Assert.AreEqual(number, 0);
         }
+
+
 
 
 
@@ -99,8 +101,13 @@ namespace Unit_Testing
             Assert.AreEqual(number, 0);
         }
 
-
-
+        [TestMethod]
+        //Function name space | String Breakout Class| Error Handling Test | FindAndExtractDigits | Test 3
+        public void F_S_B_NED_3()
+        {
+            int number = StringBreakout.FindAndExtractDigits("");
+            Assert.AreEqual(number, 0);
+        }
 
 
 
@@ -108,7 +115,7 @@ namespace Unit_Testing
 
         [TestMethod]
         //Function name space | Factorial Class| Normal Test | Calc | Test 1
-        public void F_f_N_Calc_1()
+        public void F_F_N_Calc_1()
         {
             int number = Factorial.Calc(5);
             Assert.AreEqual(number, 120);
@@ -116,16 +123,16 @@ namespace Unit_Testing
 
         [TestMethod]
         //Function name space | Factorial Class| Bondary Test | Calc | Test 2
-        public void F_f_E_Calc_2()
+        public void F_F_B_Calc_2()
         {
             int number = Factorial.Calc(0);
-            Assert.AreEqual(number, 0);
+            Assert.AreEqual(number, 1);
         }
         
 
         [TestMethod]
         //Function name space | Factorial Class| Exception | Calc | Test 3
-        public void F_f_E_Calc_3()
+        public void F_F_E_Calc_3()
         {
             int number = Factorial.Calc(-99);
             Assert.AreEqual(number, 0);
@@ -134,7 +141,7 @@ namespace Unit_Testing
 
         [TestMethod]
         //Function name space | Factorial Class| Error Handling Test | Calc | Test 4
-        public void F_f_EHT_Calc_4()
+        public void F_F_EHT_Calc_4()
         {
             int number = Factorial.Calc(19);
             Assert.AreEqual(number, 0);

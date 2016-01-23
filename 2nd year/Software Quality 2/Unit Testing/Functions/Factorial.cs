@@ -19,9 +19,13 @@ namespace Functions
         public static int Calc(int i) 
         {
             int answer = i;
-            if ((answer <= 0) || (i > 20))
+            if ((answer < 0) || (i >= 13))
             {
                 answer = 0;
+            }
+            else if (i == 0)
+            {
+                answer = 1;
             }
             else
             {
@@ -31,8 +35,6 @@ namespace Functions
                 }
             }
             return answer;
-
-            //  return((i <= 1) ? 1 : (i * Calc(i-1))); 
         }
     }
 }
