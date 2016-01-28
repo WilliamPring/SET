@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+FILENAME: UnitTest.cs
+DESCRIPTION: Unit testing 5 functions 
+PROJECT: SQ-II: A-01 - Automated Unit Testing
+AUTHOR: William Pring
+*/
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Functions;
 namespace Unit_Testing
