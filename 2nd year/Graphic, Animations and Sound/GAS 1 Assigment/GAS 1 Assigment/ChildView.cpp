@@ -125,7 +125,7 @@ void CChildView::OnPaint()
 		x = 0;
 	}
 	Gdiplus::Image* reptile = Gdiplus::Image::FromFile(L"res//reptile.png");
-	drawGraphics.DrawImage(reptile, x, (yHeight - 150), 60, 60);
+	drawGraphics.DrawImage(reptile, x, (yHeight - 150), (int)(xWidth*0.10), (int)(yHeight*0.10));
 
 
 	Gdiplus::Image* slingshot2 = Gdiplus::Image::FromFile(L"res//slingshot2.png");
