@@ -19,7 +19,7 @@ public:
 
 // Operations
 public:
-
+	void OnDoubleBuffer();
 // Overrides
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -31,6 +31,9 @@ public:
 	// Generated message map functions
 protected:
 	afx_msg void OnPaint();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+
 	DECLARE_MESSAGE_MAP()
 };
 
