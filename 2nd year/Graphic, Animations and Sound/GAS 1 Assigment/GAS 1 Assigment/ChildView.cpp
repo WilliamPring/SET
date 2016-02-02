@@ -17,15 +17,26 @@ int timer;
 int x;
 int y;
 
+Bitmap* bmpBackground;
+Bitmap* bmpForeground;
+Bitmap* bmpMidground;
+
 
 CChildView::CChildView()
 {
 	GdiplusStartupInput gdiplusStartupInput;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+	bmpBackground = (Bitmap*)Image::FromFile(L"res//Background.bmp");
+	bmpForeground = (Bitmap*)Image::FromFile(L"res//Foreground.bmp");
+	bmpMidground = (Bitmap*)Image::FromFile(L"res//Midground.bmp");
+
 }
 
 CChildView::~CChildView()
 {
+	delete bmpBackground;
+	delete bmpForeground;
+	delete bmpMidground;
 	GdiplusShutdown(gdiplusToken); 
 }
 
@@ -55,6 +66,8 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
 
+
+
 	return TRUE;
 }
 
@@ -71,15 +84,14 @@ void CChildView::OnPaint()
 
 	if (timer == 0)
 	{
-		timer = SetTimer(1, 1000 / 60, NULL);
+		timer = SetTimer(1, 1000/70, NULL);
+		//bitmap backgroud imaage
 	}
-
-
 
 	CPaintDC dc(this); // device context for painting
 	//Rectangle
 	RECT screenRectSize;
-	//get teh dimension for the rectangle
+	//get dimension for the rectangle
 	GetWindowRect(&screenRectSize);
 	CMemDC mDC((CDC&)dc, this);
 	//get size for the background
@@ -90,10 +102,6 @@ void CChildView::OnPaint()
 	//chroma
 	ImageAttributes ImgAttr;
 	//for the draw method
-	//bitmap backgroud imaage
-	Bitmap* bmpBackground = (Bitmap*)Image::FromFile(L"res//Background.bmp");
-	Bitmap* bmpForeground = (Bitmap*)Image::FromFile(L"res//Foreground.bmp");
-	Bitmap* bmpMidground = (Bitmap*)Image::FromFile(L"res//Midground.bmp");	
 	//display it
 	Bitmap* displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(xWidth, yHeight);
 	Bitmap* displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(xWidth, yHeight);
@@ -118,18 +126,18 @@ void CChildView::OnPaint()
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
 
 	//draw the sling shot
-	Gdiplus::Image* slingshot1 = Gdiplus::Image::FromFile(L"res//slingshot1.png");
-	drawGraphics.DrawImage(slingshot1, 10, yHeight - 150, 100, 100);
+	Image* slingshot1 = Gdiplus::Image::FromFile(L"res//slingshot1.png");
+	drawGraphics.DrawImage(slingshot1, 10, yHeight - 150, (int)(xWidth*0.06), (int)(yHeight*0.1));
 	if (40 + x > xWidth)
 	{
 		x = 0;
 	}
-	Gdiplus::Image* reptile = Gdiplus::Image::FromFile(L"res//reptile.png");
-	drawGraphics.DrawImage(reptile, x, (yHeight - 150), (int)(xWidth*0.10), (int)(yHeight*0.10));
+	Image* reptile = Gdiplus::Image::FromFile(L"res//reptile.png");
+	drawGraphics.DrawImage(reptile, x, (yHeight - 150), (int)(xWidth*0.06), (int)(yHeight*0.06));
 
 
-	Gdiplus::Image* slingshot2 = Gdiplus::Image::FromFile(L"res//slingshot2.png");
-	drawGraphics.DrawImage(slingshot2, 10, yHeight - 150, 100, 100);
+	Image* slingshot2 = Gdiplus::Image::FromFile(L"res//slingshot2.png");
+	drawGraphics.DrawImage(slingshot2, 10, yHeight - 150, (int)(xWidth*0.06), (int)(yHeight*0.1));
 
 
 
@@ -139,43 +147,11 @@ void CChildView::OnPaint()
 	delete displayNewBackground;
 	delete displayNewForeground;
 	delete displayNewMidground;
-	delete bmpBackground;
-	delete bmpForeground;
-	delete bmpMidground;
 	delete reptile;
 	delete slingshot1;
 	delete slingshot2;
 
 
 }
-
-//{
-//	RECT rcClient;
-//	HWND hwnd;
-//	//::GetClientRect(hwnd, &rcClient);
-//	GetWindowRect(&rcClient);
-//
-//	int left = rcClient.left;
-//	int top = rcClient.top;
-//	int width = rcClient.right - rcClient.left;
-//	int height = rcClient.top - rcClient.bottom;
-//	//HDC hdcMem = ::CreateCompatibleDC(hdc);
-//	const int nMemDC = ::SaveDC(hdcMem);
-//	HBITMAP hBitmap = ::CreateCompatibleBitmap(hdc, width, height);
-//	::SelectObject(hdcMem, hBitmap);
-//	Graphics graphics(hdcMem);
-//	SolidBrush back(Color(255, 255, 255));
-//	graphics.FillRectangle(&back, left, top, width, height);
-//
-//	RECT rcClip;
-//	::GetClipBox(hdc, &rcClip);
-//	left = rcClip.left;
-//	top = rcClip.top;
-//	width = rcClip.right - rcClip.left;
-//	height = rcClip.bottom - rcClip.top;
-//	//::bitbit(hdc, left, top, width, height, hdcMem, left, top, SRCCOPY);
-//	::RestoreDC(hdcMem, nMemDC);
-//	::DeleteObject(hBitmap);
-
 
 

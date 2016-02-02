@@ -1,0 +1,229 @@
+.bkgrd
+{
+COLOR: #ffffcc;
+}
+.navbody
+{
+    FONT-SIZE: 11px;
+    COLOR: #1d2f68;
+    FONT-FAMILY: san-serif,arial
+}
+.smalllabels
+{
+    FONT-SIZE: 12px;
+	COLOR: #003366;
+    FONT-FAMILY: arial,helvetica,san-serif
+}
+.fieldlabels
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: #003366;
+    FONT-FAMILY: verdana,arial,helvetica,san-serif
+}
+.header
+{
+    FONT-SIZE: 14px;
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.reportheader
+{
+    FONT-SIZE: 14px;
+    COLOR: #000000;
+    FONT-FAMILY: Arial, Helvetica, sans-serif
+}
+.blacksmall
+{
+    FONT-SIZE: 11px;
+    COLOR: #003366;
+    FONT-FAMILY: arial,helvetica,san-serif
+}
+.pbnu
+{
+    FONT-SIZE: 11px;
+    COLOR: #000000;
+    FONT-FAMILY: arial,san-serif;
+    TEXT-DECORATION: none
+}
+.savebuttons
+{
+    BORDER-RIGHT: #ffffff 2px outset;
+    BORDER-TOP: #ffffff 2px outset;
+    FONT-SIZE: 12px;
+    BORDER-LEFT: #ffffff 2px outset;
+    COLOR: white;
+    BORDER-BOTTOM: #ffffff 2px outset;
+    FONT-FAMILY: arial,san-serif;
+    BACKGROUND-COLOR: green
+}
+.resetbuttons
+{
+    BORDER-RIGHT: #9999cc 2px outset;
+    BORDER-TOP: #9999cc 2px outset;
+    BORDER-LEFT: #9999cc 2px outset;
+    BORDER-BOTTOM: #9999cc 2px outset;
+    BACKGROUND-COLOR: red
+}
+.specialbuttons
+{
+    BORDER-RIGHT: #9999cc 2px outset;
+    BORDER-TOP: #9999cc 2px outset;
+    BORDER-LEFT: #9999cc 2px outset;
+    BORDER-BOTTOM: #9999cc 2px outset;
+	CURSOR: hand;
+    BACKGROUND-COLOR: white
+}
+.regularbuttons
+{
+    BORDER-RIGHT: #9999cc 2px outset;
+    BORDER-TOP: #9999cc 2px outset;
+    FONT-SIZE: 12px;
+    BORDER-LEFT: #9999cc 2px outset;
+    CURSOR: hand;
+    COLOR: white;
+    BORDER-BOTTOM: #9999cc 2px outset;
+    FONT-FAMILY: arial,san-serif;
+    BACKGROUND-COLOR: #003366
+}
+.select
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 11px;
+    COLOR: #003366;
+    FONT-FAMILY: arial,san-serif;
+    BACKGROUND-COLOR: #999999;
+    font-color: white
+}
+.checkboxclass
+{
+    FONT-SIZE: 11px;
+    COLOR: #003366;
+    FONT-FAMILY: arial,helvetica,san-serif
+}
+.heading
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 11px;
+    COLOR: #009ad8;
+    FONT-FAMILY: verdana,arial,san-serif
+}
+.statusheading
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 11px;
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana,arial,san-serif
+}
+
+.tableheader
+{
+    BORDER-RIGHT: #9999cc 2px outset;
+    BORDER-TOP: #9999cc 2px outset;
+    BORDER-LEFT: #9999cc 2px outset;
+    BORDER-BOTTOM: #9999cc 2px outset;
+    BACKGROUND-COLOR: #ffffff
+}
+.tableheader2
+{
+    BORDER-RIGHT: #9999cc 2px outset;
+    BORDER-TOP: #9999cc 2px outset;
+    BORDER-LEFT: #9999cc 2px outset;
+    BORDER-BOTTOM: #9999cc 2px outset;
+    BACKGROUND-COLOR: #999966
+}
+.tableheader3
+{
+    BORDER-RIGHT: #9999cc 2px outset;
+    BORDER-TOP: #9999cc 2px outset;
+    BORDER-LEFT: #9999cc 2px outset;
+    BORDER-BOTTOM: #9999cc 2px outset;
+    BACKGROUND-COLOR: #999999
+}
+.tableheader4
+{
+    BORDER-RIGHT: #9999cc 2px outset;
+    BORDER-TOP: #9999cc 2px outset;
+    BORDER-LEFT: #9999cc 2px outset;
+    BORDER-BOTTOM: #9999cc 2px outset;
+    BACKGROUND-COLOR: #3475a9
+}
+.tableheader5
+{
+    BORDER-RIGHT: #9999cc 2px outset;
+    BORDER-TOP: #9999cc 2px outset;
+    BORDER-LEFT: #9999cc 2px outset;
+    BORDER-BOTTOM: #9999cc 2px outset;
+    BACKGROUND-COLOR: navy
+}
+.rowfont
+{
+    FONT-SIZE: 11px;
+    COLOR: white;
+    FONT-FAMILY: verdana,arial,helvetica,san-serif
+}
+.row0
+{
+    FONT-SIZE: 8pt;
+    COLOR: blue;
+    FONT-FAMILY: Arial, Helvetica,sans-serif;
+    BACKGROUND-COLOR: #a7a7a7
+}
+.row1
+{
+    FONT-SIZE: 8pt;
+    COLOR: #9cff9c;
+    FONT-FAMILY: Arial, Helvetica,sans-serif;
+    BACKGROUND-COLOR: #878787
+}
+.bodycolor
+{
+    BACKGROUND-COLOR: #cccccc
+}
+.Disableinput
+{
+   	FONT-FAMILY: Arial, Helvetica,sans-serif;
+	COLOR: white;
+	BACKGROUND-COLOR: #dff1ff;
+}
+A
+{
+    FONT-SIZE: 8pt;
+    FONT-FAMILY: Arial, Helvetica,sans-serif;
+    TEXT-DECORATION: none
+}
+A:link
+{
+    COLOR: #30598A;
+    TEXT-DECORATION: underline
+}
+A:visited
+{
+    COLOR: #003399;
+    TEXT-DECORATION: underline
+}
+A:hover
+{
+    COLOR: #003366;
+    TEXT-DECORATION: underline
+}
+.smallprint
+{
+    FONT-SIZE: 6pt;
+    COLOR: #333333;
+    FONT-FAMILY: verdana,geneva,arial,helvetica,sans-serif
+}
+.LINKSOFF    {display: none;}
+.LINKSON     {display: inline;}
+
+
+BODY   
+{
+	SCROLLBAR-FACE-COLOR: #9AA9DA;
+	SCROLLBAR-HIGHLIGHT-COLOR: #333333;
+	SCROLLBAR-SHADOW-COLOR: #333333;
+	SCROLLBAR-3DLIGHT-COLOR: #eeeeee;
+	SCROLLBAR-ARROW-COLOR: #663300;
+	SCROLLBAR-TRACK-COLOR: #ffffff;
+	SCROLLBAR-DARKSHADOW-COLOR: #F8F3E8
+}

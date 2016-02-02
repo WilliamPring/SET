@@ -1,0 +1,88 @@
+Run options: 
+
+# Running tests:
+
+
+
+SQII-Form : Test Case ID 1
+      Step 1: Go to the SQII-Form Site : http://localhost
+      Step 2: Set various element values
+      Step 3: Submit the form
+      Step 4: Validate the test
+        TEST PASSED. Expected ValidPatient = 0
+        TEST PASSED. Expected ValidPatient = 0, NumberOfErrors = 5
+.
+
+SQII-Form : Test Case ID 2
+      Step 1: Go to the SQII-Form Site : http://localhost
+      Step 2: Set various element values
+         Put MDSAB2A
+         Put MDSAB3-1
+         Put MDSAB4
+         Put MDSAB5f
+         Put MDSAB8
+         Put MDSAB9-1
+         MDSAB10a to checked
+      Step 3: Submit the form
+      Step 4: Validate the test
+        TEST #1 PASSED. Expected ValidPatient = 0
+        TEST #2 PASSED. NumberOfErrors = 3
+        TEST #3 PASSED. No Canada Post
+.
+
+SQII-Form : Test Case ID 3
+      Step 1: Go to the SQII-Form Site : http://localhost
+      Step 2: Set various element values
+         Put MDSAB2A
+         Put MDSAB3-1
+         Put MDSAB4
+         Put MDSAB5f
+         Put MDSAB8
+         Put MDSAB9-1
+         MDSAB10a to checked
+         MDSAB2B to checked
+         MDSAB7 to checked
+      Step 3: Submit the form
+      Step 4: Validate the test
+        TEST #1 PASSED. Expected ValidPatient = 0
+        TEST #2 PASSED. NumberOfErrors = 1
+        TEST #3 PASSED. Invalid
+.
+
+SQII-Form : Test Case ID 4
+      Step 1: Go to the SQII-Form Site : http://localhost
+      Step 2: Set various element values
+         Put MDSAB2A
+         Put MDSAB3-1
+         Put MDSAB4
+         Put MDSAB5f
+         Put MDSAB8
+         Put MDSAB9-1
+         Put MDSAB10a
+         Put MDSAB2B
+         Put MDSAB7
+         Put MDSAB4
+      Step 3: Submit the form
+      Step 4: Validate the test
+        TEST #1 PASSED. Expected ValidPatient = 1
+        TEST #2 PASSED. NumberOfErrors = 1
+.
+
+SQII-Form : Test Case ID 5
+      Step 1: Go to the SQII-Form Site : http://localhost
+      Step 2: Set various element values
+         Put MDSAB2A
+         Put MDSAB3
+         Put MDSAB4
+         Put MDSAB5a
+         Put MDSAB7
+         Put MDSAB8
+         Put MDSAB9
+         Put MDSAB10a
+        TEST #1 PASSED. Expected ValidPatient = 1
+        TEST #2 PASSED. NumberOfErrors = 1
+.
+
+Finished tests in 13.640256s, 0.3666 tests/s, 0.8797 assertions/s.
+
+5 tests, 12 assertions, 0 failures, 0 errors, 0 skips
