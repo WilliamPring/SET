@@ -84,7 +84,7 @@ void CChildView::OnPaint()
 
 	if (timer == 0)
 	{
-		timer = SetTimer(1, 1000/70, NULL);
+		SetTimer(1, 1000/70, NULL);
 		//bitmap backgroud imaage
 	}
 
@@ -127,20 +127,17 @@ void CChildView::OnPaint()
 
 	//draw the sling shot
 	Image* slingshot1 = Gdiplus::Image::FromFile(L"res//slingshot1.png");
-	drawGraphics.DrawImage(slingshot1, 10, yHeight - 150, (int)(xWidth*0.06), (int)(yHeight*0.1));
+	drawGraphics.DrawImage(slingshot1, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
 	if (40 + x > xWidth)
 	{
 		x = 0;
 	}
 	Image* reptile = Gdiplus::Image::FromFile(L"res//reptile.png");
-	drawGraphics.DrawImage(reptile, x, (yHeight - 150), (int)(xWidth*0.06), (int)(yHeight*0.06));
+	drawGraphics.DrawImage(reptile, x, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.06));
 
 
 	Image* slingshot2 = Gdiplus::Image::FromFile(L"res//slingshot2.png");
-	drawGraphics.DrawImage(slingshot2, 10, yHeight - 150, (int)(xWidth*0.06), (int)(yHeight*0.1));
-
-
-
+	drawGraphics.DrawImage(slingshot2, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
 
 
 
