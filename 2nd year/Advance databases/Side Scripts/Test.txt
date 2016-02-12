@@ -1,0 +1,65 @@
+Create database Bank;
+
+CREATE TABLE Client
+(
+AccountNumber int NOT NULL PRIMARY KEY,
+LastName nvarchar(25),FirstName nvarchar(25)
+);
+
+CREATE TABLE Savings
+(
+AccountNumber int NOT NULL PRIMARY KEY,
+TransactionDate datetime,TransactionType nchar(2),TransactionAmount money,Balance money
+FOREIGN KEY (AccountNumber) REFERENCES Client(AccountNumber)
+);
+
+Select * FROM Client;
+
+insert into Client(AccountNumber, LastName, FirstName)
+VALUES (1, 'Pring', 'William');
+
+insert into Client(AccountNumber, LastName, FirstName)
+VALUES (2, 'Politiuk', 'William');
+
+
+GO
+CREATE PROCEDURE TransferMoney (
+@accountTo int,
+@accontFrom int,
+@amountToTransfer int
+)
+AS
+BEGIN
+DECLARE @BalanceForSender int
+DECLARE @BalanceForReceiver int
+SET @BalanceForSender = 0	
+	BEGIN TRAN
+		SELECT @BalanceForSender = (Select Balance FROM Savings Where AccountNumber = @accontFrom)
+		SELECT @BalanceForReceiver = (Select Balance FROM Savings Where AccountNumber = @accountTo)
+		/* Insert into saving the values before processing everything */
+		INSERT Savings(AccountNumber, TransactionDate, TransactionType, TransactionAmount, Balance)
+		VALUES (@accountTo, GETDATE(), 'DP', @amountToTransfer, @BalanceForReceiver)
+		
+		INSERT Savings(AccountNumber, TransactionDate, TransactionType, TransactionAmount, Balance)
+		VALUES (@accountTo, GETDATE(), 'WD', @amountToTransfer, @BalanceForSender)
+		IF @@ERROR <> 0
+		BEGIN
+			ROLLBACK TRAN
+			GOTO ERROR_LABEL
+		END
+		IF @amountToTransfer > @BalanceForSender 
+		BEGIN
+			ROLLBACK TRAN
+			GOTO ERROR_LABEL
+		END
+	INSERT Savings(AccountNumber, TransactionDate, TransactionType, TransactionAmount, Balance)
+	VALUES (@accountTo, GETDATE(), ' ', 0, @BalanceForReceiver = @BalanceForSender+ @amountToTransfer)
+	
+	INSERT Savings(AccountNumber, TransactionDate, TransactionType, TransactionAmount, Balance)
+	VALUES (@accountTo, GETDATE(), 'DP', 0, @BalanceForSender = @BalanceForSender - @amountToTransfer)
+	
+	
+	COMMIT TRAN
+END
+ERROR_LABEL:
+
