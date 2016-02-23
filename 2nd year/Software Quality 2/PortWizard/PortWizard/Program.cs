@@ -14,17 +14,14 @@ namespace PortWizard
             {
                 inputFile = args[1];
                 outputFile = args[3];
-                bool status = ReadFile(inputFile, args);
-                if (status == false)
-                {
-                    Console.WriteLine("Please provide a existing file");
-                }
+                string status = ReadFile(inputFile, args);
             }
             else
             {
                 Console.WriteLine("Error wrong Format\nExample: -i C_source_file -o C#_output_file");
             }
         }
+
         public static string ConvertPrintf(string printfToConvert)
         {
             string returnString = "";
@@ -66,13 +63,51 @@ namespace PortWizard
             {
                 returnString = printfToConvert.Replace("printf", "Console.WriteLine");
             }
-
+            if (returnString.Contains("strlen"))
+            {
+                returnString = strlenConvert(returnString);
+            }
 
 
             return returnString;
         }
 
-
+        public static string strlenConvert(string varibleToConvert)
+        {
+            int count = Regex.Matches(varibleToConvert, "strlen.+").Count;
+            varibleToConvert = varibleToConvert.Replace("strlen(", "");
+            if (count >= 2)
+            {
+                for (int i = varibleToConvert.Length-3; i != 0; i--)
+                {
+                    if (varibleToConvert[i] == ',')
+                    {
+                        varibleToConvert = varibleToConvert.Remove(i - 1, 1);
+                        varibleToConvert = varibleToConvert.Insert(i-1, ".Length");
+                        if (varibleToConvert.Contains("strlen")==false)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (count == 1)
+            {
+                for (int i = varibleToConvert.Length - 3; i != 0; i--)
+                {
+                    if (varibleToConvert[i] == ')')
+                    {
+                        varibleToConvert = varibleToConvert.Remove(i, 1);
+                        varibleToConvert = varibleToConvert.Insert(i, ".Length");
+                        if (varibleToConvert.Contains(")") == false)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return varibleToConvert;
+        }
         public static string ConvertVarible(string varibleToConvert)
         {
             string newConvertString = "";
@@ -86,15 +121,14 @@ namespace PortWizard
             {
                 string newString = varibleToConvert.Replace("char ", "String ");
                 int length = varibleToConvert.IndexOf('[');
-
                 newString = varibleToConvert.Substring(5, length - 5);
                 newConvertString = "\tstring" + newString + ";\n"; 
             }
             else
             {
                 newConvertString = varibleToConvert + '\n';
+                newConvertString = strlenConvert(newConvertString);
             }
-
             return newConvertString;
         }
 
@@ -127,7 +161,6 @@ namespace PortWizard
 
         public static string Convertfgets(string readLineInFile)
         {
-
             readLineInFile= readLineInFile.Replace("fgets", "");
             int startPosition = readLineInFile.IndexOf(',');
             int endPosition = readLineInFile.LastIndexOf(',');
@@ -135,8 +168,6 @@ namespace PortWizard
             readLineInFile = readLineInFile.Replace(",", "=");
             startPosition = readLineInFile.IndexOf('=')+4;
             readLineInFile = readLineInFile.Insert(startPosition, ".ReadLine()");
-
-
             return readLineInFile; 
         }
 
@@ -144,7 +175,6 @@ namespace PortWizard
         {
             string newString = "";
             char readOrWrite = '0';
-            string constructingNewString = "";
             try
             {
                 using (StreamReader sr = new StreamReader(path))
@@ -162,7 +192,6 @@ namespace PortWizard
                                 string outputForVariable = readLineInFile.Substring(readLineInFile.IndexOf('*') + 1);
                                 outputForVariable = outputForVariable.Remove(outputForVariable.Length-1); 
                                 newString = "StreamReader " + outputForVariable + "= new StreamReader(" + info+ ");";
-                             
                             }
                             else
                             {
@@ -170,7 +199,6 @@ namespace PortWizard
                                 string outputForVariable = readLineInFile.Substring(readLineInFile.IndexOf('*') + 1);
                                 outputForVariable = outputForVariable.Remove(outputForVariable.Length - 1);
                                 newString = "StreamWriter " + outputForVariable + "= new StreamWriter(" + info + ");";
-
                             }
                             TotalInfo = TotalInfo.Replace("using System;", "using System;\nusing System.IO;\n");
                             TotalInfo += "\t" + newString + "\n";
@@ -195,28 +223,25 @@ namespace PortWizard
             last = "\t"+ last + ".WriteLine(" + newString; 
             return last;
         }
-        public static bool ReadFile(string path, string[] args)
+
+        public static string ConvertFclose(string readLineInFile)
+        {
+            readLineInFile = readLineInFile.Replace("fclose(", ""); 
+            readLineInFile = readLineInFile.Insert(readLineInFile.Length - 2, ".Close(");
+            return readLineInFile;
+        }
+        public static string ReadFile(string path, string[] args)
         {
             bool statusOfOpenFile = true;
-            bool retStatus = true;
             string readLineInFile = "";
             string newOutput = "";
-            //check for file comment, check for closing bracets
-            //Regex specialCharacter = new Regex(@"(\/?\*|\*?\/|\{|\})");
             Regex specialCharacter = new Regex(@"(\{|\})");
-            Regex assignVariable = new Regex(@"int.+|FILE..+|char.+"); 
-            Regex forPrintf = new Regex(@"printf");
-            Regex fopen = new Regex(@"fopen");
+            Regex assignVariable = new Regex(@"int.+|char.+"); 
             Regex comment = new Regex(@"\/+\*");
             Regex ifStatement = new Regex(@"if+\(");
             Regex returnInfo = new Regex("return");
-            Regex fprintfInfo = new Regex("fprintf");
             Regex gets = new Regex("gets");
             Regex atoi = new Regex("atoi");
-            Regex forLoop = new Regex("for");
-            char readOrWrite = '0';
-            bool status = true;
-
             try
             {
                 statusOfOpenFile = (File.Exists(path)) ? true : false;
@@ -225,9 +250,7 @@ namespace PortWizard
                     System.IO.StreamReader read = new StreamReader(path);
                     while (true)
                     {
-                        //read file
                         readLineInFile = read.ReadLine();
-
                         if (readLineInFile == "")
                         {
                             newOutput += '\n';
@@ -237,37 +260,16 @@ namespace PortWizard
                         {
                             break;
                         }
-                        //reading comments
-                        if (comment.IsMatch(readLineInFile) && (status == true))
-                        {
-                            status = false;
-                            newOutput += readLineInFile + "\n";
-                            while (true)
-                            {
-                                readLineInFile = read.ReadLine();
-                                if((readLineInFile == @" */") || (readLineInFile == @"*/"))
-                                {
-                                    newOutput += readLineInFile + "\n";
-                                    break;
-                                }
-                                newOutput += readLineInFile + "\n";
-                            }
-                            newOutput += setUpProject(args);
-                        }
-                        if (readLineInFile.Contains("=="))
-                        {
-                            newOutput += readLineInFile + "\n";
-
-                        }
-                        else if(readLineInFile.Contains("fgets"))
+                        if(readLineInFile.Contains("fgets"))
                         {
                             newOutput += Convertfgets(readLineInFile);
                         }
                         //for comment header and brackets
-                        else if ((specialCharacter.IsMatch(readLineInFile)) || (readLineInFile == "int main (void)") || (readLineInFile == "int main(void)") || (returnInfo.IsMatch(readLineInFile))|| forLoop.IsMatch(readLineInFile))
+                        else if ((readLineInFile == "int main (void)") || (readLineInFile == "int main(void)"))
                         {
                             if ((readLineInFile == "int main (void)") || (readLineInFile == "int main(void)"))
                             {
+                                newOutput += setUpProject(args);
                                 newOutput += "static void Main(string[] args)\n";
                             }
                             else
@@ -275,35 +277,59 @@ namespace PortWizard
                                 newOutput += readLineInFile + '\n';
                             }
                         }       
-                        else if(fprintfInfo.IsMatch(readLineInFile))
+                        else if(readLineInFile.Contains("fprintf"))
                         {
-                            newOutput += fprintfFunctionConvert(readLineInFile) + "\n";               
+                            newOutput += fprintfFunctionConvert(readLineInFile) + "\n";
+                            newOutput += strlenConvert(readLineInFile) + "\n";
                         }
                         //for printf
-                        else if(forPrintf.IsMatch(readLineInFile))
+                        else if(readLineInFile.Contains("printf"))
                         {
                             newOutput += ConvertPrintf(readLineInFile) + "\n";
-                        }
-                        else if(atoi.IsMatch(readLineInFile))
-                        {
-                            newOutput += atoiConvertor(readLineInFile) + "\n";
-                        }
-                        else if(gets.IsMatch(readLineInFile))
-                        {
-                            newOutput += GetsConvertor(readLineInFile) + "\n";
                         }
                         else if (readLineInFile.Contains("FILE"))
                         {
                             newOutput = ConvertFile(readLineInFile, path, newOutput) + "\n";
                         }
-                        //for variables
                         else if (assignVariable.IsMatch(readLineInFile))
                         {
                             newOutput += ConvertVarible(readLineInFile);
                         }
+                        else if (readLineInFile.Contains("strlen("))
+                        {
+                            newOutput += strlenConvert(readLineInFile) + "\n";
+                        }
+                        else if(atoi.IsMatch(readLineInFile))
+                        {
+                            newOutput += "\t"+atoiConvertor(readLineInFile) + "\n";
+                        }
+                        else if(gets.IsMatch(readLineInFile))
+                        {
+                            newOutput += GetsConvertor(readLineInFile) + "\n";
+                        }
+                        //for variables     
                         else
                         {
-                            if((readLineInFile.Contains("*") == true) || (readLineInFile.Contains("fclose")))
+                            if (readLineInFile.Contains("#"))
+                            {
+                                continue;
+                            }
+                            else if((readLineInFile.Contains("*") == true) || (readLineInFile.Contains("fclose")))
+                            {
+                                if (readLineInFile.Contains("."))
+                                {
+                                    newOutput += " * " + args[3];
+                                }
+                                else if (readLineInFile.Contains("fclose("))
+                                {
+                                    newOutput += ConvertFclose(readLineInFile);
+                                }
+                                else
+                                {
+                                    newOutput += readLineInFile + "\n";
+                                }
+                            }
+                            else
                             {
                                 newOutput += readLineInFile + "\n";
                             }
@@ -316,7 +342,7 @@ namespace PortWizard
                 Console.WriteLine(errorFileStatus.Message);
             }
             newOutput += "}\n}\n";
-            return retStatus;
+            return newOutput;
        } 
     }
 }
