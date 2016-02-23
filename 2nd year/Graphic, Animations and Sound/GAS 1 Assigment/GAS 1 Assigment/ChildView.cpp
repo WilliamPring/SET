@@ -16,11 +16,16 @@ ULONG_PTR gdiplusToken;
 int timer;
 int x;
 int y;
-
+int orgion;
+int maxValue;
+int minValue;
+int orginMiddle;
 Bitmap* bmpBackground;
 Bitmap* bmpForeground;
 Bitmap* bmpMidground;
-
+Image* slingshot1;
+Image* reptile;
+Image* slingshot2;
 
 CChildView::CChildView()
 {
@@ -29,6 +34,12 @@ CChildView::CChildView()
 	bmpBackground = (Bitmap*)Image::FromFile(L"res//Background.bmp");
 	bmpForeground = (Bitmap*)Image::FromFile(L"res//Foreground.bmp");
 	bmpMidground = (Bitmap*)Image::FromFile(L"res//Midground.bmp");
+	slingshot1 = Gdiplus::Image::FromFile(L"res//slingshot1.png");
+	reptile = Gdiplus::Image::FromFile(L"res//reptile.png");
+	slingshot2 = Gdiplus::Image::FromFile(L"res//slingshot2.png");
+	orgion =0;
+	maxValue=0;
+	minValue=0;
 
 }
 
@@ -37,6 +48,9 @@ CChildView::~CChildView()
 	delete bmpBackground;
 	delete bmpForeground;
 	delete bmpMidground;
+	delete slingshot1;
+	delete reptile;
+	delete slingshot2;
 	GdiplusShutdown(gdiplusToken); 
 }
 
@@ -79,12 +93,12 @@ BOOL CChildView::OnEraseBkgnd(CDC* pDC)
 }
 
 
-void CChildView::OnPaint() 
+void CChildView::OnPaint()
 {
 
 	if (timer == 0)
 	{
-		SetTimer(1, 1000/70, NULL);
+		SetTimer(1, 1000 / 70, NULL);
 		//bitmap backgroud imaage
 	}
 
@@ -99,7 +113,6 @@ void CChildView::OnPaint()
 	//get the size for the height
 	int yHeight = screenRectSize.bottom - screenRectSize.top;
 	Graphics drawGraphics(mDC.GetDC());
-	//chroma
 	ImageAttributes ImgAttr;
 	//for the draw method
 	//display it
@@ -112,12 +125,9 @@ void CChildView::OnPaint()
 	displayNewBackground->GetPixel(0, 0, &pixleBackground);
 	displayNewForeground->GetPixel(0, 0, &pixleForeground);
 	displayNewMidground->GetPixel(0, 0, &pixleMidground);
-
-	Image imgFore(L"res//Middleground.bmp");
 	ImageAttributes imgAttMiddleground;
 	imgAttMiddleground.SetColorKey(pixleMidground, pixleMidground, ColorAdjustTypeBitmap);
 
-	Image imgMiddle(L"res//Foreground.bmp");
 	ImageAttributes imgAttForeground;
 	imgAttForeground.SetColorKey(pixleForeground, pixleForeground, ColorAdjustTypeBitmap);
 	//drawing the background
@@ -125,30 +135,17 @@ void CChildView::OnPaint()
 	drawGraphics.DrawImage(displayNewMidground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttForeground);
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
 
-	//draw the sling shot
-	Image* slingshot1 = Gdiplus::Image::FromFile(L"res//slingshot1.png");
+
 	drawGraphics.DrawImage(slingshot1, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
 	if (40 + x > xWidth)
 	{
 		x = 0;
 	}
-	Image* reptile = Gdiplus::Image::FromFile(L"res//reptile.png");
 	drawGraphics.DrawImage(reptile, x, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.06));
-
-
-	Image* slingshot2 = Gdiplus::Image::FromFile(L"res//slingshot2.png");
 	drawGraphics.DrawImage(slingshot2, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
-
-
-
 	delete displayNewBackground;
 	delete displayNewForeground;
 	delete displayNewMidground;
-	delete reptile;
-	delete slingshot1;
-	delete slingshot2;
-
-
 }
 
 
