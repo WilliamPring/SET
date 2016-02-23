@@ -123,11 +123,26 @@ namespace PortWizard
                 int length = varibleToConvert.IndexOf('[');
                 newString = varibleToConvert.Substring(5, length - 5);
                 newConvertString = "\tstring" + newString + ";\n"; 
+                if (varibleToConvert.Contains("="))
+                {
+                    int index = varibleToConvert.IndexOf("=");
+                    varibleToConvert = varibleToConvert.Remove(0, index);
+                    index = newConvertString.IndexOf(";");
+                    newConvertString = newConvertString.Insert(index, varibleToConvert);
+                    index = newConvertString.IndexOf(";");
+                    newConvertString = newConvertString.Remove(index, 1);
+
+                }
             }
             else
             {
                 newConvertString = varibleToConvert + '\n';
                 newConvertString = strlenConvert(newConvertString);
+                if(newConvertString.Contains("atoi"))
+                {
+                    newConvertString = atoiConvertor(newConvertString);
+                }
+
             }
             return newConvertString;
         }
