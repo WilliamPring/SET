@@ -63,6 +63,11 @@ namespace PortWizard
             {
                 returnString = printfToConvert.Replace("printf", "Console.WriteLine");
             }
+          
+            if (returnString.Contains("atoi"))
+            {
+                returnString = atoiConvertor(returnString);
+            }
             if (returnString.Contains("strlen"))
             {
                 returnString = strlenConvert(returnString);
@@ -75,34 +80,28 @@ namespace PortWizard
         public static string strlenConvert(string varibleToConvert)
         {
             int count = Regex.Matches(varibleToConvert, "strlen.+").Count;
-            varibleToConvert = varibleToConvert.Replace("strlen(", "");
-            if (count >= 2)
+            if (count >= 1)
             {
-                for (int i = varibleToConvert.Length-3; i != 0; i--)
+                varibleToConvert = varibleToConvert.Replace("strlen", "^");
+                while (true)
                 {
-                    if (varibleToConvert[i] == ',')
+                    count = varibleToConvert.IndexOf('^');
+                    for (int i = count; i <= varibleToConvert.Length; i++)
                     {
-                        varibleToConvert = varibleToConvert.Remove(i - 1, 1);
-                        varibleToConvert = varibleToConvert.Insert(i-1, ".Length");
-                        if (varibleToConvert.Contains("strlen")==false)
+                        if (varibleToConvert[i] == ')')
                         {
+                            varibleToConvert = varibleToConvert.Insert(i + 1, ".Length");
+                            varibleToConvert = varibleToConvert.Remove(count, 1);
                             break;
                         }
                     }
-                }
-            }
-            else if (count == 1)
-            {
-                for (int i = varibleToConvert.Length - 3; i != 0; i--)
-                {
-                    if (varibleToConvert[i] == ')')
+                    if (varibleToConvert.Contains("^"))
                     {
-                        varibleToConvert = varibleToConvert.Remove(i, 1);
-                        varibleToConvert = varibleToConvert.Insert(i, ".Length");
-                        if (varibleToConvert.Contains(")") == false)
-                        {
-                            break;
-                        }
+                        continue;
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
@@ -122,7 +121,7 @@ namespace PortWizard
                 string newString = varibleToConvert.Replace("char ", "String ");
                 int length = varibleToConvert.IndexOf('[');
                 newString = varibleToConvert.Substring(5, length - 5);
-                newConvertString = "\tstring" + newString + ";\n"; 
+                newConvertString = "string" + newString + ";\n"; 
                 if (varibleToConvert.Contains("="))
                 {
                     int index = varibleToConvert.IndexOf("=");
@@ -156,10 +155,18 @@ namespace PortWizard
         public static string atoiConvertor(string ReadNewLienInFile)
         {
             string newInput = "";
-            ReadNewLienInFile = Regex.Replace(ReadNewLienInFile, @"\t|\n|\r", "");
-            ReadNewLienInFile = Regex.Replace(ReadNewLienInFile, "(atoi)|[(^$)];|(atoi)|[(^$)]", "");
-            ReadNewLienInFile = Regex.Replace(ReadNewLienInFile, @"\(", "");
-            newInput = ReadNewLienInFile.Insert(ReadNewLienInFile.IndexOf('=')+1, "Int32.Parse(")+ ");";
+            if (ReadNewLienInFile.Contains("Console.WriteLine"))
+            {
+                ReadNewLienInFile = ReadNewLienInFile.Replace("atoi(", "Int32.Parse(");
+                newInput = ReadNewLienInFile;
+            }
+            else
+            {
+                ReadNewLienInFile = Regex.Replace(ReadNewLienInFile, @"\t|\n|\r", "");
+                ReadNewLienInFile = Regex.Replace(ReadNewLienInFile, "(atoi)|[(^$)];|(atoi)|[(^$)]", "");
+                ReadNewLienInFile = Regex.Replace(ReadNewLienInFile, @"\(", "");
+                newInput = ReadNewLienInFile.Insert(ReadNewLienInFile.IndexOf('=') + 1, "Int32.Parse(") + ");\n";
+            }
             return newInput;   
         }
         public static string GetsConvertor(string ReadNewLineInFile)
@@ -216,7 +223,7 @@ namespace PortWizard
                                 newString = "StreamWriter " + outputForVariable + "= new StreamWriter(" + info + ");";
                             }
                             TotalInfo = TotalInfo.Replace("using System;", "using System;\nusing System.IO;\n");
-                            TotalInfo += "\t" + newString + "\n";
+                            TotalInfo += "\t" + newString;
                             break;
                         }
                     }
@@ -308,7 +315,7 @@ namespace PortWizard
                         }
                         else if (assignVariable.IsMatch(readLineInFile))
                         {
-                            newOutput += ConvertVarible(readLineInFile);
+                            newOutput += "\t" + ConvertVarible(readLineInFile);
                         }
                         else if (readLineInFile.Contains("strlen("))
                         {
@@ -328,7 +335,7 @@ namespace PortWizard
                             if (readLineInFile.Contains("#"))
                             {
                                 continue;
-                            }
+                           } 
                             else if((readLineInFile.Contains("*") == true) || (readLineInFile.Contains("fclose")))
                             {
                                 if (readLineInFile.Contains("."))
@@ -337,7 +344,7 @@ namespace PortWizard
                                 }
                                 else if (readLineInFile.Contains("fclose("))
                                 {
-                                    newOutput += ConvertFclose(readLineInFile);
+                                    newOutput += ConvertFclose(readLineInFile) + "\n";
                                 }
                                 else
                                 {
