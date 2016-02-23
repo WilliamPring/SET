@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+Project: PortWizard
+File: Program.cs
+Date: 2/23/2016
+Description: Converting C project to C#
+*/
+
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -21,7 +28,11 @@ namespace PortWizard
                 Console.WriteLine("Error wrong Format\nExample: -i C_source_file -o C#_output_file");
             }
         }
-
+        /// <summary>
+        /// Converting printf Function
+        /// </summary>
+        /// <param name="printfToConvert"></param>
+        /// <returns></returns>
         public static string ConvertPrintf(string printfToConvert)
         {
             string returnString = "";
@@ -76,7 +87,11 @@ namespace PortWizard
 
             return returnString;
         }
-
+        /// <summary>
+        /// Converting strlen function to c#
+        /// </summary>
+        /// <param name="varibleToConvert"></param>
+        /// <returns></returns>
         public static string strlenConvert(string varibleToConvert)
         {
             int count = Regex.Matches(varibleToConvert, "strlen.+").Count;
@@ -107,6 +122,11 @@ namespace PortWizard
             }
             return varibleToConvert;
         }
+        /// <summary>
+        /// Converting all varible to C# style
+        /// </summary>
+        /// <param name="varibleToConvert"></param>
+        /// <returns></returns>
         public static string ConvertVarible(string varibleToConvert)
         {
             string newConvertString = "";
@@ -145,13 +165,22 @@ namespace PortWizard
             }
             return newConvertString;
         }
-
+        /// <summary>
+        /// Setting up the project
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static string setUpProject(string[] args)
         {
             string input = "";
             input = "\nusing System;\nnamespace " + args[3].Remove(args[3].Length-3, 3) + "\n{\n" + "class Program\n" + "{\n";
             return input;
         }
+        /// <summary>
+        /// Atoi Convertor to c# Function
+        /// </summary>
+        /// <param name="ReadNewLienInFile"></param>
+        /// <returns></returns>
         public static string atoiConvertor(string ReadNewLienInFile)
         {
             string newInput = "";
@@ -169,6 +198,11 @@ namespace PortWizard
             }
             return newInput;   
         }
+        /// <summary>
+        /// Get Convertor to C# Function
+        /// </summary>
+        /// <param name="ReadNewLineInFile"></param>
+        /// <returns></returns>
         public static string GetsConvertor(string ReadNewLineInFile)
         {
             string newInput ="";
@@ -180,7 +214,11 @@ namespace PortWizard
             newInput += "\t" + ReadNewLineInFile + "= System.Console.ReadLine();";
             return newInput;
         }
-
+        /// <summary>
+        /// fgets Convert to C# Functions
+        /// </summary>
+        /// <param name="readLineInFile"></param>
+        /// <returns></returns>
         public static string Convertfgets(string readLineInFile)
         {
             readLineInFile= readLineInFile.Replace("fgets", "");
@@ -192,7 +230,13 @@ namespace PortWizard
             readLineInFile = readLineInFile.Insert(startPosition, ".ReadLine()");
             return readLineInFile; 
         }
-
+        /// <summary>
+        /// Coverting File to C#
+        /// </summary>
+        /// <param name="readLineInFile"></param>
+        /// <param name="path"></param>
+        /// <param name="TotalInfo"></param>
+        /// <returns></returns>
         public static string ConvertFile(string readLineInFile, string path, string TotalInfo)
         {
             string newString = "";
@@ -236,6 +280,11 @@ namespace PortWizard
 
             return TotalInfo;
         }
+        /// <summary>
+        /// fprintf to c#
+        /// </summary>
+        /// <param name="readLineInFile"></param>
+        /// <returns></returns>
         public static string fprintfFunctionConvert(string readLineInFile)
         {
             string newString = readLineInFile;
@@ -245,13 +294,23 @@ namespace PortWizard
             last = "\t"+ last + ".WriteLine(" + newString; 
             return last;
         }
-
+        /// <summary>
+        /// Convert Fclose to c#
+        /// </summary>
+        /// <param name="readLineInFile"></param>
+        /// <returns></returns>
         public static string ConvertFclose(string readLineInFile)
         {
             readLineInFile = readLineInFile.Replace("fclose(", ""); 
             readLineInFile = readLineInFile.Insert(readLineInFile.Length - 2, ".Close(");
             return readLineInFile;
         }
+        /// <summary>
+        /// Parsing the file line by line
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static string ReadFile(string path, string[] args)
         {
             bool statusOfOpenFile = true;
