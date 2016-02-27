@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "GAS 1 Assigment.h"
 #include "ChildView.h"
-
+#include "Bird.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -16,8 +16,6 @@ ULONG_PTR gdiplusToken;
 int timer;
 int x;
 int y;
-int orgion;
-int maxValue;
 int minValue;
 int orginMiddle;
 Bitmap* bmpBackground;
@@ -26,6 +24,7 @@ Bitmap* bmpMidground;
 Image* slingshot1;
 Image* reptile;
 Image* slingshot2;
+Bird bird;
 
 CChildView::CChildView()
 {
@@ -37,10 +36,6 @@ CChildView::CChildView()
 	slingshot1 = Gdiplus::Image::FromFile(L"res//slingshot1.png");
 	reptile = Gdiplus::Image::FromFile(L"res//reptile.png");
 	slingshot2 = Gdiplus::Image::FromFile(L"res//slingshot2.png");
-	orgion =0;
-	maxValue=0;
-	minValue=0;
-
 }
 
 CChildView::~CChildView()
@@ -64,7 +59,8 @@ END_MESSAGE_MAP()
 
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
-	x += 25;
+	//x += 25;
+	bird.MoveBird();
 	this->Invalidate();
 }
 
@@ -98,7 +94,7 @@ void CChildView::OnPaint()
 
 	if (timer == 0)
 	{
-		SetTimer(1, 1000 / 70, NULL);
+		SetTimer(1, 5, NULL);
 		//bitmap backgroud imaage
 	}
 
@@ -141,7 +137,7 @@ void CChildView::OnPaint()
 	{
 		x = 0;
 	}
-	drawGraphics.DrawImage(reptile, x, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.06));
+	drawGraphics.DrawImage(reptile, bird.xBirdPos, bird.yBirdPos, (int)(xWidth*0.06), (int)(yHeight*0.06));
 	drawGraphics.DrawImage(slingshot2, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
 	delete displayNewBackground;
 	delete displayNewForeground;

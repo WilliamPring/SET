@@ -185,6 +185,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bird.h" />
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="GAS 1 Assigment.h" />
     <ClInclude Include="MainFrm.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bird.cpp" />
     <ClCompile Include="ChildView.cpp" />
     <ClCompile Include="GAS 1 Assigment.cpp" />
     <ClCompile Include="MainFrm.cpp" />
