@@ -65,22 +65,28 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	int y = point.y; 
 	int xComp = bird.getXBirdPos();
 	int yComp = bird.getBirdHitBoxY();
-	PlaySound(L"res//slingshotsound.wav", NULL, SND_ASYNC);
-	if ((x > xComp) && (x < bird.getBirdHitBoxX()) && (y * 1.21 >= yComp) && (y * 1.09 < bird.getBirdHitBoxY()))
+	if (bird.getBirdFalling() == false)
 	{
-		int a =0;
-		PlaySound(L"res//SPLAT_Sound_Effects.wav", 0, SND_FILENAME | SND_ASYNC);
-		a++;
+		PlaySound(L"res//slingshotsound.wav", NULL, SND_ASYNC);
+		if ((x > xComp) && (x < bird.getBirdHitBoxX()) && (y * 1.21 >= yComp) && (y * 1.09 < bird.getBirdHitBoxY()))
+		{
+			PlaySound(L"res//SPLAT_Sound_Effects.wav", 0, SND_ASYNC);
+			bird.setBirdFalling(true);
+		}
 	}
-
-
-	
 }
 
 
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
-	bird.MoveBird();
+	if (bird.getBirdFalling() == false)
+	{
+		bird.MoveBird();
+	}
+	else
+	{
+		
+	}
 	this->Invalidate();
 }
 

@@ -11,6 +11,9 @@ public:
 	int getBirdHitBoxX();
 	int getYBirdPos();
 	int getXBirdPos();
+	void playFallingSound();
+	bool getBirdFalling(); 
+	void setBirdFalling(bool statusOfFall);
 	void MoveBird();
 	int birdHitBoxX;
 	int birdHitBoxY;
@@ -19,7 +22,7 @@ private:
 	int screenHeight;
 	int screenWidth;
 	int birdVelocity;
-
+	bool birdFallingMode;
 	int xBirdPos;
 	int yBirdPos;
 	int orgion;

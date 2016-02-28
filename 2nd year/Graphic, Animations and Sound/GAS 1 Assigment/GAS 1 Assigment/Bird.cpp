@@ -15,12 +15,26 @@ Bird::Bird()
 	xBirdPos = 0;
 	//bird starting height for now
 	yBirdPos = orgion;
-
+	birdFallingMode = false;
 	SetUpBirdMovement();
 	birdHitBoxX = xBirdPos + HitBoxDimension;
 	birdHitBoxY = yBirdPos + HitBoxDimension;
 }
  
+void Bird::setBirdFalling(bool statusOfFall)
+{
+	birdFallingMode = statusOfFall;
+}
+
+void Bird::playFallingSound()
+{
+	PlaySound(L"CartoonFalling.wav", NULL, SND_ASYNC);
+}
+
+bool Bird::getBirdFalling()
+{
+	return birdFallingMode;
+}
 int Bird::getBirdHitBoxY()
 {
 	return birdHitBoxY;
