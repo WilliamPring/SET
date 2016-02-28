@@ -17,8 +17,30 @@ Bird::Bird()
 	yBirdPos = orgion;
 
 	SetUpBirdMovement();
+	birdHitBoxX = xBirdPos + HitBoxDimension;
+	birdHitBoxY = yBirdPos + HitBoxDimension;
 }
  
+int Bird::getBirdHitBoxY()
+{
+	return birdHitBoxY;
+}
+
+int Bird::getBirdHitBoxX()
+{
+	return birdHitBoxX;
+}
+
+int Bird::getYBirdPos()
+{
+	return yBirdPos;
+}
+
+int Bird::getXBirdPos()
+{
+	return xBirdPos;
+}
+
 void Bird::SetUpBirdMovement()
 {
 	highPotentialHeight = 0;
@@ -62,7 +84,8 @@ void Bird::MoveBird()
 			}
 		}
 	}
-
+	birdHitBoxX = xBirdPos + HitBoxDimension;
+	birdHitBoxY = yBirdPos + HitBoxDimension;
 }
 
 
@@ -88,7 +111,3 @@ void Bird::setScreenHeight(int screenHeight)
 	this->screenHeight = screenHeight;
 }
 
-int Bird::getXBirdPos()
-{
-	return xBirdPos;
-}

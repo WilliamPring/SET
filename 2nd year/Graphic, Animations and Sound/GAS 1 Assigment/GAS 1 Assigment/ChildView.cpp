@@ -6,6 +6,8 @@
 #include "GAS 1 Assigment.h"
 #include "ChildView.h"
 #include "Bird.h"
+#include "mmsystem.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -14,10 +16,6 @@ ULONG_PTR gdiplusToken;
 // CChildView
 
 int timer;
-int x;
-int y;
-int minValue;
-int orginMiddle;
 Bitmap* bmpBackground;
 Bitmap* bmpForeground;
 Bitmap* bmpMidground;
@@ -51,18 +49,43 @@ CChildView::~CChildView()
 
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
+	//left button click	
+	ON_WM_LBUTTONDOWN()
 	ON_WM_PAINT()
+	//timer
 	ON_WM_TIMER()
 	//doublebuffering
 	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
+//on left button down
+void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	int x = point.x;
+	int y = point.y; 
+	int xComp = bird.getXBirdPos();
+	int yComp = bird.getBirdHitBoxY();
+	PlaySound(L"res//slingshotsound.wav", NULL, SND_ASYNC);
+	if ((x > xComp) && (x < bird.getBirdHitBoxX()) && (y * 1.21 >= yComp) && (y * 1.09 < bird.getBirdHitBoxY()))
+	{
+		int a =0;
+		PlaySound(L"res//SPLAT_Sound_Effects.wav", 0, SND_FILENAME | SND_ASYNC);
+		a++;
+	}
+
+
+	
+}
+
+
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
-	//x += 25;
 	bird.MoveBird();
 	this->Invalidate();
 }
+
+
+
 
 // CChildView message handlers
 
@@ -94,8 +117,7 @@ void CChildView::OnPaint()
 
 	if (timer == 0)
 	{
-		SetTimer(1, 5, NULL);
-		//bitmap backgroud imaage
+		SetTimer(1, 500, NULL);
 	}
 
 	CPaintDC dc(this); // device context for painting
@@ -133,11 +155,7 @@ void CChildView::OnPaint()
 
 
 	drawGraphics.DrawImage(slingshot1, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
-	if (40 + x > xWidth)
-	{
-		x = 0;
-	}
-	drawGraphics.DrawImage(reptile, bird.xBirdPos, bird.yBirdPos, (int)(xWidth*0.06), (int)(yHeight*0.06));
+	drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
 	drawGraphics.DrawImage(slingshot2, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
 	delete displayNewBackground;
 	delete displayNewForeground;

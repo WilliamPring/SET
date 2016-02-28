@@ -18,10 +18,10 @@
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
-
 #include <Windows.h>
 #include <gdiplus.h>
 #include <afxdisp.h>        // MFC Automation classes
+#include <mmsystem.h>
 
 
 using namespace Gdiplus; 

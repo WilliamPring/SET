@@ -1,5 +1,5 @@
 #pragma once
-
+#define HitBoxDimension 44
 class Bird 
 {
 public:
@@ -7,18 +7,23 @@ public:
 	void setScreenHeight(int screenHeight);
 	int SetUpReferencePoints(int screenHeight);
 	void SetUpBirdMovement(); 
-	int xBirdPos;
-	int yBirdPos;
-
-	void MoveBird(); 
+	int getBirdHitBoxY();
+	int getBirdHitBoxX();
+	int getYBirdPos();
+	int getXBirdPos();
+	void MoveBird();
+	int birdHitBoxX;
+	int birdHitBoxY;
 	~Bird();
 private:
 	int screenHeight;
 	int screenWidth;
 	int birdVelocity;
+
+	int xBirdPos;
+	int yBirdPos;
 	int orgion;
 	int highPotentialHeight;
 	int lowPotentialHeight;
 	bool toggle;
-	int getXBirdPos();
 };

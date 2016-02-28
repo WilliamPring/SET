@@ -1,26 +1,17 @@
 
-// ChildView.h : interface of the CChildView class
-//
-
-
 #pragma once
 
 
-// CChildView window
 
 class CChildView : public CWnd
 {
-// Construction
 public:
 	CChildView();
 
-// Attributes
 public:
 
 // Operations
 public:
-	void OnDoubleBuffer();
-// Overrides
 	protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
@@ -33,7 +24,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	DECLARE_MESSAGE_MAP()
 };
 
