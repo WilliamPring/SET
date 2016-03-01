@@ -49,14 +49,20 @@ namespace Advanced_SQL_Assignment_03
                 connectionSrc.Open();
                 string queryRecv = "Select * FROM " + tableRecv;
                 OleDbDataAdapter adapter = new OleDbDataAdapter(queryRecv, connectionSrc);
-                DataSet information = new DataSet();
+                DataTable information = new DataTable();
                 adapter.Fill(ds);
                 adapter.Dispose();
                 connectionSrc.Close();
-                for (int i = 0; i <= ds.Tables[0].Rows.Count - 1; i++)
+                
+                foreach (DataRow dr in information.Rows)
                 {
-                    s += ds.Tables[0].Rows[i].ItemArray[0] + " -- " + ds.Tables[0].Rows[i].ItemArray[1] + "\n";
+                    //insert dr into table
                 }
+
+                //for (int i = 0; i <= ds.Tables[0].Rows.Count - 1; i++)
+                //{
+                //    s += ds.Tables[0].Rows[i].ItemArray[0] + " -- " + ds.Tables[0].Rows[i].ItemArray[1] + "\n";
+                //}
             }
             catch (Exception ex)
             {
