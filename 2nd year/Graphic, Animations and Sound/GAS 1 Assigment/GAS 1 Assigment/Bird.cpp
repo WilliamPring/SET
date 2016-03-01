@@ -26,10 +26,7 @@ void Bird::setBirdFalling(bool statusOfFall)
 	birdFallingMode = statusOfFall;
 }
 
-void Bird::playFallingSound()
-{
-	PlaySound(L"CartoonFalling.wav", NULL, SND_ASYNC);
-}
+
 
 bool Bird::getBirdFalling()
 {
@@ -55,6 +52,23 @@ int Bird::getXBirdPos()
 	return xBirdPos;
 }
 
+
+void Bird::BirdFallingToDeath()
+{
+	disappearBird = screenHeight - (screenHeight * .82);
+	/*if ((screenHeight - xBirdPos <= disappearBird))
+	{
+		orgion = SetUpReferencePoints(screenHeight);
+		xBirdPos = 0;
+		yBirdPos = orgion;
+		SetUpBirdMovement();
+		birdFallingMode = false;
+	}*/
+	xBirdPos += 12;
+	yBirdPos += birdVelocity;
+
+}
+
 void Bird::SetUpBirdMovement()
 {
 	highPotentialHeight = 0;
@@ -71,7 +85,6 @@ void Bird::SetUpBirdMovement()
 void Bird::MoveBird()
 {
 	xBirdPos += 12;
-
 	if (xBirdPos > screenWidth)
 	{
 		orgion = SetUpReferencePoints(screenHeight);

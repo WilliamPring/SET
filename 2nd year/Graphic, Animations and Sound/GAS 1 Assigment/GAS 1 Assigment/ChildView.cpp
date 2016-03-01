@@ -23,7 +23,7 @@ Image* slingshot1;
 Image* reptile;
 Image* slingshot2;
 Bird bird;
-
+float rotation = 0.0;
 CChildView::CChildView()
 {
 	GdiplusStartupInput gdiplusStartupInput;
@@ -67,11 +67,14 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	int yComp = bird.getBirdHitBoxY();
 	if (bird.getBirdFalling() == false)
 	{
-		PlaySound(L"res//slingshotsound.wav", NULL, SND_ASYNC);
 		if ((x > xComp) && (x < bird.getBirdHitBoxX()) && (y * 1.21 >= yComp) && (y * 1.09 < bird.getBirdHitBoxY()))
 		{
 			PlaySound(L"res//SPLAT_Sound_Effects.wav", 0, SND_ASYNC);
 			bird.setBirdFalling(true);
+		}
+		else
+		{
+			PlaySound(L"res//slingshotsound.wav", NULL, SND_ASYNC);
 		}
 	}
 }
@@ -85,7 +88,7 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	}
 	else
 	{
-		
+		bird.BirdFallingToDeath();
 	}
 	this->Invalidate();
 }
@@ -123,7 +126,7 @@ void CChildView::OnPaint()
 
 	if (timer == 0)
 	{
-		SetTimer(1, 500, NULL);
+		SetTimer(1, 100, NULL);
 	}
 
 	CPaintDC dc(this); // device context for painting
@@ -138,8 +141,8 @@ void CChildView::OnPaint()
 	int yHeight = screenRectSize.bottom - screenRectSize.top;
 	Graphics drawGraphics(mDC.GetDC());
 	ImageAttributes ImgAttr;
-	//for the draw method
-	//display it
+
+
 	Bitmap* displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(xWidth, yHeight);
 	Bitmap* displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(xWidth, yHeight);
 	Bitmap* displayNewMidground = (Bitmap*)bmpMidground->GetThumbnailImage(xWidth, yHeight);
@@ -158,11 +161,27 @@ void CChildView::OnPaint()
 	drawGraphics.DrawImage(displayNewBackground, 0, 0, xWidth, yHeight);
 	drawGraphics.DrawImage(displayNewMidground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttForeground);
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
+	
+	drawGraphics.DrawImage(slingshot1, 10, yHeight - (yHeight *.2), (int)(xWidth*0.06), (int)(yHeight*0.1));
+	if (bird.getBirdFalling() == false)
+	{
+		drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
+	}
+	else
+	{
 
+		//Matrix matrix;
+		//matrix.Translate(bird.getXBirdPos(), bird.getYBirdPos());
+		//matrix.RotateAt(30.0f, PointF(150.0f, 100.0f), MatrixOrderAppend);
 
-	drawGraphics.DrawImage(slingshot1, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
-	drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
-	drawGraphics.DrawImage(slingshot2, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
+		//drawGraphics.SetTransform(&matrix);
+
+		//drawGraphics.RotateTransform(rotation += 5.0f);
+		drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
+	}
+	
+	drawGraphics.DrawImage(slingshot2, 10, (yHeight - yHeight * .2), (int)(xWidth*0.06), (int)(yHeight*0.1));
+
 	delete displayNewBackground;
 	delete displayNewForeground;
 	delete displayNewMidground;
