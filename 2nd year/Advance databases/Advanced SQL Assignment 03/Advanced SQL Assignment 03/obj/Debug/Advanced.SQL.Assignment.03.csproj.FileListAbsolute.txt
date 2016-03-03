@@ -10,3 +10,15 @@ c:\users\administrator\desktop\Advanced SQL Assignment 03\Advanced SQL Assignmen
 c:\users\administrator\desktop\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Interop.ADODB.dll
 c:\users\administrator\desktop\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Interop.MSDASC.dll
 c:\users\administrator\desktop\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Advanced SQL Assignment 03.csproj.ResolveComReference.cache
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\bin\Debug\Advanced SQL Assignment 03.exe.config
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Interop.ADODB.dll
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Interop.MSDASC.dll
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Advanced.SQL.Assignment.03.csproj.ResolveComReference.cache
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\bin\Debug\Advanced SQL Assignment 03.exe
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\bin\Debug\Advanced SQL Assignment 03.pdb
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Advanced_SQL_Assignment_03.Form1.resources
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Advanced_SQL_Assignment_03.Properties.Resources.resources
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Advanced.SQL.Assignment.03.csproj.GenerateResource.Cache
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Advanced SQL Assignment 03.exe
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Advanced SQL Assignment 03.pdb
+C:\Users\William Pring\Desktop\Stuff\School\SET\2nd year\Advance databases\Advanced SQL Assignment 03\Advanced SQL Assignment 03\obj\Debug\Advanced.SQL.Assignment.03.csprojResolveAssemblyReference.cache

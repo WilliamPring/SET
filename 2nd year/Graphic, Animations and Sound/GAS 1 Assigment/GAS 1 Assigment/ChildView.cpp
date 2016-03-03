@@ -66,14 +66,12 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	int x = point.x;
 	int y = point.y; 
-	int xCompPlus = bird.getXBirdPos() + ((bird.getScreenWidth()* 0.09)/2);
-	int xCompMinus = bird.getXBirdPos() - ((bird.getScreenWidth()* 0.09) / 2);
-	int yCompPlus = bird.getYBirdPos() + ((bird.getScreenWidth() * 0.06) / 2);
-	int yCompMinus = bird.getYBirdPos() - ((bird.getScreenWidth() * 0.06) / 2);
+	int xCompPlus = bird.getXBirdPos() + ((bird.getScreenWidth()* 0.04));
+	int yCompPlus = bird.getYBirdPos() + ((bird.getScreenWidth()* 0.03));
 	if (bird.getBirdFalling() == false)
 	{
 		PlaySound(L"res//slingshotsound.wav", NULL, SND_FILENAME| SND_ASYNC);
-		if (((x >= xCompMinus) && (x <= xCompPlus)) && (y <= yCompPlus)&& (y >= yCompMinus))
+		if (((x >= bird.getXBirdPos()) && (x <= xCompPlus)) && (y <= yCompPlus)&& (y >= bird.getYBirdPos()))
 		{
 			PlaySound(L"res//SPLAT_Sound_Effects.wav", NULL, SND_FILENAME | SND_ASYNC);
 			bird.setBirdFalling(true);

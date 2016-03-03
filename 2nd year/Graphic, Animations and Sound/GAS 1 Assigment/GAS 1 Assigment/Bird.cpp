@@ -105,7 +105,7 @@ void Bird::setBirdFalling(bool statusOfFall)
 void Bird::birdDieingToDeath()
 {
 	xBirdPos = xBirdPos + 19;
-	yBirdPos = yBirdPos + birdVelocity;
+	yBirdPos = yBirdPos + 19;
 }
 
 bool Bird::getBirdFalling()
