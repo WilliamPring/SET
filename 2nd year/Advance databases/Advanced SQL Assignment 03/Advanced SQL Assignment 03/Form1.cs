@@ -41,7 +41,7 @@ namespace Advanced_SQL_Assignment_03
             {
                  errorMessageTotal += "Connection String Error\n";
             }
-            if (errorMessageTotal != "Error List\n")
+            if (errorMessageTotal != "Error List:\n\n")
             {
                 System.Windows.Forms.MessageBox.Show(errorMessageTotal);
             }

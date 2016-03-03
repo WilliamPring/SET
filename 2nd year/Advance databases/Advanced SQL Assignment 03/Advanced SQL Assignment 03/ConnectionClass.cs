@@ -77,18 +77,39 @@ namespace Advanced_SQL_Assignment_03
 
                 try
                 {
+                    OleDbParameter pr = new OleDbParameter();
                     foreach (DataRow dr in ds.Rows)
                     {
-                        query = "INSERT INTO [" + tableSend + "] VALUES('";
+                        //query = "INSERT INTO [" + tableSend + "] VALUES('";
+                        //for (int i = 0; i < dr.ItemArray.Length; i++)
+                        //{
+                        //    query += dr.ItemArray[i].ToString();
+                        //    if (i != (dr.ItemArray.Length - 1))
+                        //    {
+                        //        query += "','";
+                        //    }
+                        //}
+                        //query += "');";
+
+                        command.Parameters.Clear();
+                        query = "INSERT INTO [" + tableSend + "] VALUES(";
                         for (int i = 0; i < dr.ItemArray.Length; i++)
                         {
-                            query += dr.ItemArray[i].ToString();
+                            query += "?";
+
+                            pr = new OleDbParameter();
+                            pr.ParameterName = i.ToString();
+                            pr.Value = dr.ItemArray[i];
+
+                            command.Parameters.Add(pr);
+
                             if (i != (dr.ItemArray.Length - 1))
                             {
-                                query += "','";
+                                query += ",";
                             }
                         }
-                        query += "');";
+                        query += ");";
+
                         command.CommandText = query;
                         errorOrNot = command.ExecuteNonQuery();
                     }
