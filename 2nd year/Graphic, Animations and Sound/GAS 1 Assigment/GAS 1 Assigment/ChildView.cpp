@@ -13,16 +13,19 @@
 #endif
 
 ULONG_PTR gdiplusToken;
-// CChildView
-
 int timer;
 Bitmap* bmpBackground;
 Bitmap* bmpForeground;
 Bitmap* bmpMidground;
+Bitmap* displayNewMidground;
+Bitmap* displayNewForeground;
+Bitmap* displayNewBackground; 
 Image* slingshot1;
 Image* reptile;
 Image* slingshot2;
 Bird bird;
+RECT screenRectSize;
+float rotation = 0.0f;
 
 CChildView::CChildView()
 {
@@ -63,14 +66,16 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	int x = point.x;
 	int y = point.y; 
-	int xComp = bird.getXBirdPos();
-	int yComp = bird.getBirdHitBoxY();
+	int xCompPlus = bird.getXBirdPos() + ((bird.getScreenWidth()* 0.09)/2);
+	int xCompMinus = bird.getXBirdPos() - ((bird.getScreenWidth()* 0.09) / 2);
+	int yCompPlus = bird.getYBirdPos() + ((bird.getScreenWidth() * 0.06) / 2);
+	int yCompMinus = bird.getYBirdPos() - ((bird.getScreenWidth() * 0.06) / 2);
 	if (bird.getBirdFalling() == false)
 	{
-		PlaySound(L"res//slingshotsound.wav", NULL, SND_ASYNC);
-		if ((x > xComp) && (x < bird.getBirdHitBoxX()) && (y * 1.21 >= yComp) && (y * 1.09 < bird.getBirdHitBoxY()))
+		PlaySound(L"res//slingshotsound.wav", NULL, SND_FILENAME| SND_ASYNC);
+		if (((x >= xCompMinus) && (x <= xCompPlus)) && (y <= yCompPlus)&& (y >= yCompMinus))
 		{
-			PlaySound(L"res//SPLAT_Sound_Effects.wav", 0, SND_ASYNC);
+			PlaySound(L"res//SPLAT_Sound_Effects.wav", NULL, SND_FILENAME | SND_ASYNC);
 			bird.setBirdFalling(true);
 		}
 	}
@@ -85,7 +90,15 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	}
 	else
 	{
-		
+		bird.birdDieingToDeath();
+		PlaySound(L"res//CartoonFalling2.wav", 0, SND_NOSTOP|SND_ASYNC| SND_LOOP);
+		if (bird.getYBirdPos() > bird.getPointOfNoReturn())
+		{
+			bird.setBirdFalling(false); 
+			int xWidth = screenRectSize.right - screenRectSize.left;
+			bird.setXBirdPos(xWidth + 1);
+			PlaySound(NULL, 0, SND_ASYNC); 
+		}
 	}
 	this->Invalidate();
 }
@@ -104,9 +117,6 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	cs.style &= ~WS_BORDER;
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
-
-
-
 	return TRUE;
 }
 
@@ -120,48 +130,36 @@ BOOL CChildView::OnEraseBkgnd(CDC* pDC)
 
 void CChildView::OnPaint()
 {
-
 	if (timer == 0)
 	{
-		SetTimer(1, 500, NULL);
+		SetTimer(1, 120, NULL);
 	}
-
 	CPaintDC dc(this); // device context for painting
-	//Rectangle
-	RECT screenRectSize;
-	//get dimension for the rectangle
-	GetWindowRect(&screenRectSize);
 	CMemDC mDC((CDC&)dc, this);
-	//get size for the background
+	GetWindowRect(&screenRectSize);
 	int xWidth = screenRectSize.right - screenRectSize.left;
-	//get the size for the height
 	int yHeight = screenRectSize.bottom - screenRectSize.top;
+	bird.setScreenHeight(yHeight);
+	bird.setScreenWidth(xWidth);
 	Graphics drawGraphics(mDC.GetDC());
+	Graphics drawBird(mDC.GetDC());
 	ImageAttributes ImgAttr;
-	//for the draw method
 	//display it
-	Bitmap* displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(xWidth, yHeight);
-	Bitmap* displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(xWidth, yHeight);
-	Bitmap* displayNewMidground = (Bitmap*)bmpMidground->GetThumbnailImage(xWidth, yHeight);
-	Color pixleBackground;
-	Color pixleForeground;
-	Color pixleMidground;
-	displayNewBackground->GetPixel(0, 0, &pixleBackground);
-	displayNewForeground->GetPixel(0, 0, &pixleForeground);
-	displayNewMidground->GetPixel(0, 0, &pixleMidground);
+	displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(xWidth, yHeight);
+	displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(xWidth, yHeight);
+	displayNewMidground = (Bitmap*)bmpMidground->GetThumbnailImage(xWidth, yHeight);
+
+
 	ImageAttributes imgAttMiddleground;
-	imgAttMiddleground.SetColorKey(pixleMidground, pixleMidground, ColorAdjustTypeBitmap);
-
-	ImageAttributes imgAttForeground;
-	imgAttForeground.SetColorKey(pixleForeground, pixleForeground, ColorAdjustTypeBitmap);
-	//drawing the background
+	ImageAttributes imgAttrForeground;
+	imgAttMiddleground.SetColorKey(Color(0, 200, 0), Color(255, 255, 255));
+	imgAttrForeground.SetColorKey(Color(0, 120, 0), Color(255, 255, 255));
+	
 	drawGraphics.DrawImage(displayNewBackground, 0, 0, xWidth, yHeight);
-	drawGraphics.DrawImage(displayNewMidground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttForeground);
-	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
-
-
+	drawGraphics.DrawImage(displayNewMidground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
+	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttrForeground);
 	drawGraphics.DrawImage(slingshot1, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
-	drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
+	drawBird.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
 	drawGraphics.DrawImage(slingshot2, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
 	delete displayNewBackground;
 	delete displayNewForeground;

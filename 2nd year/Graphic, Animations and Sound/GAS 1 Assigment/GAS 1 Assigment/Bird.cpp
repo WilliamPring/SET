@@ -17,43 +17,11 @@ Bird::Bird()
 	yBirdPos = orgion;
 	birdFallingMode = false;
 	SetUpBirdMovement();
-	birdHitBoxX = xBirdPos + HitBoxDimension;
-	birdHitBoxY = yBirdPos + HitBoxDimension;
-}
- 
-void Bird::setBirdFalling(bool statusOfFall)
-{
-	birdFallingMode = statusOfFall;
+	birdHitBoxX = xBirdPos +( xBirdPos *.1);
+	birdHitBoxY = yBirdPos + (yBirdPos*.1);
+	pointOfNoReturn = screenHeight * .85;
 }
 
-void Bird::playFallingSound()
-{
-	PlaySound(L"CartoonFalling.wav", NULL, SND_ASYNC);
-}
-
-bool Bird::getBirdFalling()
-{
-	return birdFallingMode;
-}
-int Bird::getBirdHitBoxY()
-{
-	return birdHitBoxY;
-}
-
-int Bird::getBirdHitBoxX()
-{
-	return birdHitBoxX;
-}
-
-int Bird::getYBirdPos()
-{
-	return yBirdPos;
-}
-
-int Bird::getXBirdPos()
-{
-	return xBirdPos;
-}
 
 void Bird::SetUpBirdMovement()
 {
@@ -64,7 +32,7 @@ void Bird::SetUpBirdMovement()
 	//lowest point bird will go to
 	lowPotentialHeight = orgion + (orgion - highPotentialHeight);
 	//speed of the movement 
-	birdVelocity = (rand() % (10 - 4)) + 4;
+	birdVelocity = (rand() % (20 - 4)) + 4;
 
 }
 
@@ -78,6 +46,7 @@ void Bird::MoveBird()
 		xBirdPos = 0;
 		yBirdPos = orgion;
 		SetUpBirdMovement();
+		Sleep(1000);
 	}
 	else
 	{
@@ -98,8 +67,8 @@ void Bird::MoveBird()
 			}
 		}
 	}
-	birdHitBoxX = xBirdPos + HitBoxDimension;
-	birdHitBoxY = yBirdPos + HitBoxDimension;
+	birdHitBoxX = xBirdPos + (xBirdPos *.1);
+	birdHitBoxY = yBirdPos + (yBirdPos*.1);
 }
 
 
@@ -112,16 +81,75 @@ int Bird::SetUpReferencePoints(int screenSizeHeight)
 	return startPosition;
 }
 
-Bird::~Bird()
-{
 
+int Bird::getPointOfNoReturn()
+{
+	return pointOfNoReturn;
 }
 
+void Bird::setPointOfNoReturn(int pointOfDeath)
+{
+	pointOfNoReturn = pointOfDeath * .85;
+}
 
+void Bird::setXBirdPos(int curPost)
+{
+	xBirdPos = curPost;
+}
 
+void Bird::setBirdFalling(bool statusOfFall)
+{
+	birdFallingMode = statusOfFall;
+}
+
+void Bird::birdDieingToDeath()
+{
+	xBirdPos = xBirdPos + 19;
+	yBirdPos = yBirdPos + birdVelocity;
+}
+
+bool Bird::getBirdFalling()
+{
+	return birdFallingMode;
+}
+int Bird::getBirdHitBoxY()
+{
+	return birdHitBoxY;
+}
+
+int Bird::getScreenHeight()
+{
+	return screenHeight;
+}
+
+int Bird::getScreenWidth()
+{
+	return screenWidth;
+}
+
+int Bird::getBirdHitBoxX()
+{
+	return birdHitBoxX;
+}
+
+int Bird::getYBirdPos()
+{
+	return yBirdPos;
+}
+
+int Bird::getXBirdPos()
+{
+	return xBirdPos;
+}
+
+void Bird::setScreenWidth(int screenWidth)
+{
+	this->screenWidth = screenWidth;
+}
 
 void Bird::setScreenHeight(int screenHeight)
 {
+	setPointOfNoReturn(screenHeight);
 	this->screenHeight = screenHeight;
 }
 
