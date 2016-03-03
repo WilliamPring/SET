@@ -126,7 +126,7 @@ void CChildView::OnPaint()
 
 	if (timer == 0)
 	{
-		SetTimer(1, 100, NULL);
+		SetTimer(1, 300, NULL);
 	}
 
 	CPaintDC dc(this); // device context for painting
@@ -140,6 +140,8 @@ void CChildView::OnPaint()
 	//get the size for the height
 	int yHeight = screenRectSize.bottom - screenRectSize.top;
 	Graphics drawGraphics(mDC.GetDC());
+	Graphics drawBird(mDC.GetDC());
+
 	ImageAttributes ImgAttr;
 
 
@@ -163,23 +165,18 @@ void CChildView::OnPaint()
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
 	
 	drawGraphics.DrawImage(slingshot1, 10, yHeight - (yHeight *.2), (int)(xWidth*0.06), (int)(yHeight*0.1));
-	if (bird.getBirdFalling() == false)
+	if (bird.getBirdFalling() == true)
 	{
-		drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
-	}
-	else
-	{
-
-		//Matrix matrix;
 		//matrix.Translate(bird.getXBirdPos(), bird.getYBirdPos());
 		//matrix.RotateAt(30.0f, PointF(150.0f, 100.0f), MatrixOrderAppend);
-
+		drawBird.TranslateTransform(0, 0);
+		drawBird.RotateTransform(5.0f, MatrixOrderAppend);
 		//drawGraphics.SetTransform(&matrix);
 
 		//drawGraphics.RotateTransform(rotation += 5.0f);
-		drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
 	}
-	
+	drawBird.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
+
 	drawGraphics.DrawImage(slingshot2, 10, (yHeight - yHeight * .2), (int)(xWidth*0.06), (int)(yHeight*0.1));
 
 	delete displayNewBackground;
