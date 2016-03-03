@@ -22,6 +22,51 @@ Bird::Bird()
 	pointOfNoReturn = screenHeight * .85;
 }
 
+<<<<<<< HEAD
+
+
+bool Bird::getBirdFalling()
+{
+	return birdFallingMode;
+}
+int Bird::getBirdHitBoxY()
+{
+	return birdHitBoxY;
+}
+
+int Bird::getBirdHitBoxX()
+{
+	return birdHitBoxX;
+}
+
+int Bird::getYBirdPos()
+{
+	return yBirdPos;
+}
+
+int Bird::getXBirdPos()
+{
+	return xBirdPos;
+}
+=======
+>>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
+
+
+void Bird::BirdFallingToDeath()
+{
+	disappearBird = screenHeight - (screenHeight * .82);
+	/*if ((screenHeight - xBirdPos <= disappearBird))
+	{
+		orgion = SetUpReferencePoints(screenHeight);
+		xBirdPos = 0;
+		yBirdPos = orgion;
+		SetUpBirdMovement();
+		birdFallingMode = false;
+	}*/
+	xBirdPos += 12;
+	yBirdPos += birdVelocity;
+
+}
 
 void Bird::SetUpBirdMovement()
 {
@@ -39,7 +84,6 @@ void Bird::SetUpBirdMovement()
 void Bird::MoveBird()
 {
 	xBirdPos += 12;
-
 	if (xBirdPos > screenWidth)
 	{
 		orgion = SetUpReferencePoints(screenHeight);
