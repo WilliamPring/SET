@@ -47,7 +47,7 @@ namespace Advanced_SQL_Assignment_03
             try
             {
                 connectionSrc.Open();
-                string queryRecv = "Select * FROM " + tableRecv;
+                string queryRecv = "Select * FROM [" + tableRecv + "]";
                 OleDbDataAdapter adapter = new OleDbDataAdapter(queryRecv, connectionSrc);
                 adapter.Fill(ds);
                 adapter.Dispose();
@@ -79,7 +79,7 @@ namespace Advanced_SQL_Assignment_03
                 {
                     foreach (DataRow dr in ds.Rows)
                     {
-                        query = "INSERT INTO " + tableSend + " VALUES('";
+                        query = "INSERT INTO [" + tableSend + "] VALUES('";
                         for (int i = 0; i < dr.ItemArray.Length; i++)
                         {
                             query += dr.ItemArray[i].ToString();
@@ -95,6 +95,7 @@ namespace Advanced_SQL_Assignment_03
                 }
                 catch (Exception ex)
                 {
+                    status = true;
                     trans.Rollback();
                 }
             }
@@ -102,8 +103,10 @@ namespace Advanced_SQL_Assignment_03
             {
                 status = true;
             }
-
-
+            if (status != true)
+            {
+                trans.Commit();
+            }
 
             return status;
         }

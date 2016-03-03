@@ -26,6 +26,7 @@ namespace Advanced_SQL_Assignment_03
 
         private void submit_Click(object sender, EventArgs e)
         {
+            string tableSrc = "";
             string tableReading = "";
             string errorMessageTotal = "Error List\n";
             if ((sourceTable.TextLength ==0) || (destinationTable.TextLength ==0))
@@ -38,16 +39,25 @@ namespace Advanced_SQL_Assignment_03
             }
             if (errorMessageTotal != "Error List\n")
             {
-                 errorMessage.Text = errorMessageTotal; 
+                errorMessages.Text = errorMessageTotal; 
             }
             else
             {
                 tableReading = sourceTable.Text;
-                ConnectionClass connection = new ConnectionClass(sourceConnectionString, destinationConnectionString, tableReading);
+                tableSrc = destinationTable.Text;
+                ConnectionClass connection = new ConnectionClass(sourceConnectionString, destinationConnectionString, tableReading, tableSrc);
                 bool status = connection.Connect();
                 if(status == false)
                 {
-                    connection.GetInformation(); 
+                    status = connection.GetInformation();
+                    if (status == false)
+                    {
+                        connection.SetInformation();
+                    }
+                    else
+                    {
+                        //errorMessage.Text = "Error in Connection String\n";
+                    }
                 }
                 else
                 {
