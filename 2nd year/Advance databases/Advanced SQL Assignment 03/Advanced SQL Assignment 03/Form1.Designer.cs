@@ -40,11 +40,7 @@
             // 
             // submit
             // 
-<<<<<<< HEAD
             this.submit.Location = new System.Drawing.Point(19, 152);
-=======
-            this.submit.Location = new System.Drawing.Point(140, 148);
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             this.submit.Name = "submit";
             this.submit.Size = new System.Drawing.Size(189, 82);
             this.submit.TabIndex = 4;
@@ -54,11 +50,7 @@
             // 
             // sourceTable
             // 
-<<<<<<< HEAD
             this.sourceTable.Location = new System.Drawing.Point(108, 15);
-=======
-            this.sourceTable.Location = new System.Drawing.Point(95, 15);
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             this.sourceTable.Name = "sourceTable";
             this.sourceTable.Size = new System.Drawing.Size(100, 20);
             this.sourceTable.TabIndex = 8;
@@ -75,11 +67,7 @@
             // destinationTableLbl
             // 
             this.destinationTableLbl.AutoSize = true;
-<<<<<<< HEAD
             this.destinationTableLbl.Location = new System.Drawing.Point(12, 88);
-=======
-            this.destinationTableLbl.Location = new System.Drawing.Point(208, 18);
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             this.destinationTableLbl.Name = "destinationTableLbl";
             this.destinationTableLbl.Size = new System.Drawing.Size(90, 13);
             this.destinationTableLbl.TabIndex = 15;
@@ -87,11 +75,7 @@
             // 
             // destinationTable
             // 
-<<<<<<< HEAD
             this.destinationTable.Location = new System.Drawing.Point(108, 85);
-=======
-            this.destinationTable.Location = new System.Drawing.Point(323, 18);
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             this.destinationTable.Name = "destinationTable";
             this.destinationTable.Size = new System.Drawing.Size(100, 20);
             this.destinationTable.TabIndex = 13;
@@ -106,15 +90,9 @@
             // 
             // ConnectionStringSourceBtn
             // 
-<<<<<<< HEAD
             this.ConnectionStringSourceBtn.Location = new System.Drawing.Point(108, 41);
             this.ConnectionStringSourceBtn.Name = "ConnectionStringSourceBtn";
             this.ConnectionStringSourceBtn.Size = new System.Drawing.Size(100, 35);
-=======
-            this.ConnectionStringSourceBtn.Location = new System.Drawing.Point(55, 44);
-            this.ConnectionStringSourceBtn.Name = "ConnectionStringSourceBtn";
-            this.ConnectionStringSourceBtn.Size = new System.Drawing.Size(114, 82);
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             this.ConnectionStringSourceBtn.TabIndex = 24;
             this.ConnectionStringSourceBtn.Text = "Connection String Source";
             this.ConnectionStringSourceBtn.UseVisualStyleBackColor = true;
@@ -122,15 +100,9 @@
             // 
             // ConnectionStringDestinationBtn
             // 
-<<<<<<< HEAD
             this.ConnectionStringDestinationBtn.Location = new System.Drawing.Point(108, 111);
             this.ConnectionStringDestinationBtn.Name = "ConnectionStringDestinationBtn";
             this.ConnectionStringDestinationBtn.Size = new System.Drawing.Size(100, 35);
-=======
-            this.ConnectionStringDestinationBtn.Location = new System.Drawing.Point(276, 44);
-            this.ConnectionStringDestinationBtn.Name = "ConnectionStringDestinationBtn";
-            this.ConnectionStringDestinationBtn.Size = new System.Drawing.Size(125, 82);
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             this.ConnectionStringDestinationBtn.TabIndex = 25;
             this.ConnectionStringDestinationBtn.Text = "Connection String Destination";
             this.ConnectionStringDestinationBtn.UseVisualStyleBackColor = true;
@@ -140,11 +112,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(238, 241);
-=======
-            this.ClientSize = new System.Drawing.Size(454, 238);
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             this.Controls.Add(this.ConnectionStringDestinationBtn);
             this.Controls.Add(this.ConnectionStringSourceBtn);
             this.Controls.Add(this.errorMessage);

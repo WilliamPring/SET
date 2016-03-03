@@ -26,7 +26,6 @@ namespace Advanced_SQL_Assignment_03
 
         private void submit_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
             string tableSrc = "";
             string tableReading = "";
             string errorMessageTotal = "Error List:\n\n";
@@ -37,13 +36,6 @@ namespace Advanced_SQL_Assignment_03
             if (destinationTable.TextLength == 0)
             {
                 errorMessageTotal += "Error Missing Parameter For Destination Table\n";
-=======
-            string tableReading = "";
-            string errorMessageTotal = "Error List\n";
-            if ((sourceTable.TextLength ==0) || (destinationTable.TextLength ==0))
-            {
-                errorMessageTotal += "Error Missing Parameter For Database Parameters \n";
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             }
             if ((sourceConnectionString == null) || (destinationConnectionString == null))
             {
@@ -51,16 +43,11 @@ namespace Advanced_SQL_Assignment_03
             }
             if (errorMessageTotal != "Error List\n")
             {
-<<<<<<< HEAD
                 System.Windows.Forms.MessageBox.Show(errorMessageTotal);
-=======
-                 errorMessage.Text = errorMessageTotal; 
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
             }
             else
             {
                 tableReading = sourceTable.Text;
-<<<<<<< HEAD
                 tableSrc = destinationTable.Text;
                 ConnectionClass connection = new ConnectionClass(sourceConnectionString, destinationConnectionString, tableReading, tableSrc);
                 bool status = connection.Connect();
@@ -81,17 +68,6 @@ namespace Advanced_SQL_Assignment_03
                 {
                     errorMessageTotal += "Copying Table Error\n";
                     System.Windows.Forms.MessageBox.Show(errorMessageTotal);
-=======
-                ConnectionClass connection = new ConnectionClass(sourceConnectionString, destinationConnectionString, tableReading);
-                bool status = connection.Connect();
-                if(status == false)
-                {
-                    connection.GetInformation(); 
-                }
-                else
-                {
-                    errorMessage.Text = "Error in Connection String\n"; 
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
                 }
             }
         }

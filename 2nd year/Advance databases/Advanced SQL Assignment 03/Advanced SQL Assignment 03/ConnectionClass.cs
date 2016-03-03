@@ -47,11 +47,7 @@ namespace Advanced_SQL_Assignment_03
             try
             {
                 connectionSrc.Open();
-<<<<<<< HEAD
                 string queryRecv = "Select * FROM [" + tableRecv + "]";
-=======
-                string queryRecv = "Select * FROM " + tableRecv;
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
                 OleDbDataAdapter adapter = new OleDbDataAdapter(queryRecv, connectionSrc);
                 adapter.Fill(ds);
                 adapter.Dispose();
@@ -83,11 +79,7 @@ namespace Advanced_SQL_Assignment_03
                 {
                     foreach (DataRow dr in ds.Rows)
                     {
-<<<<<<< HEAD
                         query = "INSERT INTO [" + tableSend + "] VALUES('";
-=======
-                        query = "INSERT INTO " + tableSend + " VALUES('";
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
                         for (int i = 0; i < dr.ItemArray.Length; i++)
                         {
                             query += dr.ItemArray[i].ToString();
@@ -103,10 +95,7 @@ namespace Advanced_SQL_Assignment_03
                 }
                 catch (Exception ex)
                 {
-<<<<<<< HEAD
                     status = true;
-=======
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
                     trans.Rollback();
                 }
             }
@@ -114,15 +103,10 @@ namespace Advanced_SQL_Assignment_03
             {
                 status = true;
             }
-<<<<<<< HEAD
             if (status != true)
             {
                 trans.Commit();
             }
-=======
-
-
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
 
             return status;
         }
