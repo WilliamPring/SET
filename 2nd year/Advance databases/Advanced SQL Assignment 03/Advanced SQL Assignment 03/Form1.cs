@@ -28,18 +28,22 @@ namespace Advanced_SQL_Assignment_03
         {
             string tableSrc = "";
             string tableReading = "";
-            string errorMessageTotal = "Error List\n";
-            if ((sourceTable.TextLength ==0) || (destinationTable.TextLength ==0))
+            string errorMessageTotal = "Error List:\n\n";
+            if (sourceTable.TextLength ==0) 
             {
-                errorMessageTotal += "Error Missing Parameter For Database Parameters \n";
+                errorMessageTotal += "Error Missing Parameter For Source Table\n";
+            }
+            if (destinationTable.TextLength == 0)
+            {
+                errorMessageTotal += "Error Missing Parameter For Destination Table\n";
             }
             if ((sourceConnectionString == null) || (destinationConnectionString == null))
             {
                  errorMessageTotal += "Connection String Error\n";
             }
-            if (errorMessageTotal != "Error List\n")
+            if (errorMessageTotal != "Error List:\n\n")
             {
-                errorMessages.Text = errorMessageTotal; 
+                System.Windows.Forms.MessageBox.Show(errorMessageTotal);
             }
             else
             {
@@ -56,12 +60,14 @@ namespace Advanced_SQL_Assignment_03
                     }
                     else
                     {
-                        //errorMessage.Text = "Error in Connection String\n";
+                        errorMessageTotal += "Writing Table Error\n";
+                        System.Windows.Forms.MessageBox.Show(errorMessageTotal);
                     }
                 }
                 else
                 {
-                    errorMessage.Text = "Error in Connection String\n"; 
+                    errorMessageTotal += "Copying Table Error\n";
+                    System.Windows.Forms.MessageBox.Show(errorMessageTotal);
                 }
             }
         }

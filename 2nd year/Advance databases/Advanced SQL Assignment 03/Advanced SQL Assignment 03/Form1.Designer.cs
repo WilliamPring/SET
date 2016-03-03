@@ -36,7 +36,6 @@
             this.errorMessage = new System.Windows.Forms.Label();
             this.ConnectionStringSourceBtn = new System.Windows.Forms.Button();
             this.ConnectionStringDestinationBtn = new System.Windows.Forms.Button();
-            this.errorMessages = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // submit
@@ -109,20 +108,11 @@
             this.ConnectionStringDestinationBtn.UseVisualStyleBackColor = true;
             this.ConnectionStringDestinationBtn.Click += new System.EventHandler(this.ConnectionStringDestinationBtn_Click);
             // 
-            // errorMessages
-            // 
-            this.errorMessages.AutoSize = true;
-            this.errorMessages.Location = new System.Drawing.Point(223, 15);
-            this.errorMessages.Name = "errorMessages";
-            this.errorMessages.Size = new System.Drawing.Size(0, 13);
-            this.errorMessages.TabIndex = 26;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(336, 238);
-            this.Controls.Add(this.errorMessages);
+            this.ClientSize = new System.Drawing.Size(238, 241);
             this.Controls.Add(this.ConnectionStringDestinationBtn);
             this.Controls.Add(this.ConnectionStringSourceBtn);
             this.Controls.Add(this.errorMessage);
@@ -149,7 +139,6 @@
         private System.Windows.Forms.Label errorMessage;
         private System.Windows.Forms.Button ConnectionStringSourceBtn;
         private System.Windows.Forms.Button ConnectionStringDestinationBtn;
-        private System.Windows.Forms.Label errorMessages;
     }
 }
 
