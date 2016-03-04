@@ -1,6 +1,6 @@
 ﻿namespace Advanced_SQL_Assignment_03
 {
-    partial class Form1
+    partial class ASQL
     {
         /// <summary>
         /// Required designer variable.
@@ -108,7 +108,7 @@
             this.ConnectionStringDestinationBtn.UseVisualStyleBackColor = true;
             this.ConnectionStringDestinationBtn.Click += new System.EventHandler(this.ConnectionStringDestinationBtn_Click);
             // 
-            // Form1
+            // ASQL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -121,8 +121,8 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.sourceTable);
             this.Controls.Add(this.submit);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "ASQL";
+            this.Text = "ASQL-A3";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -22,13 +22,7 @@ Bird::Bird()
 	pointOfNoReturn = screenHeight * .85;
 }
 
-<<<<<<< HEAD
 
-
-bool Bird::getBirdFalling()
-{
-	return birdFallingMode;
-}
 int Bird::getBirdHitBoxY()
 {
 	return birdHitBoxY;
@@ -39,17 +33,7 @@ int Bird::getBirdHitBoxX()
 	return birdHitBoxX;
 }
 
-int Bird::getYBirdPos()
-{
-	return yBirdPos;
-}
 
-int Bird::getXBirdPos()
-{
-	return xBirdPos;
-}
-=======
->>>>>>> 1ce91a4eff736dd9ab989346dc901bfdbf041fa2
 
 
 void Bird::BirdFallingToDeath()
@@ -156,10 +140,7 @@ bool Bird::getBirdFalling()
 {
 	return birdFallingMode;
 }
-int Bird::getBirdHitBoxY()
-{
-	return birdHitBoxY;
-}
+
 
 int Bird::getScreenHeight()
 {
@@ -171,10 +152,6 @@ int Bird::getScreenWidth()
 	return screenWidth;
 }
 
-int Bird::getBirdHitBoxX()
-{
-	return birdHitBoxX;
-}
 
 int Bird::getYBirdPos()
 {
