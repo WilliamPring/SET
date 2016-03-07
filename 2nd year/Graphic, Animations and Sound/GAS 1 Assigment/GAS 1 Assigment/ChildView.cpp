@@ -25,7 +25,7 @@ Image* reptile;
 Image* slingshot2;
 Bird bird;
 RECT screenRectSize;
-
+float spin = 0.0;
 CChildView::CChildView()
 {
 	GdiplusStartupInput gdiplusStartupInput;
@@ -46,11 +46,15 @@ CChildView::~CChildView()
 	delete slingshot1;
 	delete reptile;
 	delete slingshot2;
+	delete displayNewBackground;
+	delete displayNewForeground;
+	delete displayNewMidground;
 	GdiplusShutdown(gdiplusToken); 
 }
 
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
+	ON_WM_SIZE()
 	//left button click	
 	ON_WM_LBUTTONDOWN()
 	ON_WM_PAINT()
@@ -82,7 +86,15 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 }
 
-
+void CChildView::OnSize(UINT nType, int x, int y)
+{
+	delete displayNewBackground;
+	delete displayNewForeground;
+	delete displayNewMidground;
+	displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
+	displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
+	displayNewMidground = (Bitmap*)bmpMidground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
+}
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
 	if (bird.getBirdFalling() == false)
@@ -139,10 +151,7 @@ void CChildView::OnPaint()
 	bird.setScreenHeight(yHeight);
 	bird.setScreenWidth(xWidth);
 	Graphics drawGraphics(mDC.GetDC());
-	
-	displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(xWidth, yHeight);
-	displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(xWidth, yHeight);
-	displayNewMidground = (Bitmap*)bmpMidground->GetThumbnailImage(xWidth, yHeight);
+
 
 
 	ImageAttributes imgAttMiddleground;
@@ -157,7 +166,7 @@ void CChildView::OnPaint()
 	if (bird.getBirdFalling()==true)
 	{	
 		drawGraphics.TranslateTransform(bird.getXBirdPos(), bird.getYBirdPos(), MatrixOrderAppend);
-		drawGraphics.RotateTransform(5);
+		drawGraphics.RotateTransform(spin+=5);
 		drawGraphics.DrawImage(reptile, -15, -10, (int)(bird.getScreenWidth() * 0.06), (int)(bird.getScreenHeight() * 0.06));
 		drawGraphics.ResetTransform();
 	}
@@ -165,9 +174,6 @@ void CChildView::OnPaint()
 	drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
 	drawGraphics.DrawImage(slingshot2, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
 
-	delete displayNewBackground;
-	delete displayNewForeground;
-	delete displayNewMidground;
 }
 
 
