@@ -39,16 +39,8 @@ int Bird::getBirdHitBoxX()
 void Bird::BirdFallingToDeath()
 {
 	disappearBird = screenHeight - (screenHeight * .82);
-	/*if ((screenHeight - xBirdPos <= disappearBird))
-	{
-		orgion = SetUpReferencePoints(screenHeight);
-		xBirdPos = 0;
-		yBirdPos = orgion;
-		SetUpBirdMovement();
-		birdFallingMode = false;
-	}*/
 	xBirdPos += 12;
-	yBirdPos += birdVelocity;
+	yBirdPos += 12;
 
 }
 
@@ -61,7 +53,7 @@ void Bird::SetUpBirdMovement()
 	//lowest point bird will go to
 	lowPotentialHeight = orgion + (orgion - highPotentialHeight);
 	//speed of the movement 
-	birdVelocity = (rand() % (20 - 4)) + 4;
+	birdVelocity = (rand() % (15 - 4)) + 4;
 
 }
 
@@ -132,8 +124,8 @@ void Bird::setBirdFalling(bool statusOfFall)
 
 void Bird::birdDieingToDeath()
 {
-	xBirdPos = xBirdPos + 19;
-	yBirdPos = yBirdPos + 19;
+	xBirdPos = xBirdPos + 11;
+	yBirdPos = yBirdPos + 11;
 }
 
 bool Bird::getBirdFalling()

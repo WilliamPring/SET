@@ -76,7 +76,6 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 		if (((x >= bird.getXBirdPos()) && (x <= xCompPlus)) && (y <= yCompPlus)&& (y >= bird.getYBirdPos()))
 		{
 			PlaySound(L"res//SPLAT_Sound_Effects.wav", NULL, SND_ASYNC);
-			Sleep(1);
 			bird.setBirdFalling(true);
 		}
 		else
@@ -141,7 +140,7 @@ void CChildView::OnPaint()
 {
 	if (timer == 0)
 	{
-		SetTimer(1, 100, NULL);
+		SetTimer(1, 200, NULL);
 	}
 	CPaintDC dc(this); // device context for painting
 	CMemDC mDC((CDC&)dc, this);
@@ -162,7 +161,7 @@ void CChildView::OnPaint()
 	drawGraphics.DrawImage(displayNewBackground, 0, 0, xWidth, yHeight);
 	drawGraphics.DrawImage(displayNewMidground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttrForeground);
-	drawGraphics.DrawImage(slingshot1, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
+	drawGraphics.DrawImage(slingshot1, 10, yHeight - 60, (int)(xWidth*0.06), (int)(yHeight*0.1));
 	if (bird.getBirdFalling()==true)
 	{	
 		drawGraphics.TranslateTransform(bird.getXBirdPos(), bird.getYBirdPos(), MatrixOrderAppend);
@@ -171,8 +170,11 @@ void CChildView::OnPaint()
 		drawGraphics.ResetTransform();
 	}
 	else
-	drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
-	drawGraphics.DrawImage(slingshot2, 10, yHeight - 140, (int)(xWidth*0.06), (int)(yHeight*0.1));
+	{
+		spin = 0;
+		drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
+	}
+	drawGraphics.DrawImage(slingshot2, 10, yHeight - 60, (int)(xWidth*0.06), (int)(yHeight*0.1));
 
 }
 
