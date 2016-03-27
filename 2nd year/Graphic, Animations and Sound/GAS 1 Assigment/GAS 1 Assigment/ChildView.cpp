@@ -11,7 +11,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
+HCURSOR   slingShot;
 ULONG_PTR gdiplusToken;
 int timer;
 Bitmap* bmpBackground;
@@ -20,22 +20,34 @@ Bitmap* bmpMidground;
 Bitmap* displayNewMidground;
 Bitmap* displayNewForeground;
 Bitmap* displayNewBackground; 
-Image* slingshot1;
-Image* reptile;
+Image* deadBird;
+bool status;
+Image* gifOfPiggy[4];
+Image* logoDontSueMe;
+HCURSOR myCur;
 Image* slingshot2;
 Bird bird;
 RECT screenRectSize;
 float spin = 0.0;
+bool explo;
 CChildView::CChildView()
 {
+	explo = false;
 	GdiplusStartupInput gdiplusStartupInput;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 	bmpBackground = (Bitmap*)Image::FromFile(L"res//Background.bmp");
 	bmpForeground = (Bitmap*)Image::FromFile(L"res//Foreground.bmp");
 	bmpMidground = (Bitmap*)Image::FromFile(L"res//Midground.bmp");
-	slingshot1 = Gdiplus::Image::FromFile(L"res//slingshot1.png");
-	reptile = Gdiplus::Image::FromFile(L"res//reptile.png");
-	slingshot2 = Gdiplus::Image::FromFile(L"res//slingshot2.png");
+	gifOfPiggy[0] = Gdiplus::Image::FromFile(L"res//p0.gif");
+	gifOfPiggy[1] = Gdiplus::Image::FromFile(L"res//p1.gif");
+	gifOfPiggy[2] = Gdiplus::Image::FromFile(L"res//p2.gif");
+	gifOfPiggy[3] = Gdiplus::Image::FromFile(L"res//p3.gif");
+	deadBird = Gdiplus::Image::FromFile(L"res//dead.gif");
+	myCur = LoadCursorFromFile(L"res//fus.cur");
+	logoDontSueMe = Gdiplus::Image::FromFile(L"res//exp.png");
+	//logoDontSueMe = Gdiplus::Image::FromFile(L"res//exp.PNG");
+	
+	int counter =0;
 }
 
 CChildView::~CChildView()
@@ -43,9 +55,10 @@ CChildView::~CChildView()
 	delete bmpBackground;
 	delete bmpForeground;
 	delete bmpMidground;
-	delete slingshot1;
-	delete reptile;
-	delete slingshot2;
+	delete gifOfPiggy[0];
+	delete gifOfPiggy[1];
+	delete gifOfPiggy[2];
+	delete gifOfPiggy[3];
 	delete displayNewBackground;
 	delete displayNewForeground;
 	delete displayNewMidground;
@@ -60,6 +73,7 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
 	//timer
 	ON_WM_TIMER()
+	ON_WM_SETCURSOR()
 	//doublebuffering
 	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
@@ -69,8 +83,8 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	int x = point.x;
 	int y = point.y; 
-	int xCompPlus = bird.getXBirdPos() + ((bird.getScreenWidth()* 0.04));
-	int yCompPlus = bird.getYBirdPos() + ((bird.getScreenWidth()* 0.03));
+	int xCompPlus = bird.getXBirdPos() + ((bird.getScreenWidth()* 0.08));
+	int yCompPlus = bird.getYBirdPos() + ((bird.getScreenWidth()* 0.08));
 	if (bird.getBirdFalling() == false)
 	{
 		if (((x >= bird.getXBirdPos()) && (x <= xCompPlus)) && (y <= yCompPlus)&& (y >= bird.getYBirdPos()))
@@ -83,6 +97,7 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 			PlaySound(L"res//slingshotsound.wav", NULL, SND_FILENAME | SND_ASYNC);
 		}
 	}
+	explo = true;
 }
 
 void CChildView::OnSize(UINT nType, int x, int y)
@@ -90,6 +105,13 @@ void CChildView::OnSize(UINT nType, int x, int y)
 	delete displayNewBackground;
 	delete displayNewForeground;
 	delete displayNewMidground;
+	RECT screenSize;
+	GetWindowRect(&screenSize);
+
+	bird.setScreenHeight(screenSize.bottom - screenSize.top);
+	bird.setScreenWidth(screenSize.right - screenSize.left);
+
+
 	displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
 	displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
 	displayNewMidground = (Bitmap*)bmpMidground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
@@ -109,7 +131,8 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 			bird.setBirdFalling(false); 
 			int xWidth = screenRectSize.right - screenRectSize.left;
 			bird.setXBirdPos(xWidth + 1);
-			PlaySound(NULL, 0, SND_ASYNC); 
+			PlaySound(NULL, 0, SND_ASYNC);
+			Sleep(1000);
 		}
 	}
 	this->Invalidate();
@@ -125,10 +148,20 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	cs.style &= ~WS_BORDER;
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
+
 	return TRUE;
 }
 
 
+	BOOL CChildView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
+	{
+		if (m_ChangeCursor)
+		{
+			SetCursor(myCur);
+			return TRUE;
+		}
+		return CChildView::OnSetCursor(pWnd, nHitTest, message);
+	}
 
 BOOL CChildView::OnEraseBkgnd(CDC* pDC)
 {
@@ -142,39 +175,45 @@ void CChildView::OnPaint()
 	{
 		SetTimer(1, 200, NULL);
 	}
+
 	CPaintDC dc(this); // device context for painting
 	CMemDC mDC((CDC&)dc, this);
 	GetWindowRect(&screenRectSize);
+	//set the screen size
 	int xWidth = screenRectSize.right - screenRectSize.left;
 	int yHeight = screenRectSize.bottom - screenRectSize.top;
 	bird.setScreenHeight(yHeight);
 	bird.setScreenWidth(xWidth);
 	Graphics drawGraphics(mDC.GetDC());
-
-
-
 	ImageAttributes imgAttMiddleground;
 	ImageAttributes imgAttrForeground;
+
+	//key to remove the green line
 	imgAttMiddleground.SetColorKey(Color(0, 200, 0), Color(255, 255, 255));
 	imgAttrForeground.SetColorKey(Color(0, 107, 0), Color(255, 255, 255));
-	
+	//draw background
 	drawGraphics.DrawImage(displayNewBackground, 0, 0, xWidth, yHeight);
 	drawGraphics.DrawImage(displayNewMidground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttrForeground);
-	drawGraphics.DrawImage(slingshot1, 10, yHeight - 60, (int)(xWidth*0.06), (int)(yHeight*0.1));
+	
+
 	if (bird.getBirdFalling()==true)
-	{	
+	{
 		drawGraphics.TranslateTransform(bird.getXBirdPos(), bird.getYBirdPos(), MatrixOrderAppend);
 		drawGraphics.RotateTransform(spin+=5);
-		drawGraphics.DrawImage(reptile, -15, -10, (int)(bird.getScreenWidth() * 0.06), (int)(bird.getScreenHeight() * 0.06));
+		drawGraphics.DrawImage(deadBird, -15, -10, (int)(bird.getScreenWidth() * 0.08), (int)(bird.getScreenHeight() * 0.08));
 		drawGraphics.ResetTransform();
 	}
 	else
 	{
-		spin = 0;
-		drawGraphics.DrawImage(reptile, bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
+		bird.changeFlyPos();
+		drawGraphics.DrawImage(gifOfPiggy[bird.getBirdFlyPos()], bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.08), (int)(yHeight*0.08));
 	}
-	drawGraphics.DrawImage(slingshot2, 10, yHeight - 60, (int)(xWidth*0.06), (int)(yHeight*0.1));
+	if (explo == true)
+	{
+		drawGraphics.DrawImage(logoDontSueMe, 0, 0, (int)(bird.getScreenWidth()), (int)(bird.getScreenHeight()));
+		explo = false;
+	}
 
 }
 

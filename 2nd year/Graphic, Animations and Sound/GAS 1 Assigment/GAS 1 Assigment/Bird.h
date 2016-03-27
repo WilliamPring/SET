@@ -21,6 +21,8 @@ public:
 	void MoveBird();
 	void birdDieingToDeath();
 	int getPointOfNoReturn();
+	int getBirdFlyPos();
+	void changeFlyPos(); 
 	void setPointOfNoReturn(int pointOfDeath);
 private:
 	int birdHitBoxX;
@@ -30,6 +32,8 @@ private:
 	int birdVelocity;
 	bool birdFallingMode;
 	int xBirdPos;
+	bool horizontalDir;
+	int birdFlyPos;
 	int yBirdPos;
 	int orgion;
 	int highPotentialHeight;

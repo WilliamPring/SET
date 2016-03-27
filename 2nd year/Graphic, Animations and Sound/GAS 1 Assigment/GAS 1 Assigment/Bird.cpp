@@ -3,6 +3,7 @@
 
 Bird::Bird()
 {
+	birdFlyPos = 0;
 	srand(unsigned(time(NULL)));
 	toggle = true;
 	screenHeight = 423;	
@@ -13,6 +14,7 @@ Bird::Bird()
 	orgion = SetUpReferencePoints(screenHeight);
 	//Bird start postion for now in terms of 
 	xBirdPos = 0;
+	horizontalDir = true;
 	//bird starting height for now
 	yBirdPos = orgion;
 	birdFallingMode = false;
@@ -33,8 +35,18 @@ int Bird::getBirdHitBoxX()
 	return birdHitBoxX;
 }
 
-
-
+void Bird::changeFlyPos()
+{
+	birdFlyPos++;
+	if (birdFlyPos == 4)
+	{
+		birdFlyPos = 0;
+	}
+}
+int Bird::getBirdFlyPos()
+{
+	return birdFlyPos;
+}
 
 void Bird::BirdFallingToDeath()
 {
@@ -59,17 +71,20 @@ void Bird::SetUpBirdMovement()
 
 void Bird::MoveBird()
 {
+	//	xBirdPos += rand() % 17 + (-8);
+
 	xBirdPos += 12;
+	//setting up reference points
 	if (xBirdPos > screenWidth)
 	{
 		orgion = SetUpReferencePoints(screenHeight);
 		xBirdPos = 0;
 		yBirdPos = orgion;
 		SetUpBirdMovement();
-		Sleep(1000);
 	}
 	else
 	{
+		
 		if (toggle == false)
 		{
 			yBirdPos += birdVelocity;
@@ -124,8 +139,8 @@ void Bird::setBirdFalling(bool statusOfFall)
 
 void Bird::birdDieingToDeath()
 {
-	xBirdPos = xBirdPos + 11;
-	yBirdPos = yBirdPos + 11;
+	xBirdPos = xBirdPos + 8;
+	yBirdPos = yBirdPos + 8;
 }
 
 bool Bird::getBirdFalling()
