@@ -6,22 +6,15 @@ Bird::Bird()
 	birdFlyPos = 0;
 	srand(unsigned(time(NULL)));
 	toggle = true;
-	screenHeight = 423;	
-	screenWidth = 1009;
+	screenHeight = 0;	
+	screenWidth = 0;
 	//setting the bird velocity
 	birdVelocity = 0;
 	//set up where it will first start the bird 
-	orgion = SetUpReferencePoints(screenHeight);
-	//Bird start postion for now in terms of 
-	xBirdPos = 0;
-	horizontalDir = true;
-	//bird starting height for now
-	yBirdPos = orgion;
 	birdFallingMode = false;
-	SetUpBirdMovement();
-	birdHitBoxX = xBirdPos +( xBirdPos *.1);
-	birdHitBoxY = yBirdPos + (yBirdPos*.1);
-	pointOfNoReturn = screenHeight * .85;
+	birdHitBoxX = 0;
+	birdHitBoxY = 0;
+	pointOfNoReturn = 0;
 }
 
 
@@ -58,62 +51,36 @@ void Bird::BirdFallingToDeath()
 
 void Bird::SetUpBirdMovement()
 {
-	highPotentialHeight = 0;
-	lowPotentialHeight = 0;
-	//highest Poistion bird will elevate to
-	highPotentialHeight += orgion *.83;
-	//lowest point bird will go to
-	lowPotentialHeight = orgion + (orgion - highPotentialHeight);
-	//speed of the movement 
-	birdVelocity = (rand() % (15 - 4)) + 4;
-
+	birdVelocity = rand() % 17 + (-8);
 }
 
 void Bird::MoveBird()
 {
-	//	xBirdPos += rand() % 17 + (-8);
-
-	xBirdPos += 12;
+	xBirdPos += birdVelocity;
+	SetUpBirdMovement();
+	yBirdPos -= 20;
 	//setting up reference points
-	if (xBirdPos > screenWidth)
+	if (xBirdPos > screenWidth-(screenWidth*.05))
 	{
-		orgion = SetUpReferencePoints(screenHeight);
-		xBirdPos = 0;
-		yBirdPos = orgion;
-		SetUpBirdMovement();
+		SetUpReferencePoints(screenHeight, screenWidth); 
 	}
-	else
+	if (yBirdPos < (screenHeight * -.09))
 	{
-		
-		if (toggle == false)
-		{
-			yBirdPos += birdVelocity;
-			if (yBirdPos > lowPotentialHeight)
-			{
-				toggle = !toggle;
-			}
-		}
-		else
-		{
-			yBirdPos -= birdVelocity;
-			if (yBirdPos <= highPotentialHeight)
-			{
-				toggle = !toggle;
-			}
-		}
+		SetUpReferencePoints(screenHeight, screenWidth);
 	}
 	birdHitBoxX = xBirdPos + (xBirdPos *.1);
 	birdHitBoxY = yBirdPos + (yBirdPos*.1);
 }
 
 
-int Bird::SetUpReferencePoints(int screenSizeHeight)
+void Bird::SetUpReferencePoints(int screenHeight, int screenWidth)
 {
-	//total size subtrack 25 percent of the screen of possible position of the bird to start up from
-	int lowestMovement = screenSizeHeight - (screenSizeHeight * .3);
-	int highestMovement = screenHeight * .3;
-	int startPosition = rand() % (lowestMovement - highestMovement + 1) + highestMovement;
-	return startPosition;
+	xBirdPos = rand() % ((screenWidth-30)+30);
+	yBirdPos = screenHeight* .85;
+	SetUpBirdMovement();
+	birdHitBoxX = xBirdPos + (xBirdPos *.1);
+	birdHitBoxY = yBirdPos + (yBirdPos*.1);
+	pointOfNoReturn = screenHeight * .85;
 }
 
 

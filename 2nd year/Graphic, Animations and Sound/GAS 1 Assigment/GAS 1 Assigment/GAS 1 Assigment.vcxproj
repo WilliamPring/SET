@@ -188,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bird.h" />
+    <ClInclude Include="box.h" />
     <ClInclude Include="ChildView.h" />
     <ClInclude Include="GAS 1 Assigment.h" />
     <ClInclude Include="MainFrm.h" />

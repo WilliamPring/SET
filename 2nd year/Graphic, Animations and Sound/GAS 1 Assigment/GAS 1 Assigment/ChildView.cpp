@@ -21,7 +21,7 @@ Bitmap* displayNewMidground;
 Bitmap* displayNewForeground;
 Bitmap* displayNewBackground; 
 Image* deadBird;
-bool status;
+bool statusRefFirstTime;
 Image* gifOfPiggy[4];
 Image* logoDontSueMe;
 HCURSOR myCur;
@@ -33,6 +33,7 @@ bool explo;
 CChildView::CChildView()
 {
 	explo = false;
+	statusRefFirstTime = true;
 	GdiplusStartupInput gdiplusStartupInput;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 	bmpBackground = (Bitmap*)Image::FromFile(L"res//Background.bmp");
@@ -45,8 +46,7 @@ CChildView::CChildView()
 	deadBird = Gdiplus::Image::FromFile(L"res//dead.gif");
 	myCur = LoadCursorFromFile(L"res//fus.cur");
 	logoDontSueMe = Gdiplus::Image::FromFile(L"res//exp.png");
-	//logoDontSueMe = Gdiplus::Image::FromFile(L"res//exp.PNG");
-	
+
 	int counter =0;
 }
 
@@ -107,9 +107,9 @@ void CChildView::OnSize(UINT nType, int x, int y)
 	delete displayNewMidground;
 	RECT screenSize;
 	GetWindowRect(&screenSize);
-
 	bird.setScreenHeight(screenSize.bottom - screenSize.top);
 	bird.setScreenWidth(screenSize.right - screenSize.left);
+	//setting  up point for the first time
 
 
 	displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
@@ -173,7 +173,7 @@ void CChildView::OnPaint()
 {
 	if (timer == 0)
 	{
-		SetTimer(1, 200, NULL);
+		SetTimer(1, 130, NULL);
 	}
 
 	CPaintDC dc(this); // device context for painting
@@ -184,6 +184,13 @@ void CChildView::OnPaint()
 	int yHeight = screenRectSize.bottom - screenRectSize.top;
 	bird.setScreenHeight(yHeight);
 	bird.setScreenWidth(xWidth);
+
+	if (statusRefFirstTime)
+	{
+		bird.SetUpReferencePoints(yHeight, xWidth);
+		statusRefFirstTime = false;
+	}
+
 	Graphics drawGraphics(mDC.GetDC());
 	ImageAttributes imgAttMiddleground;
 	ImageAttributes imgAttrForeground;

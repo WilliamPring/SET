@@ -5,8 +5,8 @@ class Bird
 public:
 	Bird(); 
 	void setScreenHeight(int screenHeight);
-	int SetUpReferencePoints(int screenHeight);
-	void SetUpBirdMovement(); 
+	void SetUpReferencePoints(int screenHeight, int screenWidth);
+	void SetUpBirdMovement();
 	int getScreenHeight();
 	int getScreenWidth();
 	int getBirdHitBoxY();
@@ -32,12 +32,9 @@ private:
 	int birdVelocity;
 	bool birdFallingMode;
 	int xBirdPos;
-	bool horizontalDir;
 	int birdFlyPos;
 	int yBirdPos;
 	int orgion;
-	int highPotentialHeight;
-	int lowPotentialHeight;
 	int pointOfNoReturn;
 	int birdHitBoxY;
 	bool toggle;

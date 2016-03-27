@@ -39,6 +39,9 @@
     <ClInclude Include="Bird.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GAS 1 Assigment.cpp">
