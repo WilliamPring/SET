@@ -201,21 +201,26 @@ void CChildView::OnPaint()
 	//draw background
 	drawGraphics.DrawImage(displayNewBackground, 0, 0, xWidth, yHeight);
 	drawGraphics.DrawImage(displayNewMidground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
-	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttrForeground);
-	
 
 	if (bird.getBirdFalling()==true)
 	{
 		drawGraphics.TranslateTransform(bird.getXBirdPos(), bird.getYBirdPos(), MatrixOrderAppend);
+		if (spin >= 360)
+		{
+			spin = 0.0;
+		}
 		drawGraphics.RotateTransform(spin+=5);
+
 		drawGraphics.DrawImage(deadBird, -15, -10, (int)(bird.getScreenWidth() * 0.08), (int)(bird.getScreenHeight() * 0.08));
 		drawGraphics.ResetTransform();
 	}
 	else
 	{
+		spin = 0.0;
 		bird.changeFlyPos();
 		drawGraphics.DrawImage(gifOfPiggy[bird.getBirdFlyPos()], bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.08), (int)(yHeight*0.08));
 	}
+	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttrForeground);
 	if (explo == true)
 	{
 		drawGraphics.DrawImage(logoDontSueMe, 0, 0, (int)(bird.getScreenWidth()), (int)(bird.getScreenHeight()));

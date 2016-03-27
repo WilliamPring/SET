@@ -41,13 +41,7 @@ int Bird::getBirdFlyPos()
 	return birdFlyPos;
 }
 
-void Bird::BirdFallingToDeath()
-{
-	disappearBird = screenHeight - (screenHeight * .82);
-	xBirdPos += 12;
-	yBirdPos += 12;
 
-}
 
 void Bird::SetUpBirdMovement()
 {
@@ -80,7 +74,7 @@ void Bird::SetUpReferencePoints(int screenHeight, int screenWidth)
 	SetUpBirdMovement();
 	birdHitBoxX = xBirdPos + (xBirdPos *.1);
 	birdHitBoxY = yBirdPos + (yBirdPos*.1);
-	pointOfNoReturn = screenHeight * .85;
+	pointOfNoReturn = screenHeight * .88;
 }
 
 
@@ -91,7 +85,7 @@ int Bird::getPointOfNoReturn()
 
 void Bird::setPointOfNoReturn(int pointOfDeath)
 {
-	pointOfNoReturn = pointOfDeath * .85;
+	pointOfNoReturn = pointOfDeath * .88;
 }
 
 void Bird::setXBirdPos(int curPost)
@@ -108,6 +102,13 @@ void Bird::birdDieingToDeath()
 {
 	xBirdPos = xBirdPos + 8;
 	yBirdPos = yBirdPos + 8;
+
+
+	if (xBirdPos > screenWidth+ (screenWidth*.04))
+	{
+		SetUpReferencePoints(screenHeight, screenWidth);
+	}
+
 }
 
 bool Bird::getBirdFalling()
