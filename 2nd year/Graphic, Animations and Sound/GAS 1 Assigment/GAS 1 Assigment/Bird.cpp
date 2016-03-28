@@ -5,7 +5,7 @@ Bird::Bird()
 {
 	birdFlyPos = 0;
 	srand(unsigned(time(NULL)));
-	toggle = true;
+	toggleLeftOrRight = true;
 	screenHeight = 0;	
 	screenWidth = 0;
 	//setting the bird velocity
@@ -50,8 +50,8 @@ void Bird::SetUpBirdMovement()
 
 void Bird::MoveBird()
 {
-	xBirdPos += birdVelocity;
 	SetUpBirdMovement();
+	xBirdPos += birdVelocity;
 	yBirdPos -= 20;
 	//setting up reference points
 	if (xBirdPos > screenWidth-(screenWidth*.05))

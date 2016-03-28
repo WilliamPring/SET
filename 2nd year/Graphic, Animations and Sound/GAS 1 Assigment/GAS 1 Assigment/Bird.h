@@ -36,5 +36,5 @@ private:
 	int orgion;
 	int pointOfNoReturn;
 	int birdHitBoxY;
-	bool toggle;
+	bool toggleLeftOrRight;
 };

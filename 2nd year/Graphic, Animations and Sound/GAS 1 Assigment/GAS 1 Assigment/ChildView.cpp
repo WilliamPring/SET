@@ -11,7 +11,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-HCURSOR   slingShot;
+
 ULONG_PTR gdiplusToken;
 int timer;
 Bitmap* bmpBackground;
@@ -19,19 +19,19 @@ Bitmap* bmpForeground;
 Bitmap* bmpMidground;
 Bitmap* displayNewMidground;
 Bitmap* displayNewForeground;
-Bitmap* displayNewBackground; 
+Bitmap* displayNewBackground;
 Image* deadBird;
 bool statusRefFirstTime;
 Image* gifOfPiggy[4];
 Image* logoDontSueMe;
 HCURSOR myCur;
-Image* slingshot2;
 Bird bird;
+StringFormat format;
 RECT screenRectSize;
-float spin = 0.0;
-bool explo;
 CChildView::CChildView()
 {
+	colorTextPoint = Color(255, 255, 0, 0);
+	wcscat(wcScore, L"Score: 0");
 	explo = false;
 	statusRefFirstTime = true;
 	GdiplusStartupInput gdiplusStartupInput;
@@ -46,8 +46,11 @@ CChildView::CChildView()
 	deadBird = Gdiplus::Image::FromFile(L"res//dead.gif");
 	myCur = LoadCursorFromFile(L"res//fus.cur");
 	logoDontSueMe = Gdiplus::Image::FromFile(L"res//exp.png");
-
-	int counter =0;
+	//style of text
+	format.SetAlignment(StringAlignmentCenter);
+	//color white for text
+	printToScreen = false;
+	points = 0;
 }
 
 CChildView::~CChildView()
@@ -89,6 +92,8 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		if (((x >= bird.getXBirdPos()) && (x <= xCompPlus)) && (y <= yCompPlus)&& (y >= bird.getYBirdPos()))
 		{
+			points += 100;
+			printToScreen = true;
 			PlaySound(L"res//SPLAT_Sound_Effects.wav", NULL, SND_ASYNC);
 			bird.setBirdFalling(true);
 		}
@@ -173,7 +178,7 @@ void CChildView::OnPaint()
 {
 	if (timer == 0)
 	{
-		SetTimer(1, 130, NULL);
+		SetTimer(1, 160, NULL);
 	}
 
 	CPaintDC dc(this); // device context for painting
@@ -202,6 +207,7 @@ void CChildView::OnPaint()
 	drawGraphics.DrawImage(displayNewBackground, 0, 0, xWidth, yHeight);
 	drawGraphics.DrawImage(displayNewMidground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttMiddleground);
 
+
 	if (bird.getBirdFalling()==true)
 	{
 		drawGraphics.TranslateTransform(bird.getXBirdPos(), bird.getYBirdPos(), MatrixOrderAppend);
@@ -226,7 +232,25 @@ void CChildView::OnPaint()
 		drawGraphics.DrawImage(logoDontSueMe, 0, 0, (int)(bird.getScreenWidth()), (int)(bird.getScreenHeight()));
 		explo = false;
 	}
-
+	if (printToScreen == true)
+	{
+		swprintf(wcScore, L"Score: %d", points);
+		printToScreen = false;
+	}
+	//Rectangle position for text
+	RectF layoutRect(0.0f, 0.0f, 200.0f, 50.0f);
+	//color of text
+	SolidBrush color(colorTextPoint);
+	//style and font
+	Font myFont(L"Arial", 16);
+	//draw the string
+	drawGraphics.DrawString(
+		wcScore,
+		-1,
+		&myFont,
+		layoutRect,
+		&format,
+		&color);
 }
 
 

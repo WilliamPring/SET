@@ -1,10 +1,20 @@
 
 #pragma once
-
-
+#include <windows.h>
+#include <gdiplus.h>
 
 class CChildView : public CWnd
 {
+private:
+	WCHAR wcScore[50] = { 0 };
+	float spin = 0.0;
+	bool explo;
+	//setting up the font
+	int points;
+	bool printToScreen;
+	bool statusRefFirstTime;
+	Color colorTextPoint;
+	StringFormat format;
 public:
 	CChildView();
 
