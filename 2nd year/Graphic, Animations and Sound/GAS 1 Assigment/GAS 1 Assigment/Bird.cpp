@@ -13,6 +13,7 @@ Bird::Bird()
 	//set up where it will first start the bird 
 	birdFallingMode = false;
 	birdHitBoxX = 0;
+	leftOrRight = true;
 	birdHitBoxY = 0;
 	pointOfNoReturn = 0;
 }
@@ -45,7 +46,21 @@ int Bird::getBirdFlyPos()
 
 void Bird::SetUpBirdMovement()
 {
-	birdVelocity = rand() % 17 + (-8);
+	int oldBirdVelocity = birdVelocity;
+	int random = rand() % 2;
+	
+	while (true)
+	{
+		birdVelocity = rand() % 17 + (-8);
+		if (oldBirdVelocity == birdVelocity)
+		{
+			continue;
+		}
+		else
+		{
+			break;
+		}
+	}
 }
 
 void Bird::MoveBird()

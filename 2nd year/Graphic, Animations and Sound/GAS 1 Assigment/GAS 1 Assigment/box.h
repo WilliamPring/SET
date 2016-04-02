@@ -8,7 +8,7 @@ public:
 	int getBoxPosX(); 
 	int getBoxWidth();
 	void setBoxWidth(int newBoxWidth);
-
+	Box();
 	int getBoxHeight();
 	void setBoxHeight(int newBoxHeight); 
 

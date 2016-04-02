@@ -1,4 +1,11 @@
-
+/*
+* FILE : ChildView.h
+* PROJECT : Gas Assig 3
+* PROGRAMMER : William Pring
+* FIRST VERSION : 3/28/2016
+* DESCRIPTION :
+* Child View header file contains functions, variable
+*/
 #pragma once
 #include <windows.h>
 #include <gdiplus.h>
@@ -15,6 +22,7 @@ private:
 	bool statusRefFirstTime;
 	Color colorTextPoint;
 	StringFormat format;
+	RectF layoutRect;
 public:
 	CChildView();
 

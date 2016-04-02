@@ -15,6 +15,7 @@ public:
 	int getYBirdPos();
 	int getXBirdPos();
 	void setXBirdPos(int curPost);
+	bool leftOrRight;
 	bool getBirdFalling(); 
 	void setBirdFalling(bool statusOfFall);
 	void MoveBird();

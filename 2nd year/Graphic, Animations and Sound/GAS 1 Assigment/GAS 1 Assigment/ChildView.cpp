@@ -1,12 +1,19 @@
+/*
+* FILE : ChildView.cpp
+* PROJECT : Gas Assig 3
+* PROGRAMMER : William Pring
+* FIRST VERSION : 3/28/2016
+* DESCRIPTION :
+* contains the view of the project and events
+*/
 
-// ChildView.cpp : implementation of the CChildView class
-//
 
 #include "stdafx.h"
 #include "GAS 1 Assigment.h"
 #include "ChildView.h"
 #include "Bird.h"
 #include "mmsystem.h"
+#include "Stack.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,8 +35,15 @@ HCURSOR myCur;
 Bird bird;
 StringFormat format;
 RECT screenRectSize;
+Stack stack;
+Bitmap* onScreenBox;
+/*
+* NAME : CChildView
+* PURPOSE : constructor the inits all of the varible
+*/
 CChildView::CChildView()
 {
+	layoutRect = RectF(0.0f, 0.0f, 200.0f, 50.0f);
 	colorTextPoint = Color(255, 255, 0, 0);
 	wcscat(wcScore, L"Score: 0");
 	explo = false;
@@ -43,6 +57,7 @@ CChildView::CChildView()
 	gifOfPiggy[1] = Gdiplus::Image::FromFile(L"res//p1.gif");
 	gifOfPiggy[2] = Gdiplus::Image::FromFile(L"res//p2.gif");
 	gifOfPiggy[3] = Gdiplus::Image::FromFile(L"res//p3.gif");
+	onScreenBox = (Bitmap*)Image::FromFile(L"res//Box.png");
 	deadBird = Gdiplus::Image::FromFile(L"res//dead.gif");
 	myCur = LoadCursorFromFile(L"res//fus.cur");
 	logoDontSueMe = Gdiplus::Image::FromFile(L"res//exp.png");
@@ -52,7 +67,10 @@ CChildView::CChildView()
 	printToScreen = false;
 	points = 0;
 }
-
+/*
+* NAME : CChildView
+* PURPOSE : Destructor delete all of the resources
+*/
 CChildView::~CChildView()
 {
 	delete bmpBackground;
@@ -81,7 +99,10 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
-//on left button down
+/*
+* NAME : OnLButtonDown
+* PURPOSE : Left button click
+*/
 void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	int x = point.x;
@@ -104,7 +125,10 @@ void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
 	}
 	explo = true;
 }
-
+/*
+* NAME : OnSize
+* PURPOSE : Resizing the screen
+*/
 void CChildView::OnSize(UINT nType, int x, int y)
 {
 	delete displayNewBackground;
@@ -121,11 +145,24 @@ void CChildView::OnSize(UINT nType, int x, int y)
 	displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
 	displayNewMidground = (Bitmap*)bmpMidground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
 }
+
+/*
+* NAME : OnTimer
+* PURPOSE : Timer class event
+*/
 void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
 	if (bird.getBirdFalling() == false)
 	{
 		bird.MoveBird();
+		std::vector<Box> myBox = stack.getListOfBox();
+
+		if (bird.getXBirdPos() >= myBox[0].getBoxPosX())
+		{
+
+		}
+
+
 	}
 	else
 	{
@@ -143,7 +180,11 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	this->Invalidate();
 }
 
-
+/*
+* NAME : PreCreateWindow
+* PURPOSE : pre creating the windows vefore everything gets created
+* create cursor as well
+*/
 BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs) 
 {
 	if (!CWnd::PreCreateWindow(cs))
@@ -153,11 +194,13 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	cs.style &= ~WS_BORDER;
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
-
 	return TRUE;
 }
 
-
+/*
+* NAME : OnSetCursor
+* PURPOSE : Set the cursor to an image
+*/
 	BOOL CChildView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	{
 		if (m_ChangeCursor)
@@ -168,11 +211,19 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 		return CChildView::OnSetCursor(pWnd, nHitTest, message);
 	}
 
+
+/*
+* NAME : OnEraseBkgnd
+* PURPOSE : Double buffering
+*/
 BOOL CChildView::OnEraseBkgnd(CDC* pDC)
 {
 	return TRUE;
 }
-
+/*
+* NAME : OnPaint
+* PURPOSE : Drawing to the screen
+*/
 
 void CChildView::OnPaint()
 {
@@ -192,8 +243,8 @@ void CChildView::OnPaint()
 
 	if (statusRefFirstTime)
 	{
+		stack = Stack(xWidth, yHeight);
 		bird.SetUpReferencePoints(yHeight, xWidth);
-		statusRefFirstTime = false;
 	}
 
 	Graphics drawGraphics(mDC.GetDC());
@@ -216,17 +267,18 @@ void CChildView::OnPaint()
 			spin = 0.0;
 		}
 		drawGraphics.RotateTransform(spin+=5);
-
-		drawGraphics.DrawImage(deadBird, -15, -10, (int)(bird.getScreenWidth() * 0.08), (int)(bird.getScreenHeight() * 0.08));
+		drawGraphics.DrawImage(deadBird, -15, -10, (int)(bird.getScreenWidth() * 0.05), (int)(bird.getScreenHeight() * 0.05));
 		drawGraphics.ResetTransform();
 	}
 	else
 	{
 		spin = 0.0;
 		bird.changeFlyPos();
-		drawGraphics.DrawImage(gifOfPiggy[bird.getBirdFlyPos()], bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.08), (int)(yHeight*0.08));
+		drawGraphics.DrawImage(gifOfPiggy[bird.getBirdFlyPos()], bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.05), (int)(yHeight*0.05));
 	}
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttrForeground);
+	
+
 	if (explo == true)
 	{
 		drawGraphics.DrawImage(logoDontSueMe, 0, 0, (int)(bird.getScreenWidth()), (int)(bird.getScreenHeight()));
@@ -237,13 +289,9 @@ void CChildView::OnPaint()
 		swprintf(wcScore, L"Score: %d", points);
 		printToScreen = false;
 	}
-	//Rectangle position for text
-	RectF layoutRect(0.0f, 0.0f, 200.0f, 50.0f);
-	//color of text
-	SolidBrush color(colorTextPoint);
-	//style and font
+
 	Font myFont(L"Arial", 16);
-	//draw the string
+	SolidBrush color(colorTextPoint);
 	drawGraphics.DrawString(
 		wcScore,
 		-1,
@@ -251,6 +299,25 @@ void CChildView::OnPaint()
 		layoutRect,
 		&format,
 		&color);
+
+	if (statusRefFirstTime)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			std::vector<Box> myBox = stack.getListOfBox();
+			drawGraphics.DrawImage(onScreenBox, myBox.at(i).getBoxPosX(), myBox.at(i).getBoxPosY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+		}
+		statusRefFirstTime = false;
+	}
+	else
+	{
+		stack.Resize(xWidth, yHeight);
+		std::vector<Box> myBox = stack.getListOfBox();
+		for (int i = 0; i < 5; i++)
+		{
+			drawGraphics.DrawImage(onScreenBox, myBox.at(i).getBoxPosX(), myBox.at(i).getBoxPosY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+		}
+	}
 }
 
 
