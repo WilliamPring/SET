@@ -11,11 +11,13 @@ public:
 	Box();
 	int getBoxHeight();
 	void setBoxHeight(int newBoxHeight); 
-
+	bool getBoxHit();
+	void setBoxHit(bool status);
 
 private:
 	int boxPosX;
 	int boxPosY;
 	int boxWidth;
 	int boxHeight;
+	bool hit;
 };

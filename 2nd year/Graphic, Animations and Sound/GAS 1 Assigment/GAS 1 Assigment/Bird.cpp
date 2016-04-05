@@ -66,7 +66,14 @@ void Bird::SetUpBirdMovement()
 void Bird::MoveBird()
 {
 	SetUpBirdMovement();
-	xBirdPos += birdVelocity;
+	//if (birdVelocity < 0)
+	//{
+	//	xBirdPos += (birdVelocity - (screenWidth*.04));
+	//}
+	//else
+	//{
+		xBirdPos += (birdVelocity + (screenWidth*.04));
+	//}
 	yBirdPos -= 20;
 	//setting up reference points
 	if (xBirdPos > screenWidth-(screenWidth*.05))
@@ -74,6 +81,10 @@ void Bird::MoveBird()
 		SetUpReferencePoints(screenHeight, screenWidth); 
 	}
 	if (yBirdPos < (screenHeight * -.09))
+	{
+		SetUpReferencePoints(screenHeight, screenWidth);
+	}
+	if (xBirdPos < 0)
 	{
 		SetUpReferencePoints(screenHeight, screenWidth);
 	}

@@ -139,8 +139,6 @@ void CChildView::OnSize(UINT nType, int x, int y)
 	bird.setScreenHeight(screenSize.bottom - screenSize.top);
 	bird.setScreenWidth(screenSize.right - screenSize.left);
 	//setting  up point for the first time
-
-
 	displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
 	displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
 	displayNewMidground = (Bitmap*)bmpMidground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
@@ -154,15 +152,19 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
 	if (bird.getBirdFalling() == false)
 	{
-		bird.MoveBird();
 		std::vector<Box> myBox = stack.getListOfBox();
-
-		if (bird.getXBirdPos() >= myBox[0].getBoxPosX())
+		for (int i = 0; i < myBox.size(); i++)
 		{
-
+			if ((bird.getXBirdPos() < (myBox[i].getBoxPosX() + myBox[i].getBoxWidth()) && (bird.getXBirdPos() + (bird.getScreenWidth()*.04)) > myBox[i].getBoxPosX()))
+			{
+				if (bird.getYBirdPos() < (myBox[i].getBoxPosY() + myBox[i].getBoxHeight()) && (bird.getYBirdPos() + bird.getScreenHeight()*.05) > myBox[i].getBoxPosY())
+				{
+					bool retStatus = true; 
+					retStatus = false;
+				}
+			}
 		}
-
-
+		bird.MoveBird();
 	}
 	else
 	{
@@ -179,6 +181,12 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	}
 	this->Invalidate();
 }
+
+
+
+
+
+
 
 /*
 * NAME : PreCreateWindow
@@ -229,7 +237,7 @@ void CChildView::OnPaint()
 {
 	if (timer == 0)
 	{
-		SetTimer(1, 160, NULL);
+		SetTimer(1, 220, NULL);
 	}
 
 	CPaintDC dc(this); // device context for painting
@@ -274,7 +282,7 @@ void CChildView::OnPaint()
 	{
 		spin = 0.0;
 		bird.changeFlyPos();
-		drawGraphics.DrawImage(gifOfPiggy[bird.getBirdFlyPos()], bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.05), (int)(yHeight*0.05));
+		drawGraphics.DrawImage(gifOfPiggy[bird.getBirdFlyPos()], bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.07), (int)(yHeight*0.07));
 	}
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttrForeground);
 	

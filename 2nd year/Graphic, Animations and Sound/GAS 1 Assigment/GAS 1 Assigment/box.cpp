@@ -36,6 +36,18 @@ void Box::setBoxPosY(int curBoxPosY)
 	boxPosY = curBoxPosY;
 
 }
+
+
+void Box::setBoxHit(bool status)
+{
+	hit = status; 
+}
+
+bool Box::getBoxHit()
+{
+	return hit;
+}
+
 /*
 * NAME : setBoxPosX
 * PURPOSE: set the boxPosX
