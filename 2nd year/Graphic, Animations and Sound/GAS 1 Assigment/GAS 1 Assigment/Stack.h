@@ -17,7 +17,7 @@ class Stack
 public:
 	Stack(int width, int height);
 	Stack();
-	std::vector<Box> getListOfBox();
+	std::vector<Box>* Stack::getListOfBox();
 	void Resize(int width, int height);
 private:
 	std::vector<Box> listofBox;

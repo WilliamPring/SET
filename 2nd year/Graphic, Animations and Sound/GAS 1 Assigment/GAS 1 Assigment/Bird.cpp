@@ -136,6 +136,10 @@ void Bird::MoveBird()
 	birdHitBoxY = yBirdPos + (yBirdPos*.1);
 }
 
+/*
+* NAME : SetUpReferencePoints
+* PURPOSE : Setting up the intail values and movement
+*/
 
 void Bird::SetUpReferencePoints(int screenHeight, int screenWidth)
 {

@@ -37,6 +37,7 @@ StringFormat format;
 RECT screenRectSize;
 Stack stack;
 Bitmap* onScreenBox;
+std::vector<Box>* myBox;
 /*
 * NAME : CChildView
 * PURPOSE : constructor the inits all of the varible
@@ -153,17 +154,21 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 	if (bird.getBirdFalling() == false)
 	{
 		bool retStatus = true;
-		std::vector<Box> myBox = stack.getListOfBox();
-		for (int i = 0; i < myBox.size(); i++)
+		myBox = stack.getListOfBox();
+		for (int i = 0; i < myBox->size(); i++)
 		{
-			if ((bird.getXBirdPos() < (myBox[i].getBoxPosX() + myBox[i].getBoxWidth()) && (bird.getXBirdPos() + (bird.getScreenWidth()*0.06)) > myBox[i].getBoxPosX()))
+			if((((bird.getXBirdPos() < (*myBox)[i].getBoxPosX()) + (*myBox)[i].getBoxWidth()) && (bird.getXBirdPos() + (bird.getScreenWidth()*0.06)) > (*myBox)[i].getBoxPosX()))
 			{
-				if (bird.getYBirdPos() < (myBox[i].getBoxPosY() + myBox[i].getBoxHeight()) && (bird.getYBirdPos() + bird.getScreenHeight()*0.06) > myBox[i].getBoxPosY())
+				if (bird.getYBirdPos() < ((*myBox)[i].getBoxPosY() + (*myBox)[i].getBoxHeight()) && (bird.getYBirdPos() + bird.getScreenHeight()*0.06) > (*myBox)[i].getBoxPosY())
 				{
-					myBox[i].setBoxHit(true);
+					(*myBox)[i].setBoxHit(true);
+					(*myBox)[i].setBoxVelX();
+					(*myBox)[i].setBoxVelY();
+					break;
 				}
 			}
 		}
+
 		if (retStatus)
 		{
 			bird.MoveBird();
@@ -240,7 +245,7 @@ void CChildView::OnPaint()
 {
 	if (timer == 0)
 	{
-		SetTimer(1, 220, NULL);
+		SetTimer(1, 150, NULL);
 	}
 
 	CPaintDC dc(this); // device context for painting
@@ -313,20 +318,28 @@ void CChildView::OnPaint()
 
 	if (statusRefFirstTime)
 	{
-		for (int i = 0; i < 5; i++)
+		if (myBox != NULL)
 		{
-			std::vector<Box> myBox = stack.getListOfBox();
-			drawGraphics.DrawImage(onScreenBox, myBox.at(i).getBoxPosX(), myBox.at(i).getBoxPosY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+			for (int i = 0; i < (*myBox).size(); i++)
+			{
+				drawGraphics.DrawImage(onScreenBox, (*myBox).at(i).getBoxPosX(), (*myBox).at(i).getBoxPosY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+			}
+			statusRefFirstTime = false;
 		}
-		statusRefFirstTime = false;
 	}
 	else
 	{
-		stack.Resize(xWidth, yHeight);
-		std::vector<Box> myBox = stack.getListOfBox();
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < (*myBox).size(); i++)
 		{
-			drawGraphics.DrawImage(onScreenBox, myBox.at(i).getBoxPosX(), myBox.at(i).getBoxPosY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+			if ((*myBox)[i].getBoxHit() == true)
+			{
+
+				drawGraphics.DrawImage(onScreenBox, (*myBox).at(i).getBoxMovementX(), (*myBox).at(i).getBoxMovementY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+			}
+			else
+			{
+				drawGraphics.DrawImage(onScreenBox, (*myBox).at(i).getBoxPosX(), (*myBox).at(i).getBoxPosY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+			}
 		}
 	}
 }

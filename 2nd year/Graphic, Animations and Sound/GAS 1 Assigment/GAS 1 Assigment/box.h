@@ -13,11 +13,20 @@ public:
 	void setBoxHeight(int newBoxHeight); 
 	bool getBoxHit();
 	void setBoxHit(bool status);
-
+	int getBoxVelX();
+	void setBoxVelX();
+	int getBoxVelY();
+	int getBoxMovementX();
+	int getBoxMovementY();
+	void setBoxVelY();
 private:
+	int boxMovementY;
+	int boxMovementX;
 	int boxPosX;
 	int boxPosY;
 	int boxWidth;
 	int boxHeight;
 	bool hit;
+	int boxXVel;
+	int boxYVel;
 };

@@ -11,9 +11,38 @@
 #include "stdafx.h"
 #include "box.h"
 
+int Box::getBoxVelX()
+{
+	return boxXVel;
+}
+void Box::setBoxVelX()
+{
+	boxXVel = (rand() % 17)*(-1);
+}
+int Box::getBoxVelY()
+{
+	return boxYVel;
+}
+void Box::setBoxVelY()
+{
+	boxYVel = rand() % 17 + (-8);
+}
+int Box::getBoxMovementX()
+{
+	boxPosX -= boxXVel;
+	return boxPosX;
+}
 
+int Box::getBoxMovementY()
+{
+	boxPosY -= boxYVel;
+	return boxPosY;
+}
 Box::Box()
 {
+	boxYVel = 0;
+	boxXVel = 0;
+	srand(unsigned(time(NULL)));
 	hit = false;
 	boxPosX =0;
 	boxPosY=0;

@@ -53,9 +53,9 @@ void Stack::Resize(int width, int height)
 	}
 }
 
-std::vector<Box> Stack::getListOfBox()
+std::vector<Box>* Stack::getListOfBox()
 {
-	return listofBox;
+	return &listofBox;
 }
 
 
