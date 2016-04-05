@@ -152,19 +152,22 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 {
 	if (bird.getBirdFalling() == false)
 	{
+		bool retStatus = true;
 		std::vector<Box> myBox = stack.getListOfBox();
 		for (int i = 0; i < myBox.size(); i++)
 		{
-			if ((bird.getXBirdPos() < (myBox[i].getBoxPosX() + myBox[i].getBoxWidth()) && (bird.getXBirdPos() + (bird.getScreenWidth()*.04)) > myBox[i].getBoxPosX()))
+			if ((bird.getXBirdPos() < (myBox[i].getBoxPosX() + myBox[i].getBoxWidth()) && (bird.getXBirdPos() + (bird.getScreenWidth()*0.06)) > myBox[i].getBoxPosX()))
 			{
-				if (bird.getYBirdPos() < (myBox[i].getBoxPosY() + myBox[i].getBoxHeight()) && (bird.getYBirdPos() + bird.getScreenHeight()*.05) > myBox[i].getBoxPosY())
+				if (bird.getYBirdPos() < (myBox[i].getBoxPosY() + myBox[i].getBoxHeight()) && (bird.getYBirdPos() + bird.getScreenHeight()*0.06) > myBox[i].getBoxPosY())
 				{
-					bool retStatus = true; 
-					retStatus = false;
+					myBox[i].setBoxHit(true);
 				}
 			}
 		}
-		bird.MoveBird();
+		if (retStatus)
+		{
+			bird.MoveBird();
+		}
 	}
 	else
 	{
@@ -190,7 +193,7 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 
 /*
 * NAME : PreCreateWindow
-* PURPOSE : pre creating the windows vefore everything gets created
+* PURPOSE : pre creating the windows before everything gets created
 * create cursor as well
 */
 BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs) 
@@ -207,7 +210,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 
 /*
 * NAME : OnSetCursor
-* PURPOSE : Set the cursor to an image
+* PURPOSE : Set the cursor to an cur file
 */
 	BOOL CChildView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	{
@@ -222,7 +225,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 
 /*
 * NAME : OnEraseBkgnd
-* PURPOSE : Double buffering
+* PURPOSE : Double buffering and return true
 */
 BOOL CChildView::OnEraseBkgnd(CDC* pDC)
 {
@@ -230,7 +233,7 @@ BOOL CChildView::OnEraseBkgnd(CDC* pDC)
 }
 /*
 * NAME : OnPaint
-* PURPOSE : Drawing to the screen
+* PURPOSE : Drawing to the screen to represent the bird moving and hiting boxes
 */
 
 void CChildView::OnPaint()
@@ -275,14 +278,14 @@ void CChildView::OnPaint()
 			spin = 0.0;
 		}
 		drawGraphics.RotateTransform(spin+=5);
-		drawGraphics.DrawImage(deadBird, -15, -10, (int)(bird.getScreenWidth() * 0.05), (int)(bird.getScreenHeight() * 0.05));
+		drawGraphics.DrawImage(deadBird, -15, -10, (int)(bird.getScreenWidth() * 0.06), (int)(bird.getScreenHeight() * 0.06));
 		drawGraphics.ResetTransform();
 	}
 	else
 	{
 		spin = 0.0;
 		bird.changeFlyPos();
-		drawGraphics.DrawImage(gifOfPiggy[bird.getBirdFlyPos()], bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.07), (int)(yHeight*0.07));
+		drawGraphics.DrawImage(gifOfPiggy[bird.getBirdFlyPos()], bird.getXBirdPos(), bird.getYBirdPos(), (int)(xWidth*0.06), (int)(yHeight*0.06));
 	}
 	drawGraphics.DrawImage(displayNewForeground, RectF(0, 0, xWidth, yHeight), 0, 0, xWidth, yHeight, UnitPixel, &imgAttrForeground);
 	

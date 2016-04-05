@@ -14,6 +14,7 @@
 
 Box::Box()
 {
+	hit = false;
 	boxPosX =0;
 	boxPosY=0;
 	boxWidth=50;

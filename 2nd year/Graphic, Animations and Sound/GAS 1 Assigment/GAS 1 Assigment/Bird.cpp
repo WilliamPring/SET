@@ -1,5 +1,17 @@
+/*
+* FILE : Bird.cpp
+* PROJECT : Gas Assig 3
+* PROGRAMMER : William Pring
+* FIRST VERSION : 3/28/2016
+* DESCRIPTION : Bird Class that contain supporting function
+*/
+
 #include "stdafx.h"
 #include "Bird.h"
+/*
+* NAME : Bird
+* PURPOSE : Bird constructor
+*/
 
 Bird::Bird()
 {
@@ -17,6 +29,10 @@ Bird::Bird()
 	birdHitBoxY = 0;
 	pointOfNoReturn = 0;
 }
+/*
+* NAME : getBirdHitBoxY
+* PURPOSE : get the bird height hit box
+*/
 
 
 int Bird::getBirdHitBoxY()
@@ -24,10 +40,22 @@ int Bird::getBirdHitBoxY()
 	return birdHitBoxY;
 }
 
+
+/*
+* NAME : changeFlyPos
+* PURPOSE : get the brid hit box for X
+*/
+
 int Bird::getBirdHitBoxX()
 {
 	return birdHitBoxX;
 }
+
+
+/*
+* NAME : changeFlyPos
+* PURPOSE : change the sprite position of what the bird will use
+*/
 
 void Bird::changeFlyPos()
 {
@@ -37,11 +65,23 @@ void Bird::changeFlyPos()
 		birdFlyPos = 0;
 	}
 }
+
+
+/*
+* NAME : getBirdFlyPos
+* PURPOSE : gettting the bird flying position
+*/
+
+
 int Bird::getBirdFlyPos()
 {
 	return birdFlyPos;
 }
 
+/*
+* NAME : SetUpBirdMovement
+* PURPOSE : Setting up to cordinate for the bird to move
+*/
 
 
 void Bird::SetUpBirdMovement()
@@ -62,6 +102,10 @@ void Bird::SetUpBirdMovement()
 		}
 	}
 }
+/*
+* NAME : MoveBird
+* PURPOSE : Moving the bird or generating new location for bird to move
+*/
 
 void Bird::MoveBird()
 {
