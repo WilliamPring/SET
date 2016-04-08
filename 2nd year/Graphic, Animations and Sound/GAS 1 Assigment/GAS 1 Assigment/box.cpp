@@ -4,7 +4,7 @@
 * PROGRAMMER : William Pring
 * FIRST VERSION : 3/28/2016
 * DESCRIPTION :
-* box object
+* box object representation
 */
 
 
@@ -48,6 +48,8 @@ Box::Box()
 	boxPosY=0;
 	boxWidth=50;
 	boxHeight = 50;
+	boxMovementY = 0;
+	boxMovementX = 0;
 }
 /*
 * NAME : getBoxPosY

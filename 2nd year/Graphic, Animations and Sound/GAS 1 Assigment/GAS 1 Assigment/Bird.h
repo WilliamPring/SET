@@ -1,5 +1,22 @@
+/*
+* FILE : bird.h
+* PROJECT : Gas Assig 3
+* PROGRAMMER : William Pring
+* FIRST VERSION : 3/28/2016
+* DESCRIPTION :
+* Header file for the bird class which represent a reptile
+*/
+
 #pragma once
 #define HitBoxDimension 44
+
+
+/*
+CLASS		: Bird
+DESCRIPTION	:
+Class represent the bird that can move, resize, die, reset post
+*/
+
 class Bird 
 {
 public:

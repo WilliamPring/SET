@@ -40,7 +40,7 @@ Bitmap* onScreenBox;
 std::vector<Box>* myBox;
 /*
 * NAME : CChildView
-* PURPOSE : constructor the inits all of the varible
+* PURPOSE : constructor the inits all of the varible and load all resource
 */
 CChildView::CChildView()
 {
@@ -87,7 +87,10 @@ CChildView::~CChildView()
 	GdiplusShutdown(gdiplusToken); 
 }
 
-
+/*
+* NAME : BEGIN_MESSAGE_MAP
+* PURPOSE : delcare all the function that are used
+*/
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_SIZE()
 	//left button click	
@@ -139,6 +142,7 @@ void CChildView::OnSize(UINT nType, int x, int y)
 	GetWindowRect(&screenSize);
 	bird.setScreenHeight(screenSize.bottom - screenSize.top);
 	bird.setScreenWidth(screenSize.right - screenSize.left);
+
 	//setting  up point for the first time
 	displayNewBackground = (Bitmap*)bmpBackground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
 	displayNewForeground = (Bitmap*)bmpForeground->GetThumbnailImage(bird.getScreenWidth(), bird.getScreenHeight());
@@ -161,6 +165,8 @@ void CChildView::OnTimer(UINT_PTR nIDEvent)
 			{
 				if (bird.getYBirdPos() < ((*myBox)[i].getBoxPosY() + (*myBox)[i].getBoxHeight()) && (bird.getYBirdPos() + bird.getScreenHeight()*0.06) > (*myBox)[i].getBoxPosY())
 				{
+					points += 50;
+					printToScreen = true;
 					(*myBox)[i].setBoxHit(true);
 					(*myBox)[i].setBoxVelX();
 					(*myBox)[i].setBoxVelY();
@@ -219,12 +225,8 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 */
 	BOOL CChildView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	{
-		if (m_ChangeCursor)
-		{
-			SetCursor(myCur);
-			return TRUE;
-		}
-		return CChildView::OnSetCursor(pWnd, nHitTest, message);
+		SetCursor(myCur);
+		return TRUE;
 	}
 
 
@@ -333,8 +335,14 @@ void CChildView::OnPaint()
 		{
 			if ((*myBox)[i].getBoxHit() == true)
 			{
-
-				drawGraphics.DrawImage(onScreenBox, (*myBox).at(i).getBoxMovementX(), (*myBox).at(i).getBoxMovementY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+				if ((*myBox).at(i).getBoxMovementX() > xWidth) 
+				{
+					(*myBox).erase((*myBox).begin() + i);
+				}
+				else
+				{
+					drawGraphics.DrawImage(onScreenBox, (*myBox).at(i).getBoxMovementX(), (*myBox).at(i).getBoxMovementY(), (int)(xWidth*0.05), (int)(yHeight*0.09));
+				}
 			}
 			else
 			{

@@ -10,6 +10,11 @@
 #include <windows.h>
 #include <gdiplus.h>
 
+/*
+CLASS		: CChildView
+DESCRIPTION	:
+Class represent the drawing of the screen, function of the screen, timer, doube buffering functionality of the program
+*/
 class CChildView : public CWnd
 {
 private:

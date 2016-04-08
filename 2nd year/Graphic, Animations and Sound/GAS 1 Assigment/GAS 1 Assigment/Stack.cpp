@@ -12,7 +12,7 @@
 
 Stack::Stack(int width, int height)
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i <= 5; i++)
 	{
 		Box box = Box();
 		box.setBoxPosX(width * .9);
@@ -32,7 +32,6 @@ Stack::Stack(int width, int height)
 
 void Stack::Resize(int width, int height)
 {
-
 	listofBox.clear(); 
 	for (int i = 0; i < 5; i++)
 	{
@@ -45,7 +44,7 @@ void Stack::Resize(int width, int height)
 		else
 		{
 			box.setBoxHeight(height*0.072);
-			box.setBoxWidth(width*0.05);
+			box.setBoxWidth(width*0.06);
 			int tmp = listofBox.at(i - 1).getBoxPosY() - box.getBoxHeight();
 			box.setBoxPosY(tmp);
 		}

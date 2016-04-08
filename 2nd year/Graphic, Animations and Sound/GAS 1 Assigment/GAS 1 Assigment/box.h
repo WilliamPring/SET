@@ -1,4 +1,19 @@
+/*
+* FILE : box.h
+* PROJECT : Gas Assig 3
+* PROGRAMMER : William Pring
+* FIRST VERSION : 3/28/2016
+* DESCRIPTION :
+* Heading box
+*/
+
 #pragma once
+
+/*
+CLASS		: Box
+DESCRIPTION	:
+Class to represent an object of the box on the screen. The Box can move and can reset it's position
+*/
 class Box
 {
 public:

@@ -72,7 +72,6 @@ void Bird::changeFlyPos()
 * PURPOSE : gettting the bird flying position
 */
 
-
 int Bird::getBirdFlyPos()
 {
 	return birdFlyPos;
@@ -110,14 +109,14 @@ void Bird::SetUpBirdMovement()
 void Bird::MoveBird()
 {
 	SetUpBirdMovement();
-	//if (birdVelocity < 0)
-	//{
-	//	xBirdPos += (birdVelocity - (screenWidth*.04));
-	//}
-	//else
-	//{
+	if (birdVelocity < 0)
+	{
+		xBirdPos += (birdVelocity - (screenWidth*.04));
+	}
+	else
+	{
 		xBirdPos += (birdVelocity + (screenWidth*.04));
-	//}
+	}
 	yBirdPos -= 20;
 	//setting up reference points
 	if (xBirdPos > screenWidth-(screenWidth*.05))
@@ -150,28 +149,43 @@ void Bird::SetUpReferencePoints(int screenHeight, int screenWidth)
 	birdHitBoxY = yBirdPos + (yBirdPos*.1);
 	pointOfNoReturn = screenHeight * .88;
 }
-
+/*
+* NAME : getPointOfNoReturn
+* PURPOSE : returning the bird where it should be deleted
+*/
 
 int Bird::getPointOfNoReturn()
 {
 	return pointOfNoReturn;
 }
-
+/*
+* NAME : setPointOfNoReturn
+* PURPOSE : Set up the new screen
+*/
 void Bird::setPointOfNoReturn(int pointOfDeath)
 {
 	pointOfNoReturn = pointOfDeath * .88;
 }
-
+/*
+* NAME : setXBirdPos
+* PURPOSE : return x bird pos
+*/
 void Bird::setXBirdPos(int curPost)
 {
 	xBirdPos = curPost;
 }
-
+/*
+* NAME : setBirdFalling
+* PURPOSE : Return bird filling mode
+*/
 void Bird::setBirdFalling(bool statusOfFall)
 {
 	birdFallingMode = statusOfFall;
 }
-
+/*
+* NAME : birdDieingToDeath
+* PURPOSE : move the bird when it is dieing
+*/
 void Bird::birdDieingToDeath()
 {
 	xBirdPos = xBirdPos + 8;
@@ -185,38 +199,62 @@ void Bird::birdDieingToDeath()
 
 }
 
+/*
+* NAME : getBirdFalling
+* PURPOSE : Get the status of the bird death 
+*/
 bool Bird::getBirdFalling()
 {
 	return birdFallingMode;
 }
-
+/*
+* NAME : getScreenHeight
+* PURPOSE : return the screen size height
+*/
 
 int Bird::getScreenHeight()
 {
 	return screenHeight;
 }
+/*
+* NAME : getScreenHeight
+* PURPOSE : return the screen size width
+*/
 
 int Bird::getScreenWidth()
 {
 	return screenWidth;
 }
 
-
+/*
+* NAME : getYBirdPos
+* PURPOSE : return the birds y pos
+*/
 int Bird::getYBirdPos()
 {
 	return yBirdPos;
 }
-
+/*
+* NAME : getXBirdPos
+* PURPOSE : return the birds X pos
+*/
 int Bird::getXBirdPos()
 {
 	return xBirdPos;
 }
 
+/*
+* NAME : setScreenWidth
+* PURPOSE : set screen width size
+*/
 void Bird::setScreenWidth(int screenWidth)
 {
 	this->screenWidth = screenWidth;
 }
-
+/*
+* NAME : setScreenHeight
+* PURPOSE : set the screen Height
+*/
 void Bird::setScreenHeight(int screenHeight)
 {
 	setPointOfNoReturn(screenHeight);
