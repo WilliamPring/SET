@@ -19,6 +19,7 @@ namespace IAD
         int yPos;
         int xPos;
         int widthBorder;
+        Random rand;
         public GameUI()
         {
             InitializeComponent();
@@ -29,7 +30,7 @@ namespace IAD
             myPen = new Pen(Color.Black, widthBorder);
             rectangle = new Rectangle(xPos, yPos, 50, 50);
             solidBrush = new SolidBrush(Color.PaleVioletRed);
-         
+            rand = new Random();
         }
         private void bttnRight_Click(object sender, EventArgs e)
         {
@@ -106,12 +107,29 @@ namespace IAD
             }
         }
 
-
-
-       
-
-  
-       
-
+        private void bttnSendRandMove_Click(object sender, EventArgs e)
+        {
+            int randomMove = rand.Next(1, 4);
+            //up
+            if (randomMove==1)
+            {
+                bttnUp_Click(sender, e);
+            }
+            //down
+            else if (randomMove ==2)
+            {
+                bttnDown_Click(sender, e);
+            }
+            //left
+            else if(randomMove ==3)
+            {
+                bttnLeft_Click(sender, e);
+            }
+            //right
+            else
+            {
+                bttnRight_Click(sender, e);
+            }
+        }
     }
 }

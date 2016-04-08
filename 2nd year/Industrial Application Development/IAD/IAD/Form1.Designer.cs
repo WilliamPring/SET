@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.displayPnl = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.bttnSendRandMove = new System.Windows.Forms.Button();
+            this.BttnRandomize = new System.Windows.Forms.CheckBox();
             this.colorDialogFilling = new System.Windows.Forms.ColorDialog();
             this.bttnFill = new System.Windows.Forms.Button();
             this.bttnBorder = new System.Windows.Forms.Button();
@@ -49,24 +49,25 @@
             this.displayPnl.TabIndex = 4;
             this.displayPnl.Paint += new System.Windows.Forms.PaintEventHandler(this.displayPnl_Paint);
             // 
-            // button1
+            // bttnSendRandMove
             // 
-            this.button1.Location = new System.Drawing.Point(518, 464);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.bttnSendRandMove.Location = new System.Drawing.Point(513, 464);
+            this.bttnSendRandMove.Name = "bttnSendRandMove";
+            this.bttnSendRandMove.Size = new System.Drawing.Size(121, 23);
+            this.bttnSendRandMove.TabIndex = 5;
+            this.bttnSendRandMove.Text = "Send Random Move";
+            this.bttnSendRandMove.UseVisualStyleBackColor = true;
+            this.bttnSendRandMove.Click += new System.EventHandler(this.bttnSendRandMove_Click);
             // 
-            // checkBox1
+            // BttnRandomize
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(495, 418);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(80, 17);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.BttnRandomize.AutoSize = true;
+            this.BttnRandomize.Location = new System.Drawing.Point(513, 422);
+            this.BttnRandomize.Name = "BttnRandomize";
+            this.BttnRandomize.Size = new System.Drawing.Size(79, 17);
+            this.BttnRandomize.TabIndex = 6;
+            this.BttnRandomize.Text = "Randomize";
+            this.BttnRandomize.UseVisualStyleBackColor = true;
             // 
             // bttnFill
             // 
@@ -135,8 +136,8 @@
             this.ClientSize = new System.Drawing.Size(680, 521);
             this.Controls.Add(this.bttnBorder);
             this.Controls.Add(this.bttnFill);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.BttnRandomize);
+            this.Controls.Add(this.bttnSendRandMove);
             this.Controls.Add(this.displayPnl);
             this.Controls.Add(this.bttnDown);
             this.Controls.Add(this.bttnUp);
@@ -151,8 +152,8 @@
 
         #endregion
         private System.Windows.Forms.Panel displayPnl;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button bttnSendRandMove;
+        private System.Windows.Forms.CheckBox BttnRandomize;
         private System.Windows.Forms.ColorDialog colorDialogFilling;
         private System.Windows.Forms.Button bttnFill;
         private System.Windows.Forms.Button bttnBorder;
