@@ -145,6 +145,7 @@
             this.Controls.Add(this.bttnLeft);
             this.Name = "GameUI";
             this.Text = "Moving";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameUI_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
