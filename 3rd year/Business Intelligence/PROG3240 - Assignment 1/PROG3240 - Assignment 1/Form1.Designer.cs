@@ -182,34 +182,34 @@
             // 
             // controlChart
             // 
-            chartArea3.Name = "ChartArea1";
+            chartArea3.Name = "ControlChartArea";
             this.controlChart.ChartAreas.Add(chartArea3);
             legend3.Name = "Legend1";
             this.controlChart.Legends.Add(legend3);
             this.controlChart.Location = new System.Drawing.Point(6, 8);
             this.controlChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.controlChart.Name = "controlChart";
-            series3.ChartArea = "ChartArea1";
+            series3.ChartArea = "ControlChartArea";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series3.Legend = "Legend1";
             series3.Name = "UCL";
-            series4.ChartArea = "ChartArea1";
+            series4.ChartArea = "ControlChartArea";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series4.Legend = "Legend1";
             series4.Name = "LCL";
-            series5.ChartArea = "ChartArea1";
+            series5.ChartArea = "ControlChartArea";
             series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series5.Legend = "Legend1";
             series5.Name = "UWL";
-            series6.ChartArea = "ChartArea1";
+            series6.ChartArea = "ControlChartArea";
             series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series6.Legend = "Legend1";
             series6.Name = "LWL";
-            series7.ChartArea = "ChartArea1";
+            series7.ChartArea = "ControlChartArea";
             series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series7.Legend = "Legend1";
             series7.Name = "Average";
-            series8.ChartArea = "ChartArea1";
+            series8.ChartArea = "ControlChartArea";
             series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series8.Legend = "Legend1";
             series8.Name = "Amount";

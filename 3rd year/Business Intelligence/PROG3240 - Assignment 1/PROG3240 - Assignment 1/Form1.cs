@@ -109,11 +109,14 @@ namespace PROG3240___Assignment_1
         /// </summary>
         private void LoadControlChart()
         {
+            controlChart.ChartAreas[0].AxisX.IsMarginVisible = false;
             //clear the values
             ClearControlChart();
             DataTable dataTable = (DataTable)dataGridView.DataSource;
             DataView dataView = new DataView(dataTable);
             controlChart.Series["Amount"].Points.DataBindXY(dataView, dataTable.Columns[0].ColumnName, dataView, dataTable.Columns[1].ColumnName);
+         
+            //controlChart.Series["Amount"].Points.Add(new DataP)
             double totalCookies = 0; 
             for(int i =0; i < controlChart.Series["Amount"].Points.Count; i++)
             {
@@ -131,6 +134,7 @@ namespace PROG3240___Assignment_1
             uwl = isNumber(tbUWL.Text, "UWL");
             lwl = isNumber(tbLWL.Text, "LWL");
 
+
             foreach (System.Windows.Forms.DataVisualization.Charting.DataPoint point in controlChart.Series["Amount"].Points)
             {
                 controlChart.Series["Average"].Points.Add(totalCookies);
@@ -139,6 +143,10 @@ namespace PROG3240___Assignment_1
                 controlChart.Series["UWL"].Points.Add(uwl);
                 controlChart.Series["LWL"].Points.Add(lwl);
             }
+
+
+            controlChart.ChartAreas["ControlChartArea"].AxisX.Title = "People";
+            controlChart.ChartAreas["ControlChartArea"].AxisY.Title = "Cookies Amount";
 
         }
         /// <summary>
@@ -217,11 +225,30 @@ namespace PROG3240___Assignment_1
         private void LoadParetoDiagram()
         {
             ClearPareto();
+            double temp = 0;
+            double totalCookies = 0;
             DataTable dataTable = (DataTable)dataGridView.DataSource;
             DataView dataView = new DataView(dataTable);
             dataView.Sort = dataGridView.Columns[1].DataPropertyName + " DESC";
             paretoChart.Series["Amount"].Points.DataBindXY(dataView, dataTable.Columns[0].ColumnName, dataView, dataTable.Columns[1].ColumnName);
-            paretoChart.Series["Percentage"].Points.DataBindXY(dataView, dataTable.Columns[0].ColumnName, dataView, dataTable.Columns[1].ColumnName);
+            for (int i = 0; i < paretoChart.Series["Amount"].Points.Count; i++)
+            {
+                totalCookies += paretoChart.Series["Amount"].Points[i].YValues[0];
+            }
+            foreach (System.Windows.Forms.DataVisualization.Charting.DataPoint point in paretoChart.Series["Amount"].Points)
+            {
+                temp += (point.YValues[0] / totalCookies)*100;
+                paretoChart.Series["Percentage"].Points.Add(temp);
+
+            }
+            paretoChart.ChartAreas.First().AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.True;
+            paretoChart.ChartAreas.First().AxisY2.MajorGrid.Enabled = false;
+            paretoChart.ChartAreas.First().AxisY2.Minimum = 0;
+
+            paretoChart.ChartAreas.First().AxisY2.LabelStyle.Format = "{#' %'}";
+
+
+
         }
 
         /// <summary>
