@@ -1,0 +1,6 @@
+2017-10-11 22:27:26.3275|ERROR|Case|System.Web.Services.Protocols.SoapException: Flag out of bound
+   at ExceptionError.ThrowCustomSoapException(String errorString, String moreDetailError, String url) in c:\Users\William Pring\Desktop\SET\3rd year\Service Oriented Architecture\Assignment 3\App_Code\ExceptionError.cs:line 45
+   at Case.CaseConvert(String incoming, UInt32 flag) in c:\Users\William Pring\Desktop\SET\3rd year\Service Oriented Architecture\Assignment 3\App_Code\Case.cs:line 48
+2017-10-11 22:55:39.7789|ERROR|VinniesLoanService|System.Web.Services.Protocols.SoapException: Values should not be less then 0
+   at ExceptionError.ThrowCustomSoapException(String errorString, String moreDetailError, String url) in c:\Users\William Pring\Desktop\SET\3rd year\Service Oriented Architecture\Assignment 3\App_Code\ExceptionError.cs:line 45
+   at VinniesLoanService.LoanPayment(Single principle, Single rate, Int32 payments) in c:\Users\William Pring\Desktop\SET\3rd year\Service Oriented Architecture\Assignment 3\App_Code\VinniesLoanService.cs:line 39
