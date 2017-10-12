@@ -54,7 +54,6 @@ public class VinniesLoanService : System.Web.Services.WebService
             catch(DivideByZeroException ex)
             {
                 logger.Error(ex);
-
                 errorString = "Resulted ended in undefinded";
                 string moreDetailError = "Cannot divide by zero";
                 try

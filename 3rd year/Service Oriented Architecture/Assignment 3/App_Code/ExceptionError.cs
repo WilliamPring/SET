@@ -43,6 +43,5 @@ public class ExceptionError
           node);
 
         throw se;
-        return;
     }
 }

@@ -14,12 +14,12 @@ using NLog;
 // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
 // [System.Web.Script.Services.ScriptService]
 
-public class Case : System.Web.Services.WebService
+public class TextService : System.Web.Services.WebService
 {
     private static Logger logger = LogManager.GetCurrentClassLogger();
 
     ExceptionError eError = new ExceptionError();
-    public Case () {
+    public TextService() {
 
         //Uncomment the following line if using designed components 
         //InitializeComponent(); 
