@@ -18,7 +18,7 @@ public class TickerTape : System.Web.Services.WebService
 
     ExceptionError eError = new ExceptionError();
 
-    delayedstockquote.DelayedStockQuote dsq = new delayedstockquote.DelayedStockQuote();
+    stockquote.DelayedStockQuote dsq = new stockquote.DelayedStockQuote();
     public struct QuoteInfo
     {
         public string Symbol;
@@ -42,7 +42,7 @@ public class TickerTape : System.Web.Services.WebService
     {
         QuoteInfo qi = new QuoteInfo();
 
-        if ((Regex.IsMatch(tickerSymbol, @"[^A-Za-z0-9]+")) || (tickerSymbol== ""))
+        if ((Regex.IsMatch(tickerSymbol, @"[^A-Za-z0-9]+")) || (tickerSymbol == ""))
         {
             try
             {
@@ -61,7 +61,7 @@ public class TickerTape : System.Web.Services.WebService
 
             try
             {
-                delayedstockquote.QuoteData qd = dsq.GetQuote(tickerSymbol, "0");
+                stockquote.QuoteData qd = dsq.GetQuote(tickerSymbol, "0");
                 qi.Symbol = qd.StockSymbol;
                 qi.LastPrice = System.Convert.ToDouble(qd.LastTradeAmount);
                 qi.LastPriceDate = qd.LastTradeDateTime.Date.ToString();
@@ -83,8 +83,12 @@ public class TickerTape : System.Web.Services.WebService
             }
 
         }
+
+
+
+
+
         return qi;
 
     }
-
 }

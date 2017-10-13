@@ -18,7 +18,8 @@ public class TextService : System.Web.Services.WebService
     //private static Logger logger = LogManager.GetCurrentClassLogger();
 
     ExceptionError eError = new ExceptionError();
-    public TextService() {
+    public TextService()
+    {
 
         //Uncomment the following line if using designed components 
         //InitializeComponent(); 
@@ -30,7 +31,7 @@ public class TextService : System.Web.Services.WebService
         string returnStringValue = "";
         string moreDetailError = "";
         string errorString = "";
-        if (flag ==1)
+        if (flag == 1)
         {
             returnStringValue = incoming.ToUpper();
         }
@@ -46,7 +47,7 @@ public class TextService : System.Web.Services.WebService
                 moreDetailError = "Invalid Case Flag! Flag = 1 to Capalizes all string, Flag = 2 to lower case all the string";
                 eError.ThrowCustomSoapException(errorString, moreDetailError, Context.Request.Url.AbsoluteUri);
             }
-            catch(SoapException se)
+            catch (SoapException se)
             {
 
                 throw se;
@@ -56,7 +57,4 @@ public class TextService : System.Web.Services.WebService
         }
         return returnStringValue;
     }
-
-
-
 }
