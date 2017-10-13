@@ -3,27 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Assignment 3", "Assignment 3\", "{CE64C91C-21FD-4998-8537-D541FF885071}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_49215"
-		Debug.AspNetCompiler.PhysicalPath = "Assignment 3\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49215\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_49215"
-		Release.AspNetCompiler.PhysicalPath = "Assignment 3\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49215\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "49215"
-		SlnRelativePath = "Assignment 3\"
-	EndProjectSection
-EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TickerTape(2)", "TickerTape\", "{B1E8E7AC-29D6-4DCD-9D3A-D0E6F8CCF608}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
@@ -66,16 +45,33 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TextService(1)", "TextServi
 		SlnRelativePath = "TextService\"
 	EndProjectSection
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "VinniesLoanService(1)", "VinniesLoanService\", "{ED1D0725-D8FC-44E8-98B8-B5A0E67A6A8F}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_53014"
+		Debug.AspNetCompiler.PhysicalPath = "VinniesLoanService\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53014\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_53014"
+		Release.AspNetCompiler.PhysicalPath = "VinniesLoanService\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53014\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "53014"
+		SlnRelativePath = "VinniesLoanService\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CE64C91C-21FD-4998-8537-D541FF885071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE64C91C-21FD-4998-8537-D541FF885071}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE64C91C-21FD-4998-8537-D541FF885071}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE64C91C-21FD-4998-8537-D541FF885071}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{B1E8E7AC-29D6-4DCD-9D3A-D0E6F8CCF608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B1E8E7AC-29D6-4DCD-9D3A-D0E6F8CCF608}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1E8E7AC-29D6-4DCD-9D3A-D0E6F8CCF608}.Release|Any CPU.ActiveCfg = Debug|Any CPU
@@ -84,6 +80,10 @@ Global
 		{7C25D9F4-3C8E-4227-8988-6FC4E9378E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C25D9F4-3C8E-4227-8988-6FC4E9378E7A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C25D9F4-3C8E-4227-8988-6FC4E9378E7A}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{ED1D0725-D8FC-44E8-98B8-B5A0E67A6A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED1D0725-D8FC-44E8-98B8-B5A0E67A6A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED1D0725-D8FC-44E8-98B8-B5A0E67A6A8F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED1D0725-D8FC-44E8-98B8-B5A0E67A6A8F}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

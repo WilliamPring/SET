@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -17,7 +18,6 @@ public class TextService : System.Web.Services.WebService
 {
     //private static Logger logger = LogManager.GetCurrentClassLogger();
 
-    ExceptionError eError = new ExceptionError();
     public TextService()
     {
 
@@ -29,8 +29,6 @@ public class TextService : System.Web.Services.WebService
     public string CaseConvert(string incoming, uint flag)
     {
         string returnStringValue = "";
-        string moreDetailError = "";
-        string errorString = "";
         if (flag == 1)
         {
             returnStringValue = incoming.ToUpper();
@@ -41,19 +39,14 @@ public class TextService : System.Web.Services.WebService
         }
         else
         {
-            try
+            string errorMessage = "Flag out of bound! Invalid Case Flag! Flag = 1 to Capalizes all string, Flag = 2 to lower case all the string";
+
+
+            using (StreamWriter file2 = new StreamWriter(Server.MapPath("LogFileTextService.txt"), true))
             {
-                errorString = "Flag out of bound";
-                moreDetailError = "Invalid Case Flag! Flag = 1 to Capalizes all string, Flag = 2 to lower case all the string";
-                eError.ThrowCustomSoapException(errorString, moreDetailError, Context.Request.Url.AbsoluteUri);
+                file2.WriteLine("Time: " + DateTime.Now.ToString("h:mm:ss tt") + "\npublic string CaseConvert(string incoming, uint flag) \n" + "Error Messages: " + errorMessage + "\n");
             }
-            catch (SoapException se)
-            {
-
-                throw se;
-            }
-
-
+            throw new SoapException(errorMessage, SoapException.ClientFaultCode);
         }
         return returnStringValue;
     }

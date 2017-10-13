@@ -1,0 +1,3 @@
+﻿public string CaseConvert(string incoming, uint flag) 
+Error Messages: Flag out of bound! Invalid Case Flag! Flag = 1 to Capalizes all string, Flag = 2 to lower case all the string
+

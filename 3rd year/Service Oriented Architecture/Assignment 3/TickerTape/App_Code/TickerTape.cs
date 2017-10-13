@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Text.RegularExpressions;
+using System.IO;
 
 /// <summary>
 /// Summary description for TickerTape
@@ -15,9 +16,6 @@ using System.Text.RegularExpressions;
 // [System.Web.Script.Services.ScriptService]
 public class TickerTape : System.Web.Services.WebService
 {
-
-    ExceptionError eError = new ExceptionError();
-
     stockquote.DelayedStockQuote dsq = new stockquote.DelayedStockQuote();
     public struct QuoteInfo
     {
@@ -44,16 +42,13 @@ public class TickerTape : System.Web.Services.WebService
 
         if ((Regex.IsMatch(tickerSymbol, @"[^A-Za-z0-9]+")) || (tickerSymbol == ""))
         {
-            try
+
+            string errorMessage = "Invalid Ticker Format! Ticker Symbol cannot have Symbols or cannot be empty";
+            using (StreamWriter file2 = new StreamWriter(Server.MapPath("LogFileTickerTape.txt"), true))
             {
-                string errorString = "Invalid Ticker Format!";
-                string moreDetailError = "Ticker Symbol cannot have Symbols or cannot be empty";
-                eError.ThrowCustomSoapException(errorString, moreDetailError, Context.Request.Url.AbsoluteUri);
+                file2.WriteLine("Time: " + DateTime.Now.ToString("h:mm:ss tt") + "\npublic QuoteInfo GetQuote(string tickerSymbol) \n" + "Error Messages: " + errorMessage + "\n");
             }
-            catch (SoapException se)
-            {
-                throw se;
-            }
+            throw new SoapException(errorMessage, SoapException.ClientFaultCode);
         }
 
         else
@@ -69,25 +64,15 @@ public class TickerTape : System.Web.Services.WebService
             }
             catch (SoapException se)
             {
-                try
+                string errorMessage = "Input Ticker was not in a correct! Ticker Symbol was invalid!";
+                using (StreamWriter file2 = new StreamWriter(Server.MapPath("LogFileTickerTape.txt"), true))
                 {
-                    // Input string .
-                    string errorString = "Input Ticker was not in a correct!";
-                    string moreDetailError = "Ticker Symbol was invalid!";
-                    eError.ThrowCustomSoapException(errorString, moreDetailError, Context.Request.Url.AbsoluteUri);
+                    file2.WriteLine("Time: " + DateTime.Now.ToString("h:mm:ss tt") + "\npublic QuoteInfo GetQuote(string tickerSymbol) \n" + "Error Messages: " + errorMessage + "\n");
                 }
-                catch (SoapException sexp)
-                {
-                    throw sexp;
-                }
+                throw new SoapException(errorMessage, SoapException.ClientFaultCode);
             }
 
         }
-
-
-
-
-
         return qi;
 
     }

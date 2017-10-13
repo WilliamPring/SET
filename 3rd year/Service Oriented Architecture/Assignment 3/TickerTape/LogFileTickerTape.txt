@@ -1,0 +1,24 @@
+﻿Time: 5:31:46 PM
+public QuoteInfo GetQuote(string tickerSymbol) 
+Error Messages: Invalid Ticker Format! Ticker Symbol cannot have Symbols or cannot be empty
+
+Time: 5:33:38 PM
+public QuoteInfo GetQuote(string tickerSymbol) 
+Error Messages: Input Ticker was not in a correct! Ticker Symbol was invalid!
+
+Time: 5:34:34 PM
+public QuoteInfo GetQuote(string tickerSymbol) 
+Error Messages: Input Ticker was not in a correct! Ticker Symbol was invalid!
+
+Time: 5:40:08 PM
+public QuoteInfo GetQuote(string tickerSymbol) 
+Error Messages: Input Ticker was not in a correct! Ticker Symbol was invalid!
+
+Time: 5:41:33 PM
+public QuoteInfo GetQuote(string tickerSymbol) 
+Error Messages: Input Ticker was not in a correct! Ticker Symbol was invalid!
+
+Time: 5:41:54 PM
+public QuoteInfo GetQuote(string tickerSymbol) 
+Error Messages: Input Ticker was not in a correct! Ticker Symbol was invalid!
+
