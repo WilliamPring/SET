@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.15
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Assignment 3(1)", "Assignment 3\", "{CE64C91C-21FD-4998-8537-D541FF885071}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv3.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_49215"
+		Debug.AspNetCompiler.PhysicalPath = "Assignment 3\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49215\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_49215"
+		Release.AspNetCompiler.PhysicalPath = "Assignment 3\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49215\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "49215"
+		SlnRelativePath = "Assignment 3\"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinetConsumingWebservices", "..\..\source\repos\ClinetConsumingWebservices\ClinetConsumingWebservices\ClinetConsumingWebservices.csproj", "{03B46B1C-6194-425E-92EF-D0CA69DB0CC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE64C91C-21FD-4998-8537-D541FF885071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE64C91C-21FD-4998-8537-D541FF885071}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE64C91C-21FD-4998-8537-D541FF885071}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE64C91C-21FD-4998-8537-D541FF885071}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{03B46B1C-6194-425E-92EF-D0CA69DB0CC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B46B1C-6194-425E-92EF-D0CA69DB0CC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03B46B1C-6194-425E-92EF-D0CA69DB0CC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03B46B1C-6194-425E-92EF-D0CA69DB0CC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4665231-A5E0-4E3A-89F3-6B995D3455BE}
+	EndGlobalSection
+EndGlobal
