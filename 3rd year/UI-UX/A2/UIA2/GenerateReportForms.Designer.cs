@@ -38,7 +38,6 @@
             this.tbDirectory = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.AutoFill = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -124,23 +123,13 @@
             // 
             // AutoFill
             // 
-            this.AutoFill.Location = new System.Drawing.Point(115, 373);
+            this.AutoFill.Location = new System.Drawing.Point(37, 152);
             this.AutoFill.Name = "AutoFill";
-            this.AutoFill.Size = new System.Drawing.Size(223, 37);
+            this.AutoFill.Size = new System.Drawing.Size(359, 37);
             this.AutoFill.TabIndex = 9;
-            this.AutoFill.Text = "Auto Fill";
+            this.AutoFill.Text = "Auto Student Name and Last Name";
             this.AutoFill.UseVisualStyleBackColor = true;
             this.AutoFill.Click += new System.EventHandler(this.AutoFill_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(64, 413);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(337, 20);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Auto fill student information base on student id";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // button1
             // 
@@ -175,7 +164,7 @@
             "Never reach code",
             "No Goto",
             "Type not assgined"});
-            this.checkedListBox1.Location = new System.Drawing.Point(173, 162);
+            this.checkedListBox1.Location = new System.Drawing.Point(133, 217);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(228, 193);
             this.checkedListBox1.TabIndex = 13;
@@ -183,7 +172,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(88, 162);
+            this.label6.Location = new System.Drawing.Point(48, 217);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(69, 20);
             this.label6.TabIndex = 14;
@@ -198,7 +187,6 @@
             this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.AutoFill);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tbDirectory);
@@ -228,7 +216,6 @@
         private System.Windows.Forms.TextBox tbDirectory;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button AutoFill;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
