@@ -1,0 +1,27 @@
+﻿<Window x:Class="A2_MemoryCache.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:A2_MemoryCache"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Label Content="Shared User Data" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="bttnCacheAllGeneralUserData" Content="Cache Shared Data" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="116" Click="bttnCacheAllGeneralUserData_Click" RenderTransformOrigin="-0.37,0.808"/>
+        <Label Content="Cache a User's Data Setup" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,73,0,0"/>
+        <StackPanel HorizontalAlignment="Left" Height="100" Margin="467,241,-50,-22" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="tbUserName" HorizontalAlignment="Left" Height="23" Margin="87,104,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="tbUserId" HorizontalAlignment="Left" Height="23" Margin="87,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Username:" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top"/>
+        <Label Content="User ID: " HorizontalAlignment="Left" Margin="21,139,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="CacheUserData" Content="Cache User Data" HorizontalAlignment="Left" Margin="63,176,0,0" VerticalAlignment="Top" Width="114" Click="CacheUserData_Click"/>
+        <Label Content="Cache Data:" HorizontalAlignment="Left" Margin="21,223,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="tbCacheData" Content="" HorizontalAlignment="Left" Margin="124,223,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.853,0.453"/>
+        <Button x:Name="bttnCheckCacheUserData" Content="Check User Data" HorizontalAlignment="Left" Margin="21,254,0,0" VerticalAlignment="Top" Width="91" RenderTransformOrigin="0.69,-0.134" Click="bttnCheckCacheUserData_Click"/>
+        <Button x:Name="bttnClearTextField" Content="Clear Text" HorizontalAlignment="Left" Margin="21,279,0,0" VerticalAlignment="Top" Width="91" Click="bttnClearTextField_Click"/>
+        <Label Content="Time Duration Accessing Data(ms): " HorizontalAlignment="Left" Margin="286,231,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="tbCacheTime" Content="" HorizontalAlignment="Left" Margin="296,256,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

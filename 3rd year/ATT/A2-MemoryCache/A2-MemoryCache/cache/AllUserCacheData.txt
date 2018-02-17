@@ -1,0 +1,4 @@
+Company: Random Company Name
+Hours Work: 8am - 5pm
+Bonus: Maybe
+Vacation: Lets hope not
